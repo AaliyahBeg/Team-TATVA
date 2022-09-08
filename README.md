@@ -1,16 +1,16 @@
-# environment_app
+# Environment App
 
-A new Flutter project.
+An exciting project in hand to create a greener and cleaner world to live in.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+In this project we are having the following tracks :
+1) Land Pollution 
+2) Water Pollution
+3) Air Pollution
+4) Noise Pollution
+5) Light Pollution
 
-A few resources to get you started if this is your first Flutter project:
+## Resources
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+https://www.figma.com/file/xwutHNA8uxheIKWMoXhgJc/Environment-App?node-id=515%3A4
