@@ -1,5 +1,6 @@
 import 'dart:core';
 import 'package:flutter/material.dart';
+import 'package:scroll_snap_list/scroll_snap_list.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -154,12 +155,17 @@ class _HomeState extends State<Home> {
           // ),
           Container(
             height: 256,
-            child: ListView.separated(
+            child: ScrollSnapList(
               padding: EdgeInsets.all(16),
               scrollDirection: Axis.horizontal,
-                itemBuilder: (context,_)=> SizedBox(width:12),
-                separatorBuilder: (context,index) => buildCard(item:items[index]),
-                itemCount: 6,
+                onItemFocus:(int){
+
+                },
+                itemSize: 200,
+                dynamicItemSize: true,
+                // itemBuilder: (context,_)=> SizedBox(width:12),
+                itemBuilder: (context,index) => buildCard(item:items[index]),
+                itemCount: 7,
             ),
 
           )
