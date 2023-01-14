@@ -40,7 +40,7 @@ class Petitions extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               GestureDetector(
-                onTap: () => {Navigator.pushNamed(context, '')},
+                onTap: () => {Navigator.pushNamed(context, 'homepage')},
                 child: Container(
                   child: Text(
                       'Home',
