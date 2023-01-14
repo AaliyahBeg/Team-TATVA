@@ -1,7 +1,6 @@
 import 'package:environment_app/petitions.dart';
 import 'package:flutter/material.dart';
 import 'package:environment_app/homepage.dart';
-
 void main() {
   runApp(const MyApp());
 }
