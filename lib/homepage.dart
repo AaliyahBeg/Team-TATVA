@@ -1,6 +1,7 @@
 import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:scroll_snap_list/scroll_snap_list.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -20,6 +21,7 @@ class CardItem{
 }
 
 class _HomeState extends State<Home> {
+  int _currentIndex = 0;
   List<CardItem> items =[
     CardItem(
       urlImage: 'https://4.bp.blogspot.com/-N_WdeyPGz10/TocPGEkD1YI/AAAAAAAAAGU/h8Abdw5Ukdw/s1600/Soil+pollution2.jpg',
@@ -77,7 +79,7 @@ class _HomeState extends State<Home> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     GestureDetector(
-                        onTap: () => {Navigator.pushNamed(context, '')},
+                        onTap: () => {Navigator.pushNamed(context, 'homepage')},
                         child: Container(
                           padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                           decoration: BoxDecoration(
@@ -135,24 +137,6 @@ class _HomeState extends State<Home> {
                   ],
                 ),
                 SizedBox(height:12),
-                // SingleChildScrollView(
-                //     scrollDirection: Axis.horizontal,
-                //     child:Row(
-                //       children: [
-                //         buildCard(),
-                //         SizedBox(width:12),
-                //         buildCard(),
-                //         SizedBox(width:12),
-                //         buildCard(),
-                //         SizedBox(width:12),
-                //         buildCard(),
-                //         SizedBox(width:12),
-                //         buildCard(),
-                //
-                //       ],
-                //     )
-                //
-                // ),
 
                 Container(
                   color: Colors.grey[200],
@@ -173,20 +157,28 @@ class _HomeState extends State<Home> {
                         child: ScrollSnapList(
                           padding: EdgeInsets.fromLTRB(16,12,16,12),
                           scrollDirection: Axis.horizontal,
-                          onItemFocus:(int){
-
+                          onItemFocus:(index){
+                            setState(() {
+                              _currentIndex = index;
+                            });
                           },
                           itemSize: 200,
                           dynamicItemSize: true,
                           // itemBuilder: (context,_)=> SizedBox(width:12),
                           itemBuilder: (context,index) => buildCard(item:items[index]),
                           itemCount: 5,
-                        ),
+                          initialIndex: 0,
 
+                        ),
                       ),
                     ],
                   ),
-                )
+                ),
+
+
+                Expanded(
+                  child: _getPage(_currentIndex),
+                ),
 
 
               ]
@@ -195,108 +187,171 @@ class _HomeState extends State<Home> {
 
     );
   }
-  Widget buildCard({
-    required CardItem item,
-  }) => Container(
-    width: 200,
-    child: Column(
-      children: [
-        Expanded(
-          child: AspectRatio(
-            aspectRatio: 4/3,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(20),
-              child: Image.network(
-                item.urlImage,
-                fit:BoxFit.cover,
-              ),
+
+  Widget _getPage(int index) {
+    switch (index) {
+      case 0:
+        return Page1();
+      case 1:
+        return Page2();
+      case 2:
+        return Page3();
+      case 3:
+        return Page4();
+      case 4:
+        return Page5();
+      default:
+        return Container();
+    }
+  }
+}
+
+class Page1 extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Text('Content of page 1'),
+    );
+  }
+}
+
+class Page2 extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Text('Content of page 2'),
+    );
+  }
+}
+
+class Page3 extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Text('Content of page 3'),
+    );
+  }
+}
+
+class Page4 extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Text('Content of page 4'),
+    );
+  }
+}
+
+class Page5 extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Text('Content of page 5'),
+    );
+  }
+}
+
+Widget buildCard({
+  required CardItem item,
+}) => Container(
+  width: 200,
+  child: Column(
+    children: [
+      Expanded(
+        child: AspectRatio(
+          aspectRatio: 4/3,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: Image.network(
+              item.urlImage,
+              fit:BoxFit.cover,
             ),
           ),
         ),
-        const SizedBox(height: 5,),
-        Text(
-          item.title,
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
-
-        ),
-        Text(
-          item.desc,
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w100,
-            color: Colors.grey,
-          ),
-        ),
-        Container(
-
-          child:getWidget(item.title),
-
+      ),
+      const SizedBox(height: 5,),
+      Text(
+        item.title,
+        style: TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
         ),
 
-
-      ],
-    ),
-  );
-  Widget getWidget(String title){
-    if(title=='LAND POLLUTION')
-      return Container(
-        child:Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-
-          ],
+      ),
+      Text(
+        item.desc,
+        style: TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.w100,
+          color: Colors.grey,
         ),
-      );
-    else if(title=='WATER POLLUTION')
-      return Container(
-        child:Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
+      ),
+      Container(
 
-          ],
-        ),
-      );
-    else if(title=='AIR POLLUTION')
-      return Container(
-        child:Column(
+        child:getWidget(item.title),
 
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            // SizedBox(height: 20,),
-            // Text(
-            //   "AQI GRAPHS",
-            //   style: TextStyle(
-            //     fontWeight: FontWeight.w400,
-            //     fontSize: 20,
-            //   ),
-            // ),
+      ),
 
-          ],
-        ),
-      );
-    else if(title=='NOISE POLLUTION')
-      return Container(
-        child:Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
 
-          ],
-        ),
-      );
-    else if(title=='LIGHT POLLUTION')
-      return Container(
-        child:Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
+    ],
+  ),
+);
+Widget getWidget(String title){
+  if(title=='LAND POLLUTION')
+    return Container(
+      child:Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
 
-          ],
-        ),
-      );
-    else return Container(
+        ],
+      ),
+    );
+  else if(title=='WATER POLLUTION')
+    return Container(
+      child:Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
 
-      );
-  }
+        ],
+      ),
+    );
+  else if(title=='AIR POLLUTION')
+    return Container(
+      child:Column(
+
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          // SizedBox(height: 20,),
+          // Text(
+          //   "AQI GRAPHS",
+          //   style: TextStyle(
+          //     fontWeight: FontWeight.w400,
+          //     fontSize: 20,
+          //   ),
+          // ),
+
+        ],
+      ),
+    );
+  else if(title=='NOISE POLLUTION')
+    return Container(
+      child:Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+
+        ],
+      ),
+    );
+  else if(title=='LIGHT POLLUTION')
+    return Container(
+      child:Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+
+        ],
+      ),
+    );
+  else return Container(
+
+    );
 }
