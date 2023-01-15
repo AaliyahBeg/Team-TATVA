@@ -3,6 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:scroll_snap_list/scroll_snap_list.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
+import 'package:environment_app/Air_Pollution/main_page.dart';
+import 'package:environment_app/Land_Pollution/main_page.dart';
+import 'package:environment_app/Light_Pollution/main_page.dart';
+import 'package:environment_app/Noise_Pollution/main_page.dart';
+import 'package:environment_app/Water_Pollution/main_page.dart';
+
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
 
@@ -155,6 +161,7 @@ class _HomeState extends State<Home> {
                       Container(
                         height: 256,
                         child: ScrollSnapList(
+
                           padding: EdgeInsets.fromLTRB(16,12,16,12),
                           scrollDirection: Axis.horizontal,
                           onItemFocus:(index){
@@ -165,8 +172,15 @@ class _HomeState extends State<Home> {
                           itemSize: 200,
                           dynamicItemSize: true,
                           // itemBuilder: (context,_)=> SizedBox(width:12),
-                          itemBuilder: (context,index) => buildCard(item:items[index]),
-                          itemCount: 5,
+                          itemBuilder: (context,index) {
+
+                            int iindex=index;
+                            if (index == items.length) {
+                              index = 0;
+                            }
+                            return buildCard(item: items[iindex]);
+                          },
+                          itemCount: items.length,
                           initialIndex: 0,
 
                         ),
@@ -190,64 +204,19 @@ class _HomeState extends State<Home> {
 
   Widget _getPage(int index) {
     switch (index) {
-      case 0:
+      case 0: //Land_Pollution
         return Page1();
-      case 1:
+      case 1: //Water_Pollution
         return Page2();
-      case 2:
+      case 2: //Air Pollution
         return Page3();
-      case 3:
+      case 3: //Noise_Pollution
         return Page4();
-      case 4:
+      case 4: //Light_Pollution
         return Page5();
       default:
         return Container();
     }
-  }
-}
-
-class Page1 extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Text('Content of page 1'),
-    );
-  }
-}
-
-class Page2 extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Text('Content of page 2'),
-    );
-  }
-}
-
-class Page3 extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Text('Content of page 3'),
-    );
-  }
-}
-
-class Page4 extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Text('Content of page 4'),
-    );
-  }
-}
-
-class Page5 extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Text('Content of page 5'),
-    );
   }
 }
 
@@ -286,72 +255,72 @@ Widget buildCard({
           color: Colors.grey,
         ),
       ),
-      Container(
-
-        child:getWidget(item.title),
-
-      ),
+      // Container(
+      //
+      //   child:getWidget(item.title),
+      //
+      // ),
 
 
     ],
   ),
 );
-Widget getWidget(String title){
-  if(title=='LAND POLLUTION')
-    return Container(
-      child:Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-
-        ],
-      ),
-    );
-  else if(title=='WATER POLLUTION')
-    return Container(
-      child:Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-
-        ],
-      ),
-    );
-  else if(title=='AIR POLLUTION')
-    return Container(
-      child:Column(
-
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          // SizedBox(height: 20,),
-          // Text(
-          //   "AQI GRAPHS",
-          //   style: TextStyle(
-          //     fontWeight: FontWeight.w400,
-          //     fontSize: 20,
-          //   ),
-          // ),
-
-        ],
-      ),
-    );
-  else if(title=='NOISE POLLUTION')
-    return Container(
-      child:Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-
-        ],
-      ),
-    );
-  else if(title=='LIGHT POLLUTION')
-    return Container(
-      child:Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-
-        ],
-      ),
-    );
-  else return Container(
-
-    );
-}
+// Widget getWidget(String title){
+//   if(title=='LAND POLLUTION')
+//     return Container(
+//       child:Column(
+//         crossAxisAlignment: CrossAxisAlignment.stretch,
+//         children: [
+//
+//         ],
+//       ),
+//     );
+//   else if(title=='WATER POLLUTION')
+//     return Container(
+//       child:Column(
+//         crossAxisAlignment: CrossAxisAlignment.stretch,
+//         children: [
+//
+//         ],
+//       ),
+//     );
+//   else if(title=='AIR POLLUTION')
+//     return Container(
+//       child:Column(
+//
+//         crossAxisAlignment: CrossAxisAlignment.stretch,
+//         children: [
+//           // SizedBox(height: 20,),
+//           // Text(
+//           //   "AQI GRAPHS",
+//           //   style: TextStyle(
+//           //     fontWeight: FontWeight.w400,
+//           //     fontSize: 20,
+//           //   ),
+//           // ),
+//
+//         ],
+//       ),
+//     );
+//   else if(title=='NOISE POLLUTION')
+//     return Container(
+//       child:Column(
+//         crossAxisAlignment: CrossAxisAlignment.stretch,
+//         children: [
+//
+//         ],
+//       ),
+//     );
+//   else if(title=='LIGHT POLLUTION')
+//     return Container(
+//       child:Column(
+//         crossAxisAlignment: CrossAxisAlignment.stretch,
+//         children: [
+//
+//         ],
+//       ),
+//     );
+//   else return Container(
+//
+//     );
+// }
