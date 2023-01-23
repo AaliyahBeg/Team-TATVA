@@ -8,6 +8,8 @@ import 'package:environment_app/Land_Pollution/main_page.dart';
 import 'package:environment_app/Light_Pollution/main_page.dart';
 import 'package:environment_app/Noise_Pollution/main_page.dart';
 import 'package:environment_app/Water_Pollution/main_page.dart';
+import 'package:environment_app/news.dart';
+import 'package:environment_app/petitions.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -28,6 +30,7 @@ class CardItem{
 
 class _HomeState extends State<Home> {
   int _currentIndex = 0;
+  String _pageSelected="";
   List<CardItem> items =[
     CardItem(
       urlImage: 'https://4.bp.blogspot.com/-N_WdeyPGz10/TocPGEkD1YI/AAAAAAAAAGU/h8Abdw5Ukdw/s1600/Soil+pollution2.jpg',
@@ -55,6 +58,38 @@ class _HomeState extends State<Home> {
       desc: "",
     ),
   ];
+
+  // Widget _currentPage(String title) {
+  //   return InkWell(
+  //     child: Container(
+  //       padding: EdgeInsets.all(6.0),
+  //       height: 70,
+  //       // width: 90,
+  //       decoration: BoxDecoration(
+  //         borderRadius: BorderRadius.circular(15),
+  //         color: _pageSelected == title
+  //             ? Color.fromARGB(97, 243, 217, 140)
+  //             : Color.fromARGB(255, 174, 117, 136),
+  //       ),
+  //       child: Center(
+  //         child: Text(
+  //           title,
+  //           style: TextStyle(
+  //             fontSize: 18,
+  //             color: _pageSelected == title
+  //                 ? Color.fromARGB(96, 14, 11, 4)
+  //                 : Colors.white70,
+  //           ),
+  //         ),
+  //       ),
+  //     ),
+  //     onTap: () {
+  //       setState(() {
+  //         _pageSelected = title;
+  //       });
+  //     },
+  //   );
+  // }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -123,7 +158,7 @@ class _HomeState extends State<Home> {
                         )
                     ),
                     GestureDetector(
-                        onTap: () => {Navigator.pushNamed(context, '')},
+                        onTap: () => {Navigator.pushNamed(context, 'connect')},
                         child: Container(
                             child: Text('Connect',
                                 style: TextStyle(
@@ -132,7 +167,7 @@ class _HomeState extends State<Home> {
                                 )))
                     ),
                     GestureDetector(
-                        onTap: () => {Navigator.pushNamed(context, '')},
+                        onTap: () => {Navigator.pushNamed(context, 'news')},
                         child: Container(
                             child: Text('News',
                                 style: TextStyle(
