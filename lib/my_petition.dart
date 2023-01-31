@@ -1,17 +1,14 @@
 import 'package:carousel_slider/carousel_slider.dart';
+
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:environment_app/start_petition.dart';
-import 'package:environment_app/my_petition.dart';
 
-final List<String> imgs = [
-  'images/pet1.png',
-  'images/pet1.png',
-  'images/pet1.png'
-];
 
-class Petitions extends StatelessWidget {
-  const Petitions({Key? key}) : super(key: key);
+
+
+class MyPetition extends StatelessWidget {
+  const MyPetition({Key? key}) : super(key: key);
 
 
   @override
@@ -100,47 +97,27 @@ class Petitions extends StatelessWidget {
               ),
             ],
           ),
-
           Container(
             alignment: Alignment.centerLeft,
             margin: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
             child: Text(
-              'ONGOING PETITIONS',
+              'MY PETITIONS',
               style: TextStyle(
                 fontFamily: 'Inria',
                 fontSize: 22,
               ),
             ),
           ),
-
-          CarouselSlider(
-              items: imgs.map((item) => Container(
-                child: Center(
-                  child: Image.asset(
-                    item,
-                    width: 4000,
-                  )
-                )
-              )
-              ).toList(),
-              options: CarouselOptions(
-                autoPlay: true,
-                aspectRatio: 3.5,
-                enlargeCenterPage: true,
-              )
-          ),
-
-          SizedBox(height: 15),
+         
+  
 
 
-          
 
+
+          SizedBox(height: 395),
           TextButton(
-              onPressed: () {
-                Navigator.push(context,
-                MaterialPageRoute(builder:((context) => RaisePetition()),
-                )
-                );
+              onPressed: (){
+                Navigator.pop(context);
               },
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF96E072)),
@@ -153,7 +130,7 @@ class Petitions extends StatelessWidget {
                   EdgeInsets.symmetric(horizontal: 80, vertical: 10)),
             ),
               child: const Text(
-                  'RAISE PETITIONS',
+                  'GO BACK',
                 style: TextStyle(
                     color: Colors.black,
                   fontFamily: 'Inter',
@@ -161,45 +138,7 @@ class Petitions extends StatelessWidget {
               ),
           ),
 
-          Container(
-            alignment: Alignment.centerLeft,
-            margin: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
-            child: Text(
-              'SOME SUCCESS STORIES',
-              style: TextStyle(
-                fontFamily: 'Inria',
-                fontSize: 22,
-              ),
-            ),
-          ),
-
-           SizedBox(height: 165),
-
-             TextButton(
-              onPressed: () {
-                Navigator.push(context,
-                MaterialPageRoute(builder:((context) => MyPetition()),
-                )
-                );
-              },
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF96E072)),
-              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18.0),
-                  )
-              ),
-              padding: MaterialStateProperty.all<EdgeInsets>(
-                  EdgeInsets.symmetric(horizontal: 80, vertical: 10)),
-            ),
-              child: const Text(
-                  'MY PETITIONS',
-                style: TextStyle(
-                    color: Colors.black,
-                  fontFamily: 'Inter',
-                )
-              ),
-          ),
+     
         ]
       )
       )
