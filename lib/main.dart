@@ -1,22 +1,47 @@
 import 'package:environment_app/petitions.dart';
 import 'package:flutter/material.dart';
+import 'package:environment_app/Product/Products.dart';
 import 'package:environment_app/homepage.dart';
+import 'Product/Project_detail.dart';
+import 'Product/list_of_product.dart';
+
+
+// void main() {
+//   runApp(const MyApp());
+// }
+//
+// class MyApp extends StatelessWidget {
+//   const MyApp({Key? key}) : super(key: key);
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       debugShowCheckedModeBanner: false,
+//       initialRoute: 'homepage',
+//       routes: {
+//         'petitions': (context) => const Petitions(),
+//         'homepage': (context) => const Home(),
+//       },
+//     );
+//   }
+// }
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: 'homepage',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: HomeScreen(),
       routes: {
-        'petitions': (context) => const Petitions(),
-        'homepage': (context) => const Home(),
+        'project_detail': (context) => const CoffeeDetailsPage(),
+        'list_of_product': (context) =>  CoffeeCard(),
       },
     );
   }

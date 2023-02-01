@@ -29,6 +29,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+#  blurrycontainer: ^0.0.1
+#  flutter_svg: ^0.22.0
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -36,6 +38,16 @@ dependencies:
   cupertino_icons: ^1.0.2
   carousel_slider: ^4.2.1
   scroll_snap_list: ^0.9.1
+  blurrycontainer: ^1.0.2
+  flutter_svg: ^1.1.6
+  firebase_auth: ^ 4.2.5
+  cloud_firestore: ^4.3.1
+
+
+#  flutter_svg: ^1.1.6
+#    firebase_auth: ^ 4.2.5
+#    firebase_core: ^2.4.1
+#    cloud_firestore: ^0.14.0
 
 dev_dependencies:
   flutter_test:
@@ -62,6 +74,20 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
      - images/pet1.png
+     - images/coffee.jpg
+     - images/coffee-beans.svg
+     - images/firstscreen.png
+     - images/jeffrey-keenan-pUhxoSapPFA-unsplash__1_-removebg-preview.png
+     - images/kaffebase-coffeeshop-uAx74-kc5Kw-unsplash.jpg
+     - images/lattee.jpg
+     - images/newcappuccino.jpg
+     - images/newcoffee.jpg
+     - images/nicholas-grande-Hd36cpebWbQ-unsplash.jpg
+     - images/secondscreen.png
+     - images/star.svg
+     - images/timothy-dykes-yd4ubMUNTG0-unsplash-removebg-preview.png
+     - images/tyler-nix-nwdtkFzDfPY-unsplash.jpg
+     - images/water-drop.svg
 #    - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
