@@ -4,6 +4,7 @@ import 'package:environment_app/Product/Products.dart';
 import 'package:environment_app/homepage.dart';
 import 'Product/Project_detail.dart';
 import 'Product/list_of_product.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 
 // void main() {
@@ -26,11 +27,15 @@ import 'Product/list_of_product.dart';
 //   }
 // }
 
-void main() {
-  runApp(MyApp());
+ void main() async{
+   WidgetsFlutterBinding.ensureInitialized();
+   Firebase.initializeApp().then((value) => {runApp(const MyApp())});
+   // runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

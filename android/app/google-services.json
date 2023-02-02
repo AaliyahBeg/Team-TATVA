@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1083472669008",
+    "project_id": "tatva-25d61",
+    "storage_bucket": "tatva-25d61.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1083472669008:android:f37666c030a6310baf2455",
+        "android_client_info": {
+          "package_name": "com.example.environment_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1083472669008-6baem3ulabhp245ret2rjmhvmd3e2daa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB0_PtMnrgGizaIGV8-b-T8ptKNvDLOFlc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1083472669008-6baem3ulabhp245ret2rjmhvmd3e2daa.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
