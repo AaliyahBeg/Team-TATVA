@@ -44,14 +44,11 @@ dependencies:
   cloud_firestore: ^4.3.1
 
 
-#  flutter_svg: ^1.1.6
-#    firebase_auth: ^ 4.2.5
-#    firebase_core: ^2.4.1
-#    cloud_firestore: ^0.14.0
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

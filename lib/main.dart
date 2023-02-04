@@ -7,6 +7,7 @@ import 'Product/list_of_product.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 
+
 // void main() {
 //   runApp(const MyApp());
 // }
@@ -30,7 +31,6 @@ import 'package:firebase_core/firebase_core.dart';
  void main() async{
    WidgetsFlutterBinding.ensureInitialized();
    Firebase.initializeApp().then((value) => {runApp(const MyApp())});
-   // runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
       ),
       home: HomeScreen(),
       routes: {
-        'project_detail': (context) => const CoffeeDetailsPage(),
+        // 'project_detail': (context) => const CoffeeDetailsPage(),
         'list_of_product': (context) =>  CoffeeCard(),
       },
     );

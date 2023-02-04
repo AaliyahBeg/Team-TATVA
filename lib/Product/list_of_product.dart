@@ -5,7 +5,6 @@ import 'Project_detail.dart';
 
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 class CoffeeCard extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
 
@@ -44,8 +43,13 @@ class CoffeeCard extends StatelessWidget {
                             height: 250,
                             width: 160,
                             child: InkWell(
+
                                onTap: (){
-                                 Navigator.push(context, MaterialPageRoute(builder: (context) => CoffeeDetailsPage()));
+                                 String id = document.id;
+                                 Navigator.push(
+                                     context,
+                                     MaterialPageRoute
+                                       (builder: (context) => CoffeeDetailsPage(id: id)));
                           },
                             child: Column(
                               children: [
@@ -58,6 +62,7 @@ class CoffeeCard extends StatelessWidget {
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(20),
                                       image: DecorationImage(
+                                        // add placeholder so that in case image is not load then some message can be seen by customer
                                           image: NetworkImage((document.data() as Map<String, dynamic>)['image']?.toString() ?? ''),
                                           fit: BoxFit.cover)),
                                 ),
