@@ -45,8 +45,8 @@ class MyApp extends StatelessWidget {
       ),
       home: HomeScreen(),
       routes: {
-        // 'project_detail': (context) => const CoffeeDetailsPage(),
-        'list_of_product': (context) =>  CoffeeCard(),
+        // CoffeeDetailsPage. : (ctx) =>  CoffeeDetailsPage(),
+        "list_of_product": (context) =>  CoffeeCard(),
       },
     );
   }

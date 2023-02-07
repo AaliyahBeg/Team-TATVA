@@ -5,30 +5,25 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 
+class thumb extends StatefulWidget {
+
+  final id;
+  thumb(this.id);
+
+  @override
+  State<StatefulWidget> createState() => CoffeeDetailsPage(id);
+}
+
 FirebaseFirestore firestore = FirebaseFirestore.instance;
-class CoffeeDetailsPage extends StatelessWidget {
+class CoffeeDetailsPage extends State<thumb> {
+
+  static const routeName = '/project_detail';
   final String id;
-  const CoffeeDetailsPage({key,this.id=" "}) : super(key: key);
-  // const CoffeeDetailsPage(this.id) ;
-
-
-// Function to get data from Firestore
-  Future<void> getData(String documentId) async {
-    // Reference to a collection
-    final DocumentReference<Map<String,dynamic>> documentReference = firestore.collection('Product').doc(id);
-
-    // Get the collection of documents
-    DocumentSnapshot snapshot = await documentReference.get();
-
-    // Loop through the documents in the snapshot
-    if (snapshot.exists) {
-      // Print the data in the document
-      print(snapshot.data);
-    }
-  }
+  CoffeeDetailsPage( this.id) ;
 
   @override
   Widget build(BuildContext context) {
+    final id = (ModalRoute.of(context)?.settings as RouteSettings).arguments as String;
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(

@@ -1,7 +1,8 @@
+import 'package:environment_app/Product/project_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:firebase_core/firebase_core.dart';
-import 'Project_detail.dart';
 
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 class CoffeeCard extends StatelessWidget {
@@ -37,6 +38,7 @@ class CoffeeCard extends StatelessWidget {
                       print((document.data() as Map<String, dynamic>)['categorie']?.toString() ?? '');
                       print((document.data() as Map<String, dynamic>)['desc']?.toString() ?? '');
                       print((document.data() as Map<String, dynamic>)['short_desc']?.toString() ?? '');
+                      print(document.id);
                       return Column(
                         children: [
                           Container(
@@ -46,10 +48,11 @@ class CoffeeCard extends StatelessWidget {
 
                                onTap: (){
                                  String id = document.id;
-                                 Navigator.push(
-                                     context,
+                                 Navigator.of(context).push(
                                      MaterialPageRoute
-                                       (builder: (context) => CoffeeDetailsPage(id: id)));
+                                       (builder: (context) => thumb( id)),);
+                                 // Navigator.of(context)
+                                 //     .pushNamed(CoffeeDetailsPage.routeName, arguments: id);
                           },
                             child: Column(
                               children: [
