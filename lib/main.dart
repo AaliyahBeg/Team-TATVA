@@ -5,6 +5,9 @@ import 'package:environment_app/homepage.dart';
 import 'Product/Project_detail.dart';
 import 'Product/list_of_product.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'Product/SellForm.dart';
+import 'Product/sellProduct.dart';
+
 
 
 
@@ -43,7 +46,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: HomeScreen(),
+      // home: HomeScreen(),
+      home: DataSetInputScreen(),
       routes: {
         // CoffeeDetailsPage. : (ctx) =>  CoffeeDetailsPage(),
         "list_of_product": (context) =>  CoffeeCard(),
