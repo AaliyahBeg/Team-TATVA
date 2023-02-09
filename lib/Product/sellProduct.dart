@@ -1,6 +1,9 @@
+// import 'dart:html' as html;
+import 'dart:io' as io;
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'DataDetail.dart';
+import 'package:image_picker/image_picker.dart';
 
 FirebaseFirestore _firestore = FirebaseFirestore.instance;
 //
@@ -184,6 +187,8 @@ FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
 // import 'package:flutter/material.dart';
 
+
+
 class DataSetInputScreen extends StatefulWidget {
   @override
   _DataSetInputScreenState createState() => _DataSetInputScreenState();
@@ -197,6 +202,8 @@ class _DataSetInputScreenState extends State<DataSetInputScreen> {
   final _shortDescController = TextEditingController();
   final _descController = TextEditingController();
   final _categorieController = TextEditingController();
+  late io.File _image;
+
 
   @override
   Widget build(BuildContext context) {
@@ -220,15 +227,19 @@ class _DataSetInputScreenState extends State<DataSetInputScreen> {
                   return null;
                 },
               ),
-              TextFormField(
-                controller: _imageController,
-                decoration: InputDecoration(labelText: 'Image'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter an image';
-                  }
-                  return null;
-                },
+              // TextFormField(
+              //   controller: _imageController,
+              //   decoration: InputDecoration(labelText: 'Image'),
+              //   validator: (value) {
+              //     if (value == null || value.isEmpty) {
+              //       return 'Please enter an image';
+              //     }
+              //     return null;
+              //   },
+              // ),
+              ElevatedButton(
+                onPressed: _pickImage,
+                child: Text('Select Image'),
               ),
               TextFormField(
                 controller: _priceController,
@@ -306,6 +317,37 @@ class _DataSetInputScreenState extends State<DataSetInputScreen> {
       ),
     );
   }
+  final picker = ImagePicker();
+
+  Future _pickImage() async {
+    final imageSource = await showDialog<ImageSource>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text("Select the image source"),
+        actions: <Widget>[
+          MaterialButton(
+            child: Text("Camera"),
+            onPressed: () => Navigator.pop(context, ImageSource.camera),
+          ),
+          MaterialButton(
+            child: Text("Gallery"),
+            onPressed: () => Navigator.pop(context, ImageSource.gallery),
+          ),
+        ],
+      ),
+    );
+
+    if (imageSource != null) {
+      final file = await picker.getImage(source: imageSource);
+
+      if (file != null) {
+        setState(() {
+          _image = file as io.File;
+        });
+      }
+    }
+  }
+
 
   void setDataInFirestore(DataSet dataSet) async {
     await _firestore.collection('product').add({
