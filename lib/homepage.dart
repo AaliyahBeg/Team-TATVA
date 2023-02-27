@@ -96,7 +96,7 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
           elevation: 0.0,
           backgroundColor: Colors.transparent,
-          title: Text('NATURALEZA',
+          title: Text('TATV',
               style: TextStyle(
                 fontSize: 22,
                 fontFamily: 'Inter',
