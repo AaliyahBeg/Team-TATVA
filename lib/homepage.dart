@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:scroll_snap_list/scroll_snap_list.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
+import 'components/secondary_appbar.dart';
+
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
 
@@ -22,6 +24,20 @@ class CardItem{
 
 class _HomeState extends State<Home> {
   int _currentIndex = 0;
+  final CarouselController _controller = CarouselController();
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _controller.addListener(_onScroll);
+  // }
+  //
+  // _onScroll() {
+  //   if (_controller.page == _controller.itemCount - 1) {
+  //     _controller.jumpToPage(1);
+  //   } else if (_controller.page == 0) {
+  //     _controller.jumpToPage(_controller.itemCount - 2);
+  //   }
+  // }
   List<CardItem> items =[
     CardItem(
       urlImage: 'https://4.bp.blogspot.com/-N_WdeyPGz10/TocPGEkD1YI/AAAAAAAAAGU/h8Abdw5Ukdw/s1600/Soil+pollution2.jpg',
@@ -75,69 +91,8 @@ class _HomeState extends State<Home> {
           child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    GestureDetector(
-                        onTap: () => {Navigator.pushNamed(context, 'homepage')},
-                        child: Container(
-                          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            gradient: LinearGradient(
-                                begin: Alignment.centerLeft,
-                                end: Alignment.centerRight,
-                                stops: [0.3, 0.75, 0.9],
-                                colors: [
-                                  const Color(0xFF3DA35D),
-                                  const Color(0xFF96E072),
-                                  const Color(0xFFE8FCCF),
-                                ]
-                            ),
-                          ),
-                          child: Text(
-                              'Home',
-                              style: TextStyle(
-                                fontFamily: 'Inter',
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              )
-                          ),
-                        )
-                    ),
-
-                    GestureDetector(
-                        onTap: () => {Navigator.pushNamed(context, 'petitions')},
-                        child: Container(
-                          child: Text('Petitions',
-                              style: TextStyle(
-                                fontFamily: 'Inter',
-                                fontWeight: FontWeight.bold,
-                              )),
-                        )
-                    ),
-                    GestureDetector(
-                        onTap: () => {Navigator.pushNamed(context, '')},
-                        child: Container(
-                            child: Text('Connect',
-                                style: TextStyle(
-                                  fontFamily: 'Inter',
-                                  fontWeight: FontWeight.bold,
-                                )))
-                    ),
-                    GestureDetector(
-                        onTap: () => {Navigator.pushNamed(context, '')},
-                        child: Container(
-                            child: Text('News',
-                                style: TextStyle(
-                                  fontFamily: 'Inter',
-                                  fontWeight: FontWeight.bold,
-                                )))
-                    ),
-                  ],
-                ),
+                SecondaryAppbar(),
                 SizedBox(height:12),
-
                 Container(
                   color: Colors.grey[200],
                   child: Column(
@@ -168,6 +123,7 @@ class _HomeState extends State<Home> {
                           itemBuilder: (context,index) => buildCard(item:items[index]),
                           itemCount: 5,
                           initialIndex: 0,
+                          onReachEnd: () => {},
 
                         ),
                       ),
@@ -179,8 +135,7 @@ class _HomeState extends State<Home> {
                 Expanded(
                   child: _getPage(_currentIndex),
                 ),
-
-
+                
               ]
           )
       ),
@@ -205,6 +160,8 @@ class _HomeState extends State<Home> {
     }
   }
 }
+
+
 
 class Page1 extends StatelessWidget {
   @override
