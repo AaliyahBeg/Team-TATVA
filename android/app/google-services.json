@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "334339007072",
+    "project_id": "backend-tatva",
+    "storage_bucket": "backend-tatva.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:334339007072:android:bdd0deb5697f00c1925905",
+        "android_client_info": {
+          "package_name": "com.example.environment_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "334339007072-3d0dsomk3hs066h020fj3mh1knj4s283.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.environment_app",
+            "certificate_hash": "ff04d7d318da9ccdace8eaa246ec5abc06364c66"
+          }
+        },
+        {
+          "client_id": "334339007072-aon157vprn5dhd3v0n7j3lv10go1fotg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5W6bcGqM8_G7GrvrkFna6JauLZouj7ok"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "334339007072-aon157vprn5dhd3v0n7j3lv10go1fotg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

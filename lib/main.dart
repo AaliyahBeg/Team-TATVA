@@ -1,8 +1,13 @@
-import 'package:environment_app/petitions.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:environment_app/petition/petitions.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:environment_app/homepage.dart';
-
-void main() {
+import 'package:environment_app/petition/user_detail_petition.dart';
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -19,5 +24,10 @@ class MyApp extends StatelessWidget {
         'homepage': (context) => const Home(),
       },
     );
+
+    // final databaseReference= FirebaseFirestore.instance;
+    
+    
+
   }
 }

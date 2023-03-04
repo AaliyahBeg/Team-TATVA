@@ -1,14 +1,13 @@
 import 'package:carousel_slider/carousel_slider.dart';
-
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:environment_app/start_petition.dart';
+import 'package:environment_app/petition/raise_petition.dart';
 
 
 
 
-class RaisePetition extends StatelessWidget {
-  const RaisePetition({Key? key}) : super(key: key);
+class MyPetition extends StatelessWidget {
+  const MyPetition({Key? key}) : super(key: key);
 
 
   @override
@@ -97,14 +96,24 @@ class RaisePetition extends StatelessWidget {
               ),
             ],
           ),
-
+          Container(
+            alignment: Alignment.centerLeft,
+            margin: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+            child: Text(
+              'MY PETITIONS',
+              style: TextStyle(
+                fontFamily: 'Inria',
+                fontSize: 22,
+              ),
+            ),
+          ),
          
+  
 
 
 
 
-
-          SizedBox(height: 505),
+          SizedBox(height: 435),
           TextButton(
               onPressed: (){
                 Navigator.pop(context);
