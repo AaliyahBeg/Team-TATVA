@@ -48,22 +48,23 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Container(
-                            padding: EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: Colors.black,
-                              borderRadius: BorderRadius.circular(10),
-
-                            ),
-                            child: Icon(
-                              Icons.menu,
-                              color: Color(0xff4d4f52),
-                            )),
-                        Image.asset(
-                          "images/timothy-dykes-yd4ubMUNTG0-unsplash-removebg-preview.png",
-                          height: 50,
-                          width: 50,
-                        ),
+                        // Container(
+                        //     padding: EdgeInsets.all(8),
+                        //     decoration: BoxDecoration(
+                        //       color: Colors.black,
+                        //       borderRadius: BorderRadius.circular(10),
+                        //
+                        //     ),
+                        //     // child: Icon(
+                        //     //   Icons.menu,
+                        //     //   color: Color(0xff4d4f52),
+                        //     // )
+                        //   ),
+                        // Image.asset(
+                        //   "images/timothy-dykes-yd4ubMUNTG0-unsplash-removebg-preview.png",
+                        //   height: 50,
+                        //   width: 50,
+                        // ),
                       ],
                     ),
                     SizedBox(
@@ -72,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     Text(
                       "Second Hands",
                       style: TextStyle(
-                          color: Colors.black,
+                          color: Colors.green[400],
                           fontSize: 30,
                           fontWeight: FontWeight.bold),
                     ),
@@ -103,30 +104,30 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     TabBar(
                         isScrollable: true,
                         controller: tabController,
-                        labelColor: Color(0xffd17842),
+                        labelColor: Colors.green,
                         labelStyle: TextStyle(fontWeight: FontWeight.bold),
                         unselectedLabelColor: Color(0xff3c4046),
                         indicator:
-                        CircleTabIndicator(color: Color(0xffd17842), radius: 4),
+                        CircleTabIndicator(color: Colors.green, radius: 4),
                         padding:EdgeInsets.all(8) ,
                         tabs: [
                           Tab(
-                            text: "Cappuccino",
+                            text: "Dresses",
                           ),
                           Tab(
-                            text: "Americano",
+                            text: "Decoration",
                           ),
                           Tab(
-                            text: "Espresso",
+                            text: "Tops",
                           ),
                           Tab(
-                            text: "Mocha",
+                            text: "Pants",
                           ),
                           Tab(
-                            text: "Macchiato",
+                            text: "furniture",
                           ),
                           Tab(
-                            text: "Doppio",
+                            text: "Toys",
                           ),
                         ]),
                     CoffeeCard(),
@@ -141,7 +142,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.white,
-        selectedItemColor: Color(0xffd17842),
+        // selectedItemColor: Color(0x95DE71FF),
+        selectedItemColor: Colors.green,
         unselectedItemColor: Color(0xff4d4f52),
         showSelectedLabels: false,
         showUnselectedLabels: false,

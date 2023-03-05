@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       // home: HomeScreen(),
-      home: DataSetInputScreen(),
+      home: HomeScreen(),
       routes: {
         // CoffeeDetailsPage. : (ctx) =>  CoffeeDetailsPage(),
         "list_of_product": (context) =>  CoffeeCard(),

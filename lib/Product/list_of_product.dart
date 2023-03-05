@@ -102,7 +102,7 @@ class CoffeeCard extends StatelessWidget {
                                               Text(
                                                 r'Rs. ',
                                                 style: TextStyle(
-                                                    color: Color(0xffd17842),
+                                                    color: Colors.green[400],
                                                     fontWeight: FontWeight.bold,
                                                     fontSize: 20),
                                               ),
@@ -120,7 +120,7 @@ class CoffeeCard extends StatelessWidget {
                                               height: 30,
                                               width: 30,
                                               decoration: BoxDecoration(
-                                                  color: Color(0xffd17842),
+                                                  color: Colors.green[400],
                                                   borderRadius:
                                                   BorderRadius.circular(10)),
                                               child: Icon(

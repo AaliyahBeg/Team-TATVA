@@ -11,27 +11,33 @@ class thumb extends StatefulWidget {
   thumb(this.id);
 
   @override
-  State<StatefulWidget> createState() => CoffeeDetailsPage(id);
+  State<StatefulWidget> createState()  { print (id); return CoffeeDetailsPage( id: id);}
 }
 
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 class CoffeeDetailsPage extends State<thumb> {
 
-  static const routeName = '/project_detail';
+  // static const routeName = '/project_detail';
   final String id;
-  CoffeeDetailsPage( this.id) ;
+  CoffeeDetailsPage( {required this.id}) ;
 
   @override
   Widget build(BuildContext context) {
-    final id = (ModalRoute.of(context)?.settings as RouteSettings).arguments as String;
+    print (this.id);
+    // final id = (ModalRoute.of(context)?.settings as RouteSettings).arguments as String;
+    // print((ModalRoute.of(context)?.settings as RouteSettings).arguments);
+    final id = this.id;
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.all(10),
           child : FutureBuilder(
-            future: firestore.collection('Product').doc(id).get(),
-            builder: (context, snapshot) {
+            future: firestore.collection('product').doc(id).get(),
+            builder: (context,AsyncSnapshot<DocumentSnapshot<Map<String,dynamic>>> snapshot) {
+              var s = snapshot;
+              var d = (s as AsyncSnapshot<DocumentSnapshot<Map<String,dynamic>>>).data?.data();
+              print (snapshot.runtimeType);
               if (snapshot.hasData) {
                 return Column(
                   children: [
@@ -46,7 +52,7 @@ class CoffeeDetailsPage extends State<thumb> {
                           decoration:  BoxDecoration(
                               borderRadius: BorderRadius.circular(25),
                               image:  DecorationImage(
-                                  image: NetworkImage(((snapshot as DocumentSnapshot).data() as Map<String, dynamic>)['image']?.toString() ?? ''),
+                                  image: NetworkImage((d as Map<String, dynamic>)['image']?.toString() ?? ''),
                                   fit: BoxFit.cover)),
                         ),
                         Positioned(
@@ -69,7 +75,7 @@ class CoffeeDetailsPage extends State<thumb> {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          ((snapshot as DocumentSnapshot).data() as Map<String, dynamic>)['Name']?.toString() ?? 'not found',
+                                          (d as Map<String, dynamic>)['Name']?.toString() ?? 'not found',
                                           style: TextStyle(
                                               color: Colors.white,
                                               fontSize: 20,
@@ -79,7 +85,7 @@ class CoffeeDetailsPage extends State<thumb> {
                                           height: 10,
                                         ),
                                         Text(
-                                          ((snapshot as DocumentSnapshot).data() as Map<String, dynamic>)['short_desc']?.toString() ?? 'not found',
+                                          (d as Map<String, dynamic>)['short_desc']?.toString() ?? 'not found',
                                           style: TextStyle(
                                             color: Color(0xff919296),
                                             fontSize: 12,
@@ -94,13 +100,13 @@ class CoffeeDetailsPage extends State<thumb> {
                                             SvgPicture.asset(
                                               "images/star.svg",
                                               height: 20,
-                                              color: Color(0xffd17842),
+                                              color: Colors.green,
                                             ),
                                             SizedBox(
                                               width: 10,
                                             ),
                                             Text(
-                                              ((snapshot as DocumentSnapshot).data() as Map<String, dynamic>)['Rating']?.toString() ?? 'not found',
+                                              (d as Map<String, dynamic>)['Rating']?.toString() ?? 'not found',
                                               style: TextStyle(
                                                 color: Colors.white,
                                                 fontSize: 20,
@@ -128,7 +134,7 @@ class CoffeeDetailsPage extends State<thumb> {
                                                 children: [
                                                   SvgPicture.asset(
                                                     "images/coffee-beans.svg",
-                                                    color: Color(0xffd17842),
+                                                    color: Colors.green,
                                                     height: 15,
                                                   ),
                                                   SizedBox(
@@ -161,7 +167,7 @@ class CoffeeDetailsPage extends State<thumb> {
                                                 children: [
                                                   SvgPicture.asset(
                                                     "images/water-drop.svg",
-                                                    color: Color(0xffd17842),
+                                                    color: Colors.green,
                                                     height: 15,
                                                   ),
                                                   SizedBox(
@@ -213,7 +219,7 @@ class CoffeeDetailsPage extends State<thumb> {
                             height: 8,
                           ),
                           Text(
-                            ((snapshot as DocumentSnapshot).data() as Map<String, dynamic>)["desc"]?.toString() ?? 'not found',
+                            (d as Map<String, dynamic>)["desc"]?.toString() ?? 'not found',
                             style: TextStyle(color: Color(0xff919296), fontSize: 15),
                           ),
                           SizedBox(
@@ -245,7 +251,7 @@ class CoffeeDetailsPage extends State<thumb> {
                                 decoration: BoxDecoration(
                                     color: Color(0xF6F3F3E4),
                                     borderRadius: BorderRadius.circular(10),
-                                    border: Border.all(color: Color(0xffd17842))),
+                                    border: Border.all(color: Colors.green)),
                               ),
                               SizedBox(
                                 width: 11,
@@ -308,10 +314,10 @@ class CoffeeDetailsPage extends State<thumb> {
                                       Text(
                                         r'Rs.',
                                         style: TextStyle(
-                                            color: Color(0xffd17842), fontSize: 21),
+                                            color: Colors.green, fontSize: 21),
                                       ),
                                       Text(
-                                        ((snapshot as DocumentSnapshot).data() as Map<String, dynamic>)['Price']?.toString() ?? 'not found',
+                                        (d as Map<String, dynamic>)['Price']?.toString() ?? 'not found',
                                         style: TextStyle(
                                             color: Colors.black, fontSize: 21),
                                       )

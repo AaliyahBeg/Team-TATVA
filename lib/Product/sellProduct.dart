@@ -1,195 +1,14 @@
-// import 'dart:html' as html;
 import 'dart:io' as io;
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'DataDetail.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 FirebaseFirestore _firestore = FirebaseFirestore.instance;
-//
-// class FormsPage extends StatefulWidget {
-//   const FormsPage({Key? key}) : super(key: key);
-//
-//   @override
-//   State<FormsPage> createState() => _FormsPageState();
-// }
-//
-// class _FormsPageState extends State<FormsPage> {
-//   final formKey = GlobalKey<FormState>();
-//   final controller = TextEditingController();
-//   String category = 'Category1';
-//
-//   @override
-//   void dispose() {
-//     controller.dispose();
-//     super.dispose();
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: const Text('Sell Now '),
-//       ),
-//       body: SingleChildScrollView(
-//         child: Form(
-//           key: formKey,
-//           child: Padding(
-//             padding: const EdgeInsets.all(8.0),
-//             child: Column(
-//               children: [
-//                 TextFormField(
-//                   controller: controller,
-//                   autovalidateMode: AutovalidateMode.onUserInteraction,
-//                   maxLines: null,
-//                   decoration: InputDecoration(
-//                     labelText: 'Full Name',
-//                     border: OutlineInputBorder(
-//                       borderRadius: BorderRadius.circular(30),
-//                       borderSide: const BorderSide(color: Colors.black),
-//                     ),
-//                     enabledBorder: OutlineInputBorder(
-//                       borderRadius: BorderRadius.circular(30),
-//                       borderSide: const BorderSide(color: Colors.blue),
-//                     ),
-//                     focusedBorder: OutlineInputBorder(
-//                       borderRadius: BorderRadius.circular(30),
-//                       borderSide: const BorderSide(color: Colors.lightGreen),
-//                     ),
-//                     errorBorder: OutlineInputBorder(
-//                       borderRadius: BorderRadius.circular(30),
-//                       borderSide: const BorderSide(color: Colors.red),
-//                     ),
-//                     labelStyle: const TextStyle(
-//                       fontSize: 20,
-//                       color: Colors.blue,
-//                     ),
-//                     isDense: true,
-//                   ),
-//                   validator: (String? value) {
-//                     if (value == null || value.isEmpty) {
-//                       return 'Unfilled field';
-//                     }
-//                   },
-//                 ),
-//                 const SizedBox(height: 16),
-//                 TextFormField(
-//                   // controller: controller,
-//                   // autovalidateMode: AutovalidateMode.onUserInteraction,
-//                   decoration: InputDecoration(
-//                     labelText: 'Address',
-//                     border: OutlineInputBorder(
-//                       borderRadius: BorderRadius.circular(30),
-//                       borderSide: const BorderSide(color: Colors.green),
-//                     ),
-//                     enabledBorder: OutlineInputBorder(
-//                       borderRadius: BorderRadius.circular(30),
-//                       borderSide: const BorderSide(color: Colors.blue),
-//                     ),
-//                     focusedBorder: OutlineInputBorder(
-//                       borderRadius: BorderRadius.circular(30),
-//                       borderSide: const BorderSide(color: Colors.yellow),
-//                     ),
-//                     errorBorder: OutlineInputBorder(
-//                       borderRadius: BorderRadius.circular(30),
-//                       borderSide: const BorderSide(color: Colors.red),
-//                     ),
-//                     labelStyle: const TextStyle(
-//                       fontSize: 20,
-//                       color: Colors.blue,
-//                     ),
-//                     isDense: true,
-//                   ),
-//                   obscureText: true,
-//                   validator: (String? value) {
-//                     if (value == null || value.isEmpty) {
-//                       return 'Unfilled field';
-//                     }
-//                   },
-//                 ),
-//                 const SizedBox(height: 16),
-//                 DropdownButtonFormField<String>(
-//                   value: category,
-//                   elevation: 16,
-//                   icon: const Icon(Icons.arrow_drop_down),
-//                   isDense: true,
-//                   decoration: InputDecoration(
-//                     labelText: 'Category',
-//                     border: OutlineInputBorder(
-//                       borderRadius: BorderRadius.circular(30),
-//                       borderSide: const BorderSide(color: Colors.green),
-//                     ),
-//                     enabledBorder: OutlineInputBorder(
-//                       borderRadius: BorderRadius.circular(30),
-//                       borderSide: const BorderSide(color: Colors.blue),
-//                     ),
-//                     focusedBorder: OutlineInputBorder(
-//                       borderRadius: BorderRadius.circular(30),
-//                       borderSide: const BorderSide(color: Colors.yellow),
-//                     ),
-//                     errorBorder: OutlineInputBorder(
-//                       borderRadius: BorderRadius.circular(30),
-//                       borderSide: const BorderSide(color: Colors.red),
-//                     ),
-//                   ),
-//                   validator: (String? value) {
-//                     if (value == null || value.isEmpty) {
-//                       return 'Unfilled Category';
-//                     }
-//                   },
-//                   onChanged: (String? newValue) {
-//                     if (newValue != null) {
-//                       setState(() {
-//                         category = newValue;
-//                       });
-//                     }
-//                   },
-//                   items: const [
-//                     DropdownMenuItem(
-//                       value: 'Category1',
-//                       child: Text('Books'),
-//                     ),
-//                     DropdownMenuItem(
-//                       value: 'Category2',
-//                       child: Text('plastic'),
-//                     ),
-//                     DropdownMenuItem(
-//                       value: 'Category3',
-//                       child: Text('wood item'),
-//                     ),
-//                   ],
-//                 ),
-//                 ElevatedButton(
-//                   child: const Text('Save'),
-//                   onPressed: () {
-//                     var formValid = formKey.currentState?.validate() ?? false;
-//                     var message = 'Form isn\'t valid';
-//                     if (formValid) {
-//                       message = 'Form is valid: ${controller.text}';
-//                     }
-//                     ScaffoldMessenger.of(context).showSnackBar(
-//                       SnackBar(
-//                         content: Text(message),
-//                       ),
-//                     );
-//                   },
-//                 ),
-//               ],
-//             ),
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-
-
-// import 'package:flutter/material.dart';
-
-
 
 class DataSetInputScreen extends StatefulWidget {
+
   @override
   _DataSetInputScreenState createState() => _DataSetInputScreenState();
 }
@@ -203,6 +22,7 @@ class _DataSetInputScreenState extends State<DataSetInputScreen> {
   final _descController = TextEditingController();
   final _categorieController = TextEditingController();
   late io.File _image;
+  late String imageUrl;
 
 
   @override
@@ -210,6 +30,7 @@ class _DataSetInputScreenState extends State<DataSetInputScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Add DataSet'),
+        backgroundColor: Colors.green,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -219,7 +40,13 @@ class _DataSetInputScreenState extends State<DataSetInputScreen> {
             children: [
               TextFormField(
                 controller: _nameController,
-                decoration: InputDecoration(labelText: 'Name'),
+                decoration: InputDecoration(labelText: 'Name',
+                  border: new OutlineInputBorder(
+                    borderRadius: new BorderRadius.circular(25.0),
+                    borderSide: new BorderSide(
+                    ),
+                  ),
+                ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter a name';
@@ -227,23 +54,18 @@ class _DataSetInputScreenState extends State<DataSetInputScreen> {
                   return null;
                 },
               ),
-              // TextFormField(
-              //   controller: _imageController,
-              //   decoration: InputDecoration(labelText: 'Image'),
-              //   validator: (value) {
-              //     if (value == null || value.isEmpty) {
-              //       return 'Please enter an image';
-              //     }
-              //     return null;
-              //   },
-              // ),
-              ElevatedButton(
-                onPressed: _pickImage,
-                child: Text('Select Image'),
+              SizedBox(
+                height: 15,
               ),
               TextFormField(
                 controller: _priceController,
-                decoration: InputDecoration(labelText: 'Price'),
+                decoration: InputDecoration(labelText: 'Price',
+                    border: new OutlineInputBorder(
+                    borderRadius: new BorderRadius.circular(25.0),
+                borderSide: new BorderSide(
+                ),
+              ),
+                ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter a price';
@@ -251,9 +73,18 @@ class _DataSetInputScreenState extends State<DataSetInputScreen> {
                   return null;
                 },
               ),
+              SizedBox(
+                height: 15,
+              ),
               TextFormField(
                 controller: _shortDescController,
-                decoration: InputDecoration(labelText: 'Short Description'),
+                decoration: InputDecoration(labelText: 'Short Description',
+                  border: new OutlineInputBorder(
+                    borderRadius: new BorderRadius.circular(25.0),
+                    borderSide: new BorderSide(
+                    ),
+                  ),
+                ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter a short description';
@@ -261,9 +92,17 @@ class _DataSetInputScreenState extends State<DataSetInputScreen> {
                   return null;
                 },
               ),
+              SizedBox(
+                height: 15,
+              ),
               TextFormField(
                 controller: _descController,
-                decoration: InputDecoration(labelText: 'Description'),
+                decoration: InputDecoration(labelText: 'Description',
+                  border: new OutlineInputBorder(
+                    borderRadius: new BorderRadius.circular(25.0),
+                    borderSide: new BorderSide(),
+                  ),
+                ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter a description';
@@ -271,15 +110,38 @@ class _DataSetInputScreenState extends State<DataSetInputScreen> {
                   return null;
                 },
               ),
+              SizedBox(
+                height: 15,
+              ),
               TextFormField(
                 controller: _categorieController,
-                decoration: InputDecoration(labelText: 'Categorie'),
+                decoration: InputDecoration(labelText: 'Categorie',
+                  border: new OutlineInputBorder(
+                    borderRadius: new BorderRadius.circular(25.0),
+                    borderSide: new BorderSide(
+                    ),
+                  ),
+                ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter a categorie';
                   }
                   return null;
                 },
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              (imageUrl != null)
+                ? Image.network(imageUrl)
+                : Placeholder(fallbackHeight: 200.0 , fallbackWidth: double.infinity),
+              ElevatedButton(
+                onPressed: _pickImage,
+                child: Text('Select Image'),
+                style: ElevatedButton.styleFrom(shape: StadiumBorder(),
+                backgroundColor: Colors.green,
+                side: BorderSide(color: Color(0xff33691E),width: 2),
+                ),
               ),
               ElevatedButton(
                 onPressed: () {
@@ -308,7 +170,10 @@ class _DataSetInputScreenState extends State<DataSetInputScreen> {
                   }
                 },
                 child: Text('Save'),
-
+                style: ElevatedButton.styleFrom(shape: StadiumBorder(),
+                  backgroundColor: Colors.green,
+                  side: BorderSide(color: Color(0xff33691E),width: 2),
+                ),
 
               ),
             ],
@@ -358,6 +223,15 @@ class _DataSetInputScreenState extends State<DataSetInputScreen> {
       'Desc': dataSet.Desc,
       'Categorie': dataSet.Categorie,
     });
+  }
+
+  uploadImage() async{
+    final _picker = ImagePicker();
+    PickedFile image;
+    //check permissions
+    await Permission.photos.request();
+
+    // var permissionStatus = await
   }
 }
 
