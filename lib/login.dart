@@ -1,5 +1,6 @@
 import 'dart:core';
 import 'package:flutter/material.dart';
+import 'package:environment_app/services/authFunctions.dart';
 import 'package:get/get.dart';
 import 'package:environment_app/homepage.dart';
 import 'package:environment_app/sign_up.dart';
@@ -12,6 +13,11 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final _formKey=GlobalKey<FormState>(); //to save the form
+  String email='';
+  String password='';
+  String fullname='';
+  bool login=false;
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -52,47 +58,149 @@ class _LoginPageState extends State<LoginPage> {
                   width: 200,
                 ),
                 const SizedBox(height: 70,),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(30),
-                  child:
+                // ClipRRect(
+                //   borderRadius: BorderRadius.circular(30),
+                //   child:
+                //
+                //   TextButton.icon(
+                //     icon: Icon(Icons.person),
+                //     style: TextButton.styleFrom(
+                //       foregroundColor: Colors.white,
+                //       backgroundColor: Colors.blueGrey,
+                //
+                //       padding: const EdgeInsets.all(16.0),
+                //       textStyle: const TextStyle(fontSize: 15),
+                //       minimumSize: Size(350, 50),
+                //
+                //       elevation: 200,
+                //     ),
+                //     onPressed: ()  => {Navigator.pushNamed(context, 'login')},
+                //     label: const Text('Enter Email'),
+                //   ),
+                //
+                // ),
+                // const SizedBox(height: 15,),
+                // ClipRRect(
+                //   borderRadius: BorderRadius.circular(30),
+                //   child:
+                //
+                //   TextButton.icon(
+                //     icon: Icon(Icons.lock),
+                //     style: TextButton.styleFrom(
+                //       foregroundColor: Colors.white,
+                //       backgroundColor: Colors.blueGrey,
+                //
+                //       padding: const EdgeInsets.all(16.0),
+                //       textStyle: const TextStyle(fontSize: 15),
+                //       minimumSize: Size(350, 50),
+                //       elevation: 200,
+                //     ),
+                //     onPressed: ()  => {Navigator.pushNamed(context, 'login')},
+                //     label: const Text('Password'),
+                //   ),
+                //
+                // ),
+                Form(
+                  key: _formKey,
+                  child: Container(
+                    padding: EdgeInsets.all(14),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        // ======== Full Name ========
+                        login
+                            ? Container()
+                            : TextFormField(
+                          key: ValueKey('fullname'),
+                          decoration: InputDecoration(
+                            hintText: 'Enter Full Name',
+                          ),
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Please Enter Full Name';
+                            } else {
+                              return null;
+                            }
+                          },
+                          onSaved: (value) {
+                            setState(() {
+                              fullname = value!;
+                            });
+                          },
+                        ),
 
-                  TextButton.icon(
-                    icon: Icon(Icons.person),
-                    style: TextButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      backgroundColor: Colors.blueGrey,
-
-                      padding: const EdgeInsets.all(16.0),
-                      textStyle: const TextStyle(fontSize: 15),
-                      minimumSize: Size(350, 50),
-
-                      elevation: 200,
+                        // ======== Email ========
+                        TextFormField(
+                          key: ValueKey('email'),
+                          decoration: InputDecoration(
+                            hintText: 'Enter Email',
+                          ),
+                          validator: (value) {
+                            if (value!.isEmpty || !value.contains('@')) {
+                              return 'Please Enter valid Email';
+                            } else {
+                              return null;
+                            }
+                          },
+                          onSaved: (value) {
+                            setState(() {
+                              email = value!;
+                            });
+                          },
+                        ),
+                        // ======== Password ========
+                        TextFormField(
+                          key: ValueKey('password'),
+                          obscureText: true,
+                          decoration: InputDecoration(
+                            hintText: 'Enter Password',
+                          ),
+                          validator: (value) {
+                            if (value!.length < 6) {
+                              return 'Please Enter Password of min length 6';
+                            } else {
+                              return null;
+                            }
+                          },
+                          onSaved: (value) {
+                            setState(() {
+                              password = value!;
+                            });
+                          },
+                        ),
+                        SizedBox(
+                          height: 30,
+                        ),
+                        Container(
+                          height: 55,
+                          width: double.infinity,
+                          child: ElevatedButton(
+                              onPressed: () async {
+                                if (_formKey.currentState!.validate()) {
+                                  _formKey.currentState!.save();
+                                  login
+                                      ? AuthServices.signinUser(email, password, context)
+                                      : AuthServices.signupUser(
+                                      email, password, fullname, context);
+                                }
+                              },
+                              child: Text(login ? 'Login' : 'Signup')),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        TextButton(
+                            onPressed: () {
+                              setState(() {
+                                login = !login;
+                              });
+                            },
+                            child: Text(login
+                                ? "Don't have an account? Signup"
+                                : "Already have an account? Login"))
+                      ],
                     ),
-                    onPressed: ()  => {Navigator.pushNamed(context, 'login')},
-                    label: const Text('Enter Email'),
                   ),
-
-                ),
-                const SizedBox(height: 15,),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(30),
-                  child:
-
-                  TextButton.icon(
-                    icon: Icon(Icons.lock),
-                    style: TextButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      backgroundColor: Colors.blueGrey,
-
-                      padding: const EdgeInsets.all(16.0),
-                      textStyle: const TextStyle(fontSize: 15),
-                      minimumSize: Size(350, 50),
-                      elevation: 200,
-                    ),
-                    onPressed: ()  => {Navigator.pushNamed(context, 'login')},
-                    label: const Text('Password'),
-                  ),
-
                 ),
                 const SizedBox(height: 15,),
                 ClipRRect(
