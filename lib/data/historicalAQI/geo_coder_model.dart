@@ -29,7 +29,7 @@ class Data {
   String? number;
   String? postalCode;
   String? street;
-  double? confidence;
+  int? confidence;
   String? region;
   String? regionCode;
   String? county;

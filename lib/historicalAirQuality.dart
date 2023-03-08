@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:environment_app/data/historicalAQI/geo_coder_model.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -23,7 +24,15 @@ class _historicalAirQualityState extends State<historicalAirQuality> {
   late GeoCoderModel latlong;
   String? address;
 
-  final myController = TextEditingController();
+  final latlongurl =
+      'http://api.positionstack.com/v1/forward?access_key=d372fd73f07cfa7cc920756fb204ec7d&query=';
+
+  StreamController? _streamController;
+  Stream? _stream;
+
+  Timer? _debounce;
+
+  final TextEditingController myController = TextEditingController();
 
   @override
   void dispose() {
@@ -31,36 +40,42 @@ class _historicalAirQualityState extends State<historicalAirQuality> {
     super.dispose();
   }
 
-  Future<historicalAqiModel> getAPI() async {
-    await getlatlong();
+  getAPI() async {
+    if (myController.text == null || myController.text.isEmpty) {
+      _streamController!.add(null);
+      return;
+    }
+
+    _streamController!.add("Loading...");
+
+    final latlongresponse = await http
+        .get(Uri.parse(latlongurl + myController.text.replaceAll(' ', '+')));
+
+    var latlongdata = jsonDecode(latlongresponse.body.toString());
+    print(latlongdata);
+
+    latlong = GeoCoderModel.fromJson(latlongdata);
+    lat = latlong.data![0].latitude;
+    lon = latlong.data![0].longitude;
+
     final response = await http.get(Uri.parse(
         'http://api.openweathermap.org/data/2.5/air_pollution/history?lat=${lat}&lon=${lon}&start=1676851200&end=1676937600&appid=2605f9bd1c792199087da6e81aa65a25'));
 
+    
     var data = jsonDecode(response.body.toString());
     print(data);
-
+    _streamController!.add(data);
     hAQIdata = historicalAqiModel.fromJson(data);
 
     return hAQIdata;
   }
 
-  Future<void> getlatlong() async {
-    String url = await latlongurl();
-    final response = await http.get(Uri.parse(url));
+  @override
+  void initState() {
+    super.initState();
 
-    var data = jsonDecode(response.body.toString());
-    print(data);
-
-    latlong = GeoCoderModel.fromJson(data);
-    lat = latlong.data![0].latitude;
-    lon = latlong.data![0].longitude;
-  }
-
-  String latlongurl() {
-    String url =
-        'http://api.positionstack.com/v1/forward?access_key=d372fd73f07cfa7cc920756fb204ec7d&query=${address}';
-    print(url);
-    return url;
+    _streamController = StreamController();
+    _stream = _streamController!.stream;
   }
 
   @override
@@ -72,6 +87,12 @@ class _historicalAirQualityState extends State<historicalAirQuality> {
         body: Column(
           children: [
             TextFormField(
+              onChanged: (String text) async {
+                if (_debounce?.isActive ?? false) _debounce!.cancel();
+                _debounce = Timer(const Duration(milliseconds: 1000), () {
+                  getAPI();
+                });
+              },
               controller: myController,
               decoration: const InputDecoration(
                 hintText: "New Delhi",
@@ -79,42 +100,54 @@ class _historicalAirQualityState extends State<historicalAirQuality> {
                 border: InputBorder.none,
               ),
             ),
-            FloatingActionButton(onPressed: () {
-              address = myController.text.replaceAll(' ', '+');
-            }),
             Expanded(
-              child: FutureBuilder(
-                  future: getAPI(),
-                  builder: ((context, snapshot) {
-                    if (!snapshot.hasData) {
-                      return Text('Loading...');
-                    } else {
-                      List<AQIValues> columnData = <AQIValues>[];
-                      for (ComponentList pm in hAQIdata.list!) {
-                        columnData.add(new AQIValues(
-                            pm.dt!
-                                .toUnixTime(isUtc: true)
-                                .toString()
-                                .substring(11, 19),
-                            pm.components?.pm25));
+                child: StreamBuilder(
+                    stream: _stream,
+                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      if (snapshot.data == null) {
+                        return const Center(
+                          child: Text(
+                              "Enter a search word preferably a district."),
+                        );
                       }
 
-                      return Container(
-                        height: 550,
-                        child: SfCartesianChart(
-                            primaryXAxis: CategoryAxis(),
-                            primaryYAxis: NumericAxis(),
-                            series: <ChartSeries>[
-                              ColumnSeries<AQIValues, String>(
-                                dataSource: columnData,
-                                xValueMapper: (AQIValues aqiv, _) => aqiv.date,
-                                yValueMapper: (AQIValues aqiv, _) => aqiv.pm2_5,
-                              )
-                            ]),
-                      );
-                    }
-                  })),
-            )
+                      if (snapshot.data == "Loading...") {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                      if (snapshot.hasData) {
+                        final data = snapshot.data;
+                        if (data["list"].length == 0) {
+                          return const Text('Type a nearby place');
+                        }
+                        List<AQIValues> columnData = <AQIValues>[];
+                        for (ComponentList pm in hAQIdata.list!) {
+                          columnData.add(new AQIValues(
+                              pm.dt!
+                                  .toUnixTime(isUtc: true)
+                                  .toString()
+                                  .substring(11, 19),
+                              pm.components?.pm25));
+                        }
+                        return Container(
+                          height: 550,
+                          child: SfCartesianChart(
+                              primaryXAxis: CategoryAxis(),
+                              primaryYAxis: NumericAxis(),
+                              series: <ChartSeries>[
+                                ColumnSeries<AQIValues, String>(
+                                  dataSource: columnData,
+                                  xValueMapper: (AQIValues aqiv, _) =>
+                                      aqiv.date,
+                                  yValueMapper: (AQIValues aqiv, _) =>
+                                      aqiv.pm2_5,
+                                )
+                              ]),
+                        );
+                      }
+                      return Container();
+                    }))
           ],
         ));
   }

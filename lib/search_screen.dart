@@ -109,7 +109,7 @@ class _SearchScreenState extends State<SearchScreen> {
             return ListView.builder(
               itemCount: data["data"].length,
               itemBuilder: (BuildContext context, int index) {
-                return ListTile(
+                return ListTile(  
                   leading: const Icon(Icons.location_city),
                   title: Text(data["data"][index]["station"]["name"]),
                   onTap: () async {
