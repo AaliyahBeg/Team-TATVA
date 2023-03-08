@@ -45,9 +45,7 @@ class _historicalAirQualityState extends State<historicalAirQuality> {
   }
 
   Future<void> getlatlong() async {
-    String url =
-        'http://api.positionstack.com/v1/forward?access_key=d372fd73f07cfa7cc920756fb204ec7d&query=${address}';
-    print(url);
+    String url = await latlongurl();
     final response = await http.get(Uri.parse(url));
 
     var data = jsonDecode(response.body.toString());
@@ -56,6 +54,13 @@ class _historicalAirQualityState extends State<historicalAirQuality> {
     latlong = GeoCoderModel.fromJson(data);
     lat = latlong.data![0].latitude;
     lon = latlong.data![0].longitude;
+  }
+
+  String latlongurl() {
+    String url =
+        'http://api.positionstack.com/v1/forward?access_key=d372fd73f07cfa7cc920756fb204ec7d&query=${address}';
+    print(url);
+    return url;
   }
 
   @override
@@ -69,7 +74,7 @@ class _historicalAirQualityState extends State<historicalAirQuality> {
             TextFormField(
               controller: myController,
               decoration: const InputDecoration(
-                hintText: "Kolkata",
+                hintText: "New Delhi",
                 contentPadding: EdgeInsets.only(left: 24.0),
                 border: InputBorder.none,
               ),
