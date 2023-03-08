@@ -43,6 +43,8 @@ dependencies:
   provider: ^6.0.5
   permission_handler: ^10.2.0
   get: ^4.6.5
+  noise_meter: ^3.1.0
+  syncfusion_flutter_charts: ^20.4.53
 
 
 dev_dependencies:
