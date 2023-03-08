@@ -18,7 +18,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.18.0 <3.0.0"
+  sdk: ">=2.19.0 <3.0.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -28,10 +28,11 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   carousel_slider: ^4.2.1
-  cloud_firestore: ^4.3.2
+  cloud_firestore: ^4.4.4
   cupertino_icons: ^1.0.2
   firebase_core: ^2.5.0
-  firebase_database: ^10.0.10
+  firebase_database: ^10.0.14
+  firebase_storage: ^11.0.15
   flutter:
     sdk: flutter
   google_sign_in: ^5.4.4

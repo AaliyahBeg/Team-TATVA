@@ -1,11 +1,18 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:environment_app/petition/raise_petition_two.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:environment_app/petition/petition_upload_img_4_.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:environment_app/petition/raise_petition.dart';
+import 'package:environment_app/petition/raise_petition_3.dart';
 
-class RaisePetition extends StatelessWidget {
-  const RaisePetition({Key? key}) : super(key: key);
+
+class Petition_form extends StatelessWidget {
+   Petition_form({Key? key}) : super(key: key);
+  CollectionReference user = FirebaseFirestore.instance.collection('user');
+    String textNote1='Local';
+    String textNote2='Environment';
+    String textNote3='Polluted Drinking water supply in our area';
+
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +48,7 @@ class RaisePetition extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 GestureDetector(
-                    onTap: () => {Navigator.pushNamed(context, 'homepage')},
+                    onTap: () => {Navigator.pushNamed(context, '')},
                     child: Container(
                       child: Text('Home',
                           style: TextStyle(
@@ -96,49 +103,65 @@ class RaisePetition extends StatelessWidget {
               ],
             ),
 
-            SizedBox(height: 5),
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
-              child: Text(
-                "LET'S TAKE FIRST STEP TOWARDS CHANGE :)",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontFamily: 'Inria',
-                  fontSize: 22,
-                ),
-              ),
-            ),
-
-            Center(
-              child: Container(
-                child: Image.asset("images/petition.png"),
-                width: 300,
-                height: 200,
-              ), //Column
-            ), //Center
+       
 
             SizedBox(height: 5),
             Container(
               margin: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
               child: Text(
-                "Write your petition title",
+                " >> Write the scope of your petition: <<  ",
                 textAlign: TextAlign.left,
                 style: TextStyle(
                   fontFamily: 'Inria',
-                  fontSize: 22,
+                  fontSize: 15,
                 ),
               ),
             ),
 
-            SizedBox(height: 0),
+
             Container(
-              margin: EdgeInsets.only(right: 20, top: 20),
-              alignment: Alignment.topCenter,
+              width: 300,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  
+                  TextField(
+                    onChanged: (value){
+                      textNote1=value;
+                    },
+                    
+                    decoration: InputDecoration(
+                      
+                      hintText: "Scope can be Local,National,Global",
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(11),
+                        borderSide: BorderSide(
+                          color: Colors.black54,
+                          width: 1.5,
+                        ),
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(11),
+                        borderSide: BorderSide(
+                          color: Colors.black54,
+                          width: 1.5,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            SizedBox(height: 5),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
               child: Text(
-                "Petition Title ",
+                ">>What's the topic that best fits your petition?<< ",
+                textAlign: TextAlign.center,
                 style: TextStyle(
+                  fontFamily: 'Inria',
                   fontSize: 15,
-                  fontWeight:FontWeight.bold,
                 ),
               ),
             ),
@@ -149,8 +172,61 @@ class RaisePetition extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   TextField(
+                    onChanged: (value){
+                      textNote2=value;
+                    },
+                    
+                    decoration: InputDecoration(
+                      hintText: "Ex- Environment , Education,Health",
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(11),
+                        borderSide: BorderSide(
+                          color: Colors.black54,
+                          width: 1.5,
+                        ),
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(11),
+                        borderSide: BorderSide(
+                          color: Colors.black54,
+                          width: 1.5,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            SizedBox(height: 5),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+              child: Text(
+                ">>  TELL YOUR STORY << ",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontFamily: 'Inria',
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+
+            Container(
+              width: 300,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                 
+                  TextField(
+                    onChanged: (value){
+                      textNote3=value;
+                    },
                       decoration: InputDecoration(
-                    hintText: "Title must be short ",
+                        hintText: "                   Start from scratch",
+                        
+                        contentPadding: EdgeInsets.symmetric(vertical:66.0,horizontal: 0),
+                    
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(11),
                       borderSide: BorderSide(
@@ -158,23 +234,33 @@ class RaisePetition extends StatelessWidget {
                         width: 1.5,
                       ),
                     ),
-                    enabledBorder: OutlineInputBorder(
+                    
+                  
+                    border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(11),
                       borderSide: BorderSide(
                         color: Colors.black54,
                         width: 1.5,
                       ),
                     ),
-                  )),
-                ],
-              ),
-            ),
-
+                  ),
+                  maxLines: 5,
+                  minLines: 1,
+                  ),
+                  
+  
             SizedBox(height: 25),
+
             TextButton(
-              onPressed: () {
+              onPressed: () async{
+                  await user.add({
+                 'Scope':textNote1,
+                 'Topic_Relation':textNote2,
+                 'story':textNote3,
+                  
+                  }).then((value)=>print('User added'));
                  Navigator.push(context,
-                MaterialPageRoute(builder:((context) => Petition_form()),
+                MaterialPageRoute(builder:((context) => ImagePickerExample()),
                 )
                 );
               },
@@ -207,7 +293,7 @@ class RaisePetition extends StatelessWidget {
                     MaterialStateProperty.all<Color>(Color(0xFF96E072)),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18.0),
+                  borderRadius: BorderRadius.circular(14.0),
                 )),
                 padding: MaterialStateProperty.all<EdgeInsets>(
                     EdgeInsets.symmetric(horizontal: 80, vertical: 10)),
@@ -222,7 +308,9 @@ class RaisePetition extends StatelessWidget {
             ),
           ]),
         ),
-      ),
+     ], ),
+        ),
+      )
     );
   }
 }

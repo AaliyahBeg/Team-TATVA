@@ -1,10 +1,11 @@
 import 'dart:io';
-import 'package:environment_app/petition/my_petition.dart';
+import 'package:environment_app/petition/my_petition_5_.dart';
 import 'package:environment_app/petition/user_detail_petition.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 void main() => runApp(MyApp());
 
@@ -36,7 +37,7 @@ class _ImagePickerExampleState extends State<ImagePickerExample> {
       _pickedImage = File(pickedFile!.path);
     });
   }
-
+  
   Future<void> _pickVideo() async {
     final picker = ImagePicker();
     final pickedFile = await picker.getVideo(source: ImageSource.gallery);
@@ -161,6 +162,85 @@ class _ImagePickerExampleState extends State<ImagePickerExample> {
 }
 
 
+
+
+
+// import 'dart:io';
+// import 'package:flutter/material.dart';
+// import 'package:image_picker/image_picker.dart';
+// import 'package:firebase_storage/firebase_storage.dart';
+
+// class ImageUploader extends StatefulWidget {
+//   @override
+//   _ImageUploaderState createState() => _ImageUploaderState();
+// }
+
+// class _ImageUploaderState extends State<ImageUploader> {
+//   File? _imageFile;
+
+//   // Function to pick an image from the gallery
+//   Future<void> _pickImage() async {
+//     final picker = ImagePicker();
+//     final pickedFile = await picker.getImage(source: ImageSource.gallery);
+//     setState(() {
+//       _imageFile = File(pickedFile!.path);
+//     });
+//   }
+
+//   // Function to upload the selected image to Firebase Storage
+//   Future<void> _uploadImage() async {
+//     if (_imageFile == null) {
+//       // No image file is selected
+//       return;
+//     }
+
+//     // Create a Firebase Storage reference
+//     final storageRef = FirebaseStorage.instance.ref().child('images/image.jpg');
+
+//     // Upload file to storage reference
+//     final uploadTask = storageRef.putFile(_imageFile!);
+//     final snapshot = await uploadTask.whenComplete(() {});
+    
+//     // Get the download URL of the uploaded file
+//     final downloadUrl = await snapshot.ref.getDownloadURL();
+    
+//     // Print the download URL
+//     print(downloadUrl);
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text('Image Uploader'),
+//       ),
+//       body: Center(
+//         child: SingleChildScrollView(
+//           child: Column(
+//             mainAxisAlignment: MainAxisAlignment.center,
+//             children: <Widget>[
+//               if (_imageFile != null) ...[
+//                 Image.file(_imageFile!),
+//                 const SizedBox(height: 10),
+//                 Text('Selected Image'),
+//               ],
+//               SizedBox(height: 10),
+//               ElevatedButton(
+//                 onPressed: _pickImage,
+//                 child: Text('Select Image'),
+//               ),
+//               SizedBox(height: 10),
+//               ElevatedButton(
+//                 onPressed: _uploadImage,
+//                 child: Text('Upload Image'),
+//               ),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
 
 
 
