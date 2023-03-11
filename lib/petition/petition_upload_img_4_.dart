@@ -2,15 +2,20 @@ import 'dart:io';
 import 'package:environment_app/petition/my_petition_5_.dart';
 import 'package:environment_app/petition/user_detail_petition.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(ImagePickerExample());
 
 class MyApp extends StatelessWidget {
+     MyApp({Key? key}) : super(key: key);
+      
+
+
   late DatabaseReference dbRef;
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -22,11 +27,18 @@ class MyApp extends StatelessWidget {
 }
 
 class ImagePickerExample extends StatefulWidget {
+  ImagePickerExample({Key? key}) : super(key: key);
+  
   @override
   _ImagePickerExampleState createState() => _ImagePickerExampleState();
 }
 
 class _ImagePickerExampleState extends State<ImagePickerExample> {
+    String textNote1="Poluted water";// title_of_img
+    String textNote2=""; // pathurl
+    String textNote3='Dwarka Sector-5';  //location
+   CollectionReference user = FirebaseFirestore.instance.collection('user');
+   
   File? _pickedImage;
   File? _pickedVideo;
 
@@ -46,7 +58,9 @@ class _ImagePickerExampleState extends State<ImagePickerExample> {
     });
   }
 
+  String imageUrl='';
   @override
+     late UploadTask pathurl;
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -59,7 +73,144 @@ class _ImagePickerExampleState extends State<ImagePickerExample> {
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
+            
             children: <Widget>[
+                 Container(
+              margin: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+              child: Text(
+                " >> ADD AN IMAGE <<  ",
+                
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  fontFamily: 'Inria',
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+              Container(
+              margin: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+              child: Text(
+                ">> Select the image by clicking camera icon <<",
+                
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  fontFamily: 'Inria',
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+
+                Container(
+              width: 300,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  
+                  TextField(
+                    onChanged: (value){
+                     textNote1=value;
+                    },
+                    
+                    decoration: InputDecoration(
+                      
+                      hintText: ">> Give some title to your image <<",
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(11),
+                        borderSide: BorderSide(
+                          color: Colors.black54,
+                          width: 1.5,
+                        ),
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(11),
+                        borderSide: BorderSide(
+                          color: Colors.black54,
+                          width: 1.5,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+
+           SizedBox(height: 15),
+           Container(
+              width: 300,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  
+                  TextField(
+                    onChanged: (value){
+                     textNote3=value;
+                    },
+                    
+                    decoration: InputDecoration(
+                      
+                      hintText: ">> Enter location of image <<",
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(11),
+                        borderSide: BorderSide(
+                          color: Colors.black54,
+                          width: 1.5,
+                        ),
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(11),
+                        borderSide: BorderSide(
+                          color: Colors.black54,
+                          width: 1.5,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+              IconButton(onPressed: () async
+              {
+                //1.(Pick Image ) Installing the image picker and import the corresponding library
+                ImagePicker imagePicker=ImagePicker();
+                XFile? file=await imagePicker.pickImage(source:ImageSource.camera);
+                // print(`${file.path}`);
+                print('${file?.path}');
+
+                if(file==null) return;
+
+                //import dart:core
+                String uniqueFileName=DateTime.now().millisecondsSinceEpoch.toString();       
+                
+                 //2. Get a reference to storage root
+                Reference referenceRoot=FirebaseStorage.instance.ref();
+                Reference referenceDirimages=referenceRoot.child('images');
+
+                //3.Create a reference for the image to be stored
+                Reference referenceImageToUpload=referenceDirimages.child(uniqueFileName);
+                     
+                //Handle errors/success
+                try{
+                  //Store the file
+                  await referenceImageToUpload.putFile(File(file.path));
+                  //Success:get the download URL
+                  imageUrl=await referenceImageToUpload.getDownloadURL();
+                  textNote2=imageUrl;
+
+                }
+                catch(error){
+
+                }
+                //Store the file
+               
+                pathurl=referenceImageToUpload.putFile(File(file!.path));
+
+                
+              },icon:Icon(Icons.camera_alt),
+              ),
               if (_pickedImage != null) ...[
                 Image.file(_pickedImage!),
                 const SizedBox(height: 10),
@@ -71,36 +222,17 @@ class _ImagePickerExampleState extends State<ImagePickerExample> {
                 Text('Selected Video'),
               ],
               SizedBox(height: 10),
-              Container(
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.green,
-                    width: 2.0,
-                  ),
-                ),
-                child: TextButton(
-                  onPressed: _pickImage,
-                  child: Text(
-                    'Select Image',
-                    style: TextStyle(
-                      fontFamily: 'Inter',
-                      color: Color.fromARGB(255, 123, 187, 91),
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
+          
               SizedBox(height: 5),
 
               TextButton(
                 onPressed: () async {
-                  // save data to firebase
-                  (
-                    {
-                      
-                    }
-                  )  ;   
+                await user.add({
+                 'Stitle_of_img':textNote1,
+                 'pathurl':textNote2,
+                 'location':textNote3,
+                  
+                  }).then((value)=>print('User added'));
                   Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -161,86 +293,6 @@ class _ImagePickerExampleState extends State<ImagePickerExample> {
   }
 }
 
-
-
-
-
-// import 'dart:io';
-// import 'package:flutter/material.dart';
-// import 'package:image_picker/image_picker.dart';
-// import 'package:firebase_storage/firebase_storage.dart';
-
-// class ImageUploader extends StatefulWidget {
-//   @override
-//   _ImageUploaderState createState() => _ImageUploaderState();
-// }
-
-// class _ImageUploaderState extends State<ImageUploader> {
-//   File? _imageFile;
-
-//   // Function to pick an image from the gallery
-//   Future<void> _pickImage() async {
-//     final picker = ImagePicker();
-//     final pickedFile = await picker.getImage(source: ImageSource.gallery);
-//     setState(() {
-//       _imageFile = File(pickedFile!.path);
-//     });
-//   }
-
-//   // Function to upload the selected image to Firebase Storage
-//   Future<void> _uploadImage() async {
-//     if (_imageFile == null) {
-//       // No image file is selected
-//       return;
-//     }
-
-//     // Create a Firebase Storage reference
-//     final storageRef = FirebaseStorage.instance.ref().child('images/image.jpg');
-
-//     // Upload file to storage reference
-//     final uploadTask = storageRef.putFile(_imageFile!);
-//     final snapshot = await uploadTask.whenComplete(() {});
-    
-//     // Get the download URL of the uploaded file
-//     final downloadUrl = await snapshot.ref.getDownloadURL();
-    
-//     // Print the download URL
-//     print(downloadUrl);
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Image Uploader'),
-//       ),
-//       body: Center(
-//         child: SingleChildScrollView(
-//           child: Column(
-//             mainAxisAlignment: MainAxisAlignment.center,
-//             children: <Widget>[
-//               if (_imageFile != null) ...[
-//                 Image.file(_imageFile!),
-//                 const SizedBox(height: 10),
-//                 Text('Selected Image'),
-//               ],
-//               SizedBox(height: 10),
-//               ElevatedButton(
-//                 onPressed: _pickImage,
-//                 child: Text('Select Image'),
-//               ),
-//               SizedBox(height: 10),
-//               ElevatedButton(
-//                 onPressed: _uploadImage,
-//                 child: Text('Upload Image'),
-//               ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
 
 
 

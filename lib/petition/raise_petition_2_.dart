@@ -5,9 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:environment_app/petition/raise_petition_2_.dart';
 
-class RaisePetition extends StatelessWidget {
+ class RaisePetition extends StatelessWidget {
   RaisePetition({Key? key}) : super(key: key);
-  CollectionReference user = FirebaseFirestore.instance.collection('user');
+  final CollectionReference user = FirebaseFirestore.instance.collection('user');
+  
+ 
+ 
   String textNote='Pollution';
   @override
   

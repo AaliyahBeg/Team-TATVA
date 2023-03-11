@@ -8,7 +8,7 @@ import 'package:environment_app/petition/raise_petition_3.dart';
 
 class Petition_form extends StatelessWidget {
    Petition_form({Key? key}) : super(key: key);
-  CollectionReference user = FirebaseFirestore.instance.collection('user');
+   CollectionReference user = FirebaseFirestore.instance.collection('user');
     String textNote1='Local';
     String textNote2='Environment';
     String textNote3='Polluted Drinking water supply in our area';
