@@ -46,10 +46,10 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       // home: HomeScreen(),
-      home: HomeScreen(),
+      home:  HomeScreen(),
       routes: {
         // CoffeeDetailsPage. : (ctx) =>  CoffeeDetailsPage(),
-        "list_of_product": (context) =>  CoffeeCard(),
+        // "list_of_product": (context) =>  CoffeeCard(),
       },
     );
   }

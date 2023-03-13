@@ -1,9 +1,10 @@
+import 'dart:core';
 import 'dart:io' as io;
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'DataDetail.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -21,8 +22,11 @@ class _DataSetInputScreenState extends State<DataSetInputScreen> {
   final _shortDescController = TextEditingController();
   final _descController = TextEditingController();
   final _categorieController = TextEditingController();
+  final _sizeController = TextEditingController();
   late io.File _image;
-  late String imageUrl;
+  late String imageUrl ='';
+  late String imagePath ='';
+
 
 
   @override
@@ -132,9 +136,25 @@ class _DataSetInputScreenState extends State<DataSetInputScreen> {
               SizedBox(
                 height: 15,
               ),
-              (imageUrl != null)
-                ? Image.network(imageUrl)
-                : Placeholder(fallbackHeight: 200.0 , fallbackWidth: double.infinity),
+              TextFormField(
+                controller: _sizeController,
+                decoration: InputDecoration(labelText: 'size',
+                  border: new OutlineInputBorder(
+                    borderRadius: new BorderRadius.circular(25.0),
+                    borderSide: new BorderSide(
+                    ),
+                  ),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a Size';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(
+                height: 15,
+              ),
               ElevatedButton(
                 onPressed: _pickImage,
                 child: Text('Select Image'),
@@ -144,15 +164,18 @@ class _DataSetInputScreenState extends State<DataSetInputScreen> {
                 ),
               ),
               ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
+                onPressed: () async {
+                  if (_formKey.currentState!.validate() && imagePath != "") {
+                    await uploadImage();
+
                     DataSet dataSet = DataSet(
                       Name: _nameController.text,
-                      Image: _imageController.text,
+                      Image: imageUrl,
                       Price: _priceController.text,
-                      Short_desc: _shortDescController.text,
-                      Desc: _descController.text,
+                      short_desc: _shortDescController.text,
+                      desc: _descController.text,
                       Categorie: _categorieController.text,
+                      size: _sizeController.text,
                     );
                     _formKey.currentState!.reset();
                     _nameController.clear();
@@ -165,6 +188,13 @@ class _DataSetInputScreenState extends State<DataSetInputScreen> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text('DataSet saved successfully!'),
+                      ),
+                    );
+                  }
+                  else{
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Few feilds are missing!'),
                       ),
                     );
                   }
@@ -192,11 +222,26 @@ class _DataSetInputScreenState extends State<DataSetInputScreen> {
         actions: <Widget>[
           MaterialButton(
             child: Text("Camera"),
-            onPressed: () => Navigator.pop(context, ImageSource.camera),
+            onPressed: () async{
+              ImagePicker imagePicker = ImagePicker();
+              PickedFile? file = await imagePicker.getImage(source: ImageSource.camera );
+              print('${file?.path}');
+              imagePath = file!.path;
+            },
           ),
           MaterialButton(
             child: Text("Gallery"),
-            onPressed: () => Navigator.pop(context, ImageSource.gallery),
+            onPressed: () async{
+              ImagePicker imagePicker = ImagePicker();
+              PickedFile? file = await imagePicker.getImage(source: ImageSource.gallery );
+              print('${file?.path}');
+
+              if(file == null ) return;
+              imagePath = file.path;
+
+              //to get unique url
+
+            },
           ),
         ],
       ),
@@ -213,25 +258,46 @@ class _DataSetInputScreenState extends State<DataSetInputScreen> {
     }
   }
 
-
   void setDataInFirestore(DataSet dataSet) async {
     await _firestore.collection('product').add({
       'Name': dataSet.Name,
       'Image': dataSet.Image,
       'Price': dataSet.Price,
-      'Short_desc': dataSet.Short_desc,
-      'Desc': dataSet.Desc,
+      'short_desc': dataSet.short_desc,
+      'desc': dataSet.desc,
       'Categorie': dataSet.Categorie,
+      'size' : dataSet.size,
     });
   }
 
   uploadImage() async{
-    final _picker = ImagePicker();
-    PickedFile image;
-    //check permissions
-    await Permission.photos.request();
+    String uniqueFileName = DateTime.now().millisecondsSinceEpoch.toString();
 
-    // var permissionStatus = await
+    //get reference to storage root
+    Reference referenceRoot  = FirebaseStorage.instance.ref();
+    Reference referenceDirImages = referenceRoot.child('static_image');
+
+    //create a reference for the image to be stroge
+    Reference referenceImageToUplaod = referenceDirImages.child(uniqueFileName);
+
+    try {
+      //store the file
+      await referenceImageToUplaod.putFile(io.File(imagePath));
+      imageUrl = await referenceImageToUplaod.getDownloadURL();
+      print(imageUrl);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Image upload successfully'),
+        ),
+      );
+    }catch(error){
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(error.toString()),
+        ),
+      );
+
+    }
   }
 }
 

@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:like_button/like_button.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 class thumb extends StatefulWidget {
@@ -20,12 +21,11 @@ class CoffeeDetailsPage extends State<thumb> {
   // static const routeName = '/project_detail';
   final String id;
   CoffeeDetailsPage( {required this.id}) ;
+  int numberOfLike = 0;
 
   @override
   Widget build(BuildContext context) {
     print (this.id);
-    // final id = (ModalRoute.of(context)?.settings as RouteSettings).arguments as String;
-    // print((ModalRoute.of(context)?.settings as RouteSettings).arguments);
     final id = this.id;
     return Scaffold(
       backgroundColor: Colors.white,
@@ -52,7 +52,7 @@ class CoffeeDetailsPage extends State<thumb> {
                           decoration:  BoxDecoration(
                               borderRadius: BorderRadius.circular(25),
                               image:  DecorationImage(
-                                  image: NetworkImage((d as Map<String, dynamic>)['image']?.toString() ?? ''),
+                                  image: NetworkImage((d as Map<String, dynamic>)['Image']?.toString() ?? ''),
                                   fit: BoxFit.cover)),
                         ),
                         Positioned(
@@ -132,11 +132,16 @@ class CoffeeDetailsPage extends State<thumb> {
                                                 mainAxisAlignment:
                                                 MainAxisAlignment.center,
                                                 children: [
-                                                  SvgPicture.asset(
-                                                    "images/coffee-beans.svg",
-                                                    color: Colors.green,
-                                                    height: 15,
+                                                  LikeButton(
+                                                    size: 20,
+                                                    likeCount: numberOfLike,
+
                                                   ),
+                                                  // SvgPicture.asset(
+                                                  //   "images/coffee-beans.svg",
+                                                  //   color: Colors.green,
+                                                  //   height: 15,
+                                                  // ),
                                                   SizedBox(
                                                     height: 4,
                                                   ),

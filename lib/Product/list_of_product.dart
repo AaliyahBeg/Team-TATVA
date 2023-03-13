@@ -6,13 +6,22 @@ import 'package:firebase_core/firebase_core.dart';
 
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 class CoffeeCard extends StatelessWidget {
+  final String Categorie;
+
+  const CoffeeCard({
+    Key? key,
+    required this.Categorie,
+  }) : super(key: key);
+
+
   @override
   Widget build(BuildContext context) {
 
+    print("Categorie is " + this.Categorie);
     return  Flexible(
 
         child: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection('product').snapshots(),
+        stream: FirebaseFirestore.instance.collection('product').where("Categorie" ,isEqualTo: Categorie).snapshots(),
           builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.hasError)
               return Text('Error: ${snapshot.error}');
@@ -32,10 +41,10 @@ class CoffeeCard extends StatelessWidget {
                     itemCount: count,
                     itemBuilder: (context, index) {
                       final DocumentSnapshot document = (snapshot.data as QuerySnapshot<Object>).docs[index];
-                      print((document.data() as Map<String, dynamic>)['image']?.toString() ?? '');
+                      print((document.data() as Map<String, dynamic>)['Image']?.toString() ?? '');
                       print((document.data() as Map<String, dynamic>)['Name']?.toString() ?? '');
                       print((document.data() as Map<String, dynamic>)['Price']?.toString() ?? '');
-                      print((document.data() as Map<String, dynamic>)['categorie']?.toString() ?? '');
+                      print((document.data() as Map<String, dynamic>)['Categorie']?.toString() ?? '');
                       print((document.data() as Map<String, dynamic>)['desc']?.toString() ?? '');
                       print((document.data() as Map<String, dynamic>)['short_desc']?.toString() ?? '');
                       print(document.id);
@@ -66,7 +75,7 @@ class CoffeeCard extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(20),
                                       image: DecorationImage(
                                         // add placeholder so that in case image is not load then some message can be seen by customer
-                                          image: NetworkImage((document.data() as Map<String, dynamic>)['image']?.toString() ?? ''),
+                                          image: NetworkImage((document.data() as Map<String, dynamic>)['Image']?.toString() ?? ''),
                                           fit: BoxFit.cover)),
                                 ),
 

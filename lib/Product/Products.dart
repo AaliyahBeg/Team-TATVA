@@ -130,7 +130,32 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             text: "Toys",
                           ),
                         ]),
-                    CoffeeCard(),
+
+
+                LayoutBuilder(
+                  builder: (BuildContext context, BoxConstraints constraints) {
+                    final availableHeight =   700;
+                    print('maxheight' + availableHeight.toString());
+                    final tabBarViewHeight = availableHeight * 0.8; // set the tabBarView height to 80% of the available height
+                    return SizedBox(
+                      height: tabBarViewHeight,
+                      child: TabBarView(
+                        controller: tabController,
+                        children: [
+                          CoffeeCard(Categorie: "Dresses"),
+                          CoffeeCard(Categorie: "Decoration"),
+                          CoffeeCard(Categorie: "Tops"),
+                          CoffeeCard(Categorie: "Pants"),
+                          CoffeeCard(Categorie: "Furnitures"),
+                          CoffeeCard(Categorie: "Toys")
+                        ],
+                      ),
+                    );
+                  },
+                ),
+
+
+                // CoffeeCard(),
                     SizedBox(
                       height: 20,
                     ),
