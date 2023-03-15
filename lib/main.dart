@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:environment_app/Land_Pollution/Product/Products.dart';
 import 'package:environment_app/homepage.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'Product/Project_detail.dart';
+import 'Land_Pollution/Product/Project_detail.dart';
 import 'Land_Pollution/Product/list_of_product.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'Land_Pollution/Product/sellProduct.dart';
@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       // home: HomeScreen(),
-      home:  HomeScreen(),
+      home:  Home(),
       routes: {
         // CoffeeDetailsPage. : (ctx) =>  CoffeeDetailsPage(),
         // "list_of_product": (context) =>  CoffeeCard(),

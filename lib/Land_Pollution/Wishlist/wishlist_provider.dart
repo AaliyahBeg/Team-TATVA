@@ -13,5 +13,5 @@ class WishlistProvider with ChangeNotifier{
 
 final userCollection = FirebaseFirestore.instance.collection('uers');
 Future<void> fetchWishlist() async{
-  final User? user
+
 }
