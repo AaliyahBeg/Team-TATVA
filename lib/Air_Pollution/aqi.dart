@@ -1,4 +1,4 @@
-import 'package:environment_app/map.dart';
+import 'package:environment_app/Air_Pollution/map.dart';
 import 'package:flutter/material.dart';
 // import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
