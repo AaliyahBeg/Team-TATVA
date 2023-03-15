@@ -29,6 +29,7 @@ environment:
 dependencies:
   carousel_slider: ^4.2.1
   cloud_firestore: ^4.4.4
+  controller: ^0.1.10+1
   cupertino_icons: ^1.0.2
   firebase_core: ^2.5.0
   firebase_database: ^10.0.14

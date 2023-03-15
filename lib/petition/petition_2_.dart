@@ -1,19 +1,19 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:environment_app/petition/raise_petition_3.dart';
+import 'package:environment_app/petition/petition_3_.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:environment_app/petition/raise_petition_2_.dart';
+import 'package:environment_app/petition/petition_2_.dart';
+import 'controller.dart';
 
- class RaisePetition extends StatelessWidget {
+class RaisePetition extends StatelessWidget {
+  final TextEditingController _textEditingController = TextEditingController();
+  final ValueNotifier<bool> _isValid = ValueNotifier<bool>(false);
   RaisePetition({Key? key}) : super(key: key);
-  final CollectionReference user = FirebaseFirestore.instance.collection('user');
-  
- 
- 
-  String textNote='Pollution';
+  // final CollectionReference user = FirebaseFirestore.instance.collection('user');
+  String textNote = 'Pollution';
+
   @override
-  
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -42,6 +42,7 @@ import 'package:environment_app/petition/raise_petition_2_.dart';
       body: Padding(
         padding: EdgeInsets.symmetric(vertical: 25),
         child: SingleChildScrollView(
+       
           child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -144,7 +145,7 @@ import 'package:environment_app/petition/raise_petition_2_.dart';
                 "Petition Title ",
                 style: TextStyle(
                   fontSize: 15,
-                  fontWeight:FontWeight.bold,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
@@ -155,26 +156,28 @@ import 'package:environment_app/petition/raise_petition_2_.dart';
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   TextField(
-                    onChanged: (value){
-                      textNote=value;
-                    },
+                      controller: _textEditingController,
+                      onChanged: (value) {
+                        textNote = value;
+                        _isValid.value = value.isNotEmpty;
+                      },
                       decoration: InputDecoration(
-                    hintText: "Title must be short ",
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(11),
-                      borderSide: BorderSide(
-                        color: Colors.black54,
-                        width: 1.5,
-                      ),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(11),
-                      borderSide: BorderSide(
-                        color: Colors.black54,
-                        width: 1.5,
-                      ),
-                    ),
-                  )),
+                        hintText: "Title must be short ",
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(11),
+                          borderSide: BorderSide(
+                            color: Colors.black54,
+                            width: 1.5,
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(11),
+                          borderSide: BorderSide(
+                            color: Colors.black54,
+                            width: 1.5,
+                          ),
+                        ),
+                      )),
                 ],
               ),
             ),
@@ -182,14 +185,20 @@ import 'package:environment_app/petition/raise_petition_2_.dart';
             SizedBox(height: 25),
             TextButton(
               onPressed: () async {
-                await user.add({
-                 'Title':textNote,
-                  
-                  }).then((value)=>print('User added'));
-                 Navigator.push(context,
-                MaterialPageRoute(builder:((context) => Petition_form()),
-                )
-                );
+                if (_isValid.value) {
+                  // await user.add({
+                  //   'Title': textNote,
+                  // }).then((value) => print('User added'));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: ((context) => Petition_form(textNote: textNote,)),
+                      ));
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Please enter a title.')),
+                  );
+                }
               },
               style: ButtonStyle(
                 backgroundColor:

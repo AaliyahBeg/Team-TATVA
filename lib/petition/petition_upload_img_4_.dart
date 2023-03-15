@@ -7,12 +7,12 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
+
 void main() => runApp(ImagePickerExample());
 
 class MyApp extends StatelessWidget {
-     MyApp({Key? key}) : super(key: key);
-      
 
+  MyApp({Key? key}) : super(key: key);
 
   late DatabaseReference dbRef;
 
@@ -21,24 +21,48 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Image Picker Example',
       home: ImagePickerExample(),
-     
     );
   }
 }
 
 class ImagePickerExample extends StatefulWidget {
-  ImagePickerExample({Key? key}) : super(key: key);
   
+  String? textNote;
+  String? textNote1;
+  String? textNote2;
+  String? textNote3;
+ 
+
+  ImagePickerExample(
+      {this.textNote, this.textNote1, this.textNote2, this.textNote3});
+
   @override
-  _ImagePickerExampleState createState() => _ImagePickerExampleState();
+  _ImagePickerExampleState createState() => _ImagePickerExampleState(
+    
+        textNote: textNote,
+        textNote1: textNote1,
+        textNote2: textNote2,
+        textNote3: textNote3,
+        
+      );
 }
 
 class _ImagePickerExampleState extends State<ImagePickerExample> {
-    String textNote1="Poluted water";// title_of_img
-    String textNote2=""; // pathurl
-    String textNote3='Dwarka Sector-5';  //location
-   CollectionReference user = FirebaseFirestore.instance.collection('user');
-   
+
+  GlobalKey<FormState> key=GlobalKey();
+  String imageUrl='';
+  String? textNote;
+  String? textNote1;
+  String? textNote2;
+  String? textNote3;
+  String imgTitle = ""; // title_of_img
+  String pathUrl = ""; // pathurl
+  String location = '-'; //location
+
+  _ImagePickerExampleState(
+      {this.textNote, this.textNote1, this.textNote2, this.textNote3});
+  CollectionReference user = FirebaseFirestore.instance.collection('user');
+
   File? _pickedImage;
   File? _pickedVideo;
 
@@ -49,7 +73,7 @@ class _ImagePickerExampleState extends State<ImagePickerExample> {
       _pickedImage = File(pickedFile!.path);
     });
   }
-  
+
   Future<void> _pickVideo() async {
     final picker = ImagePicker();
     final pickedFile = await picker.getVideo(source: ImageSource.gallery);
@@ -58,9 +82,8 @@ class _ImagePickerExampleState extends State<ImagePickerExample> {
     });
   }
 
-  String imageUrl='';
-  @override
-     late UploadTask pathurl;
+ 
+   
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -73,143 +96,134 @@ class _ImagePickerExampleState extends State<ImagePickerExample> {
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            
             children: <Widget>[
-                 Container(
-              margin: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
-              child: Text(
-                " >> ADD AN IMAGE <<  ",
-                
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                  fontFamily: 'Inria',
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
               Container(
-              margin: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
-              child: Text(
-                ">> Select the image by clicking camera icon <<",
-                
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                  fontFamily: 'Inria',
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
+                margin: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+                child: Text(
+                  " >> ADD AN IMAGE <<  ",
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                    fontFamily: 'Inria',
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
-            ),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+                child: Text(
+                  ">> Select the image by clicking camera icon <<",
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                    fontFamily: 'Inria',
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
 
-                Container(
-              width: 300,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  
-                  TextField(
-                    onChanged: (value){
-                     textNote1=value;
-                    },
-                    
-                    decoration: InputDecoration(
-                      
-                      hintText: ">> Give some title to your image <<",
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(11),
-                        borderSide: BorderSide(
-                          color: Colors.black54,
-                          width: 1.5,
+              Container(
+                width: 300,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    TextField(
+                      onChanged: (value) {
+                        imgTitle = value;
+                      },
+                      decoration: InputDecoration(
+                        hintText: ">> Give some title to your image <<",
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(11),
+                          borderSide: BorderSide(
+                            color: Colors.black54,
+                            width: 1.5,
+                          ),
                         ),
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(11),
-                        borderSide: BorderSide(
-                          color: Colors.black54,
-                          width: 1.5,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(11),
+                          borderSide: BorderSide(
+                            color: Colors.black54,
+                            width: 1.5,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
 
-
-           SizedBox(height: 15),
-           Container(
-              width: 300,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  
-                  TextField(
-                    onChanged: (value){
-                     textNote3=value;
-                    },
-                    
-                    decoration: InputDecoration(
-                      
-                      hintText: ">> Enter location of image <<",
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(11),
-                        borderSide: BorderSide(
-                          color: Colors.black54,
-                          width: 1.5,
+              SizedBox(height: 15),
+              Container(
+                width: 300,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    TextField(
+                      onChanged: (value) {
+                        location = value;
+                      },
+                      decoration: InputDecoration(
+                        hintText: ">> Enter location of image <<",
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(11),
+                          borderSide: BorderSide(
+                            color: Colors.black54,
+                            width: 1.5,
+                          ),
                         ),
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(11),
-                        borderSide: BorderSide(
-                          color: Colors.black54,
-                          width: 1.5,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(11),
+                          borderSide: BorderSide(
+                            color: Colors.black54,
+                            width: 1.5,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
 
-              IconButton(onPressed: () async
-              {
-                //1.(Pick Image ) Installing the image picker and import the corresponding library
-                ImagePicker imagePicker=ImagePicker();
-                XFile? file=await imagePicker.pickImage(source:ImageSource.camera);
-                // print(`${file.path}`);
-                print('${file?.path}');
+              IconButton(
+                onPressed: () async {
+                  //1.(Pick Image ) Installing the image picker and import the corresponding library
+                  ImagePicker imagePicker = ImagePicker();
+                  XFile? file =
+                      await imagePicker.pickImage(source: ImageSource.camera);
+                  // print(`${file.path}`);
+                  print('${file?.path}');
 
-                if(file==null) return;
+                  if (file == null) return;
 
-                //import dart:core
-                String uniqueFileName=DateTime.now().millisecondsSinceEpoch.toString();       
-                
-                 //2. Get a reference to storage root
-                Reference referenceRoot=FirebaseStorage.instance.ref();
-                Reference referenceDirimages=referenceRoot.child('images');
+                  //import dart:core
+                  String uniqueFileName =
+                      DateTime.now().millisecondsSinceEpoch.toString();
 
-                //3.Create a reference for the image to be stored
-                Reference referenceImageToUpload=referenceDirimages.child(uniqueFileName);
-                     
-                //Handle errors/success
-                try{
+                  //2. Get a reference to storage root
+                  Reference referenceRoot = FirebaseStorage.instance.ref();
+                  Reference referenceDirimages = referenceRoot.child('images');
+
+                  //3.Create a reference for the image to be stored
+                  Reference referenceImageToUpload =
+                      referenceDirimages.child(uniqueFileName);
+
+                  //Handle errors/success
+                  try {
+                    //Store the file
+                    await referenceImageToUpload.putFile(File(file.path));
+                    //Success:get the download URL
+                    imageUrl = await referenceImageToUpload.getDownloadURL();
+                    print("Image URL ${imageUrl}");
+                    pathUrl = imageUrl;
+                    print("Path URL: ${pathUrl}");
+                  } catch (error) {}
                   //Store the file
-                  await referenceImageToUpload.putFile(File(file.path));
-                  //Success:get the download URL
-                  imageUrl=await referenceImageToUpload.getDownloadURL();
-                  textNote2=imageUrl;
 
-                }
-                catch(error){
-
-                }
-                //Store the file
-               
-                pathurl=referenceImageToUpload.putFile(File(file!.path));
-
-                
-              },icon:Icon(Icons.camera_alt),
+                  pathUrl = referenceImageToUpload.putFile(File(file!.path)) as String;
+                  print("Path URL after : ${pathUrl}");
+                },
+                icon: Icon(Icons.camera_alt),
               ),
               if (_pickedImage != null) ...[
                 Image.file(_pickedImage!),
@@ -222,17 +236,25 @@ class _ImagePickerExampleState extends State<ImagePickerExample> {
                 Text('Selected Video'),
               ],
               SizedBox(height: 10),
-          
-              SizedBox(height: 5),
 
+              SizedBox(height: 5),
+              
               TextButton(
                 onPressed: () async {
-                await user.add({
-                 'Stitle_of_img':textNote1,
-                 'pathurl':textNote2,
-                 'location':textNote3,
                   
-                  }).then((value)=>print('User added'));
+                  if(imageUrl.isEmpty){
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Please upload an image')));
+                  }
+                  print("Path URL in onPressed: ${pathUrl}");
+                  await user.add({
+                    'Title':textNote,
+                    'Scope':textNote1,
+                    'Topic':textNote2,
+                    'Story':textNote3,
+                    'imgTitle': imgTitle,
+                    'pathurl': imageUrl,
+                    'location': location,
+                  }).then((value) => print('User added'));
                   Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -292,8 +314,3 @@ class _ImagePickerExampleState extends State<ImagePickerExample> {
     );
   }
 }
-
-
-
-
-
