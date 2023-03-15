@@ -21,6 +21,7 @@ class CoffeeDetailsPage extends State<thumb> {
   // static const routeName = '/project_detail';
   final String id;
   CoffeeDetailsPage( {required this.id}) ;
+  bool isLiked = false;
   int numberOfLike = 0;
 
   @override
@@ -135,13 +136,12 @@ class CoffeeDetailsPage extends State<thumb> {
                                                   LikeButton(
                                                     size: 20,
                                                     likeCount: numberOfLike,
-
+                                                    // onTap: (isLike) async{
+                                                    //   this.isLiked = !isLiked;
+                                                    //   // numberOfLike += this.isLiked ? 1 : -1;
+                                                    //   return !isLiked;
+                                                    // },
                                                   ),
-                                                  // SvgPicture.asset(
-                                                  //   "images/coffee-beans.svg",
-                                                  //   color: Colors.green,
-                                                  //   height: 15,
-                                                  // ),
                                                   SizedBox(
                                                     height: 4,
                                                   ),

@@ -1,4 +1,4 @@
-import 'package:environment_app/Product/project_detail.dart';
+import 'package:environment_app/Land_Pollution/Product/project_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 

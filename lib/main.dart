@@ -1,11 +1,13 @@
 import 'package:environment_app/petitions.dart';
 import 'package:flutter/material.dart';
-import 'package:environment_app/Product/Products.dart';
+import 'package:environment_app/Land_Pollution/Product/Products.dart';
 import 'package:environment_app/homepage.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'Product/Project_detail.dart';
-import 'Product/list_of_product.dart';
+import 'Land_Pollution/Product/list_of_product.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'Product/sellProduct.dart';
+import 'Land_Pollution/Product/sellProduct.dart';
+import 'package:hive/hive.dart';
 
 
 
@@ -32,6 +34,7 @@ import 'Product/sellProduct.dart';
 
  void main() async{
    WidgetsFlutterBinding.ensureInitialized();
+   await Hive.initFlutter();
    Firebase.initializeApp().then((value) => {runApp(const MyApp())});
 }
 
