@@ -1,6 +1,7 @@
+import 'package:environment_app/Air_Pollution/air_pollution_main.dart';
 import 'package:flutter/material.dart';
 
-import '../Air_Pollution/historicalAirQuality.dart';
+import '../Air_Pollution/aqiGraph.dart';
 
 class Page1 extends StatelessWidget {
   @override
@@ -23,7 +24,7 @@ class Page2 extends StatelessWidget {
 class Page3 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return historicalAirQuality();
+    return AirPollutionMain();
   }
 }
 

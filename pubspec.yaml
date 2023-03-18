@@ -48,6 +48,14 @@ dependencies:
   syncfusion_flutter_charts: ^20.4.52
   unixtime: ^1.0.0
   date_util: ^0.1.4
+  firebase_core: ^2.7.1
+  cloud_firestore: ^4.4.4
+  firebase_auth: ^4.2.2
+  firebase_storage: ^11.0.15
+  uuid: ^3.0.7
+  get: ^4.6.5
+  dropdown_button2: ^2.0.0
+  image_picker: ^0.8.7
 
 dev_dependencies:
   flutter_test:
@@ -79,14 +87,16 @@ flutter:
      - images/waterPollution.png
      - images/lightPollution.png
      - images/noisePollution.png
+     - images/birds.png
+     - images/earthf.png
+     - images/R.png
+     - images/rocket.png
      - assets/images/1.png
      - assets/images/2.png
      - assets/images/3.png
      - assets/images/4.png
      - assets/images/5.png
      - assets/images/6.png
-     - assets/images/splash.png
-     - assets/images/splash_title.png
 #    - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

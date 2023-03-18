@@ -6,6 +6,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'components/card_items.dart';
 import 'components/primary_appbar.dart';
 import 'components/scroll_pages.dart';
+import 'login.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -17,14 +18,13 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   int _currentIndex = 0;
   final CarouselController _controller = CarouselController();
-  
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      resizeToAvoidBottomInset : false,
-      appBar: const PreferredSize(
+      resizeToAvoidBottomInset: false,
+      appBar: PreferredSize(
         child: PrimaryAppBar(),
         preferredSize: const Size.fromHeight(110.0),
       ),
@@ -46,7 +46,8 @@ class _HomeState extends State<Home> {
                 ),
                 Container(
                   height: 256,
-                  child: ScrollSnapList(
+                  child: 
+                  ScrollSnapList(
                     padding: EdgeInsets.fromLTRB(16, 12, 16, 12),
                     scrollDirection: Axis.horizontal,
                     onItemFocus: (index) {
@@ -63,6 +64,19 @@ class _HomeState extends State<Home> {
                     initialIndex: 0,
                     onReachEnd: () => {},
                   ),
+                  // CarouselSlider(
+                  //     items:
+                  //         items.map((item) => buildCard(item: item)).toList(),
+                  //     options: CarouselOptions(
+                  //       aspectRatio: 16 / 9,
+                  //       viewportFraction: 0.5,
+                  //       onPageChanged: (index, reason) {
+                  //         setState(() {
+                  //           _currentIndex = index;
+                  //         });
+                  //       },
+                  //       enlargeCenterPage: true,
+                  //     )),
                 ),
               ],
             ),

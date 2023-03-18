@@ -49,7 +49,7 @@ class SecondaryAppbar extends StatelessWidget {
             )
         ),
         GestureDetector(
-            onTap: () => {Navigator.pushNamed(context, '')},
+            onTap: () => {Navigator.pushNamed(context, 'connect')},
             child: Container(
                 child: Text('Connect',
                     style: TextStyle(

@@ -1,7 +1,7 @@
 import 'package:unixtime/unixtime.dart';
 
 import '../data/historicalAQI/historical_aqi_model.dart';
-import '../historicalAirQuality.dart';
+import '../aqiGraph.dart';
 
 String chartTitle = "";
 var yValueMapper;
