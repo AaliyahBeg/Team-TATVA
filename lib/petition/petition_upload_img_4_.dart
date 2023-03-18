@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:environment_app/petition/my_petition_5_.dart';
+import 'package:environment_app/petition/Ongoing_petition_5_.dart';
 import 'package:environment_app/petition/user_detail_petition.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -190,7 +190,7 @@ class _ImagePickerExampleState extends State<ImagePickerExample> {
                   //1.(Pick Image ) Installing the image picker and import the corresponding library
                   ImagePicker imagePicker = ImagePicker();
                   XFile? file =
-                      await imagePicker.pickImage(source: ImageSource.camera);
+                      await imagePicker.pickImage(source: ImageSource.gallery);
                   // print(`${file.path}`);
                   print('${file?.path}');
 
@@ -258,7 +258,7 @@ class _ImagePickerExampleState extends State<ImagePickerExample> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: ((context) => MyPetition()),
+                        builder: ((context) => Addpost()),
                       ));
                 },
                 style: ButtonStyle(

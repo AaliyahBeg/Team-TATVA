@@ -2,7 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:environment_app/petition/petition_2_.dart';
-import 'package:environment_app/petition/my_petition_5_.dart';
+import 'package:environment_app/petition/Ongoing_petition_5_.dart';
 
 final List<String> imgs = [
   'images/pet1.png',
@@ -179,7 +179,7 @@ class Petitions extends StatelessWidget {
              TextButton(
               onPressed: () {
                 Navigator.push(context,
-                MaterialPageRoute(builder:((context) => MyPetition()),
+                MaterialPageRoute(builder:((context) => Addpost()),
                 )
                 );
               },
@@ -194,7 +194,7 @@ class Petitions extends StatelessWidget {
                   EdgeInsets.symmetric(horizontal: 80, vertical: 10)),
             ),
               child: const Text(
-                  'MY PETITIONS',
+                  'ONGOING PETITIONS',
                 style: TextStyle(
                     color: Colors.black,
                   fontFamily: 'Inter',
