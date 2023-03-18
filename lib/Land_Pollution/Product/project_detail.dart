@@ -179,7 +179,7 @@ class CoffeeDetailsPage extends State<thumb> {
                                               (d as Map<String, dynamic>)[
                                                           'Rating']
                                                       ?.toString() ??
-                                                  'not found',
+                                                  '4.0',
                                               style: TextStyle(
                                                 color: Colors.white,
                                                 fontSize: 20,
