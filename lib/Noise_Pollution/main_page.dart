@@ -19,25 +19,30 @@ class _Page4State extends State<Page4>{
   late NoiseMeter _noiseMeter;
   List<String> values=[];
   _Page4State() {
-    // Start a timer that runs every 30 minutes
-    Timer.periodic(Duration(minutes: 1), (timer) {
-      //update the graph with the list values
-      // Clear the list
-      getGraph(values);
-      values.clear();
-    });
+    // Start a timer that runs every 1 minutes
+
   }
 
   @override
   void initState() {
     super.initState();
     _noiseMeter = new NoiseMeter(onError);
+    // Timer.periodic(Duration(minutes: 30), (timer) {
+    //   //update the graph with the list values
+    //   // Clear the list
+    //   //getGraph(values);
+    //   values.clear();
+    //
+    // });
   }
 
   @override
   void dispose() {
     _noiseSubscription?.cancel();
     super.dispose();
+  }
+  void clear_vector(){
+    values.clear();
   }
 
   void onData(NoiseReading noiseReading) {
@@ -46,8 +51,11 @@ class _Page4State extends State<Page4>{
         this._isRecording = true;
       }
     });
-    values.add(noiseReading.toString());
-    print(noiseReading.toString());
+    String value=noiseReading.toString();
+    String plot_value=value[28]+value[29]+value[30]+value[31]+value[32];
+
+    values.add(plot_value);
+    print(plot_value);
   }
 
   void onError(Object error) {
@@ -76,7 +84,7 @@ class _Page4State extends State<Page4>{
       print('stopRecorder error: $err');
     }
   }
-  Widget getGraph(List<String>v){
+  Widget getGraph(){
     // List<ChartData> chartData = values
     //     .asMap()
     //     .entries
@@ -84,11 +92,28 @@ class _Page4State extends State<Page4>{
     //     .toList();
     start();
     List<ChartData> chartData = [];
-    for (int i = 0; i < values.length; i++) {
-      chartData.add(ChartData(i, double.parse(v[i])));
-    }
 
-    return Container(
+
+    if(values.length==10){
+      for (int i = 0; i < values.length; i++) {
+        chartData.add(ChartData(i, double.parse(values[i])));
+      }
+      clear_vector();
+      return Container(
+        padding: EdgeInsets.all(16.0),
+        child: SfCartesianChart(
+          primaryXAxis: NumericAxis(),
+          series: <LineSeries<ChartData, num>>[
+            LineSeries<ChartData, num>(
+              dataSource: chartData,
+              xValueMapper: (ChartData data, _) => data.x,
+              yValueMapper: (ChartData data, _) => data.y,
+            ),
+          ],
+        ),
+      );
+
+    }else return Container(
       padding: EdgeInsets.all(16.0),
       child: SfCartesianChart(
         primaryXAxis: NumericAxis(),
@@ -149,7 +174,7 @@ class _Page4State extends State<Page4>{
                       ),
 
                     const SizedBox(height: 50,),
-                    getGraph(values),
+                    getGraph(),
                     const SizedBox(height: 50,),
                   ]
               )),
