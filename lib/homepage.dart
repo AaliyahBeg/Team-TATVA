@@ -91,15 +91,15 @@ class _HomeState extends State<Home> {
 
   Widget _getPage(int index) {
     switch (index) {
-      case 0:
+      case 0: //Land_Pollution
         return Page1();
-      case 1:
+      case 1: //Water_Pollution
         return Page2();
-      case 2:
+      case 2: //Air Pollution
         return Page3();
-      case 3:
+      case 3: //Noise_Pollution
         return Page4();
-      case 4:
+      case 4: //Light_Pollution
         return Page5();
       default:
         return Container();

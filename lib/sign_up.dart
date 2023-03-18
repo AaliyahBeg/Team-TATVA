@@ -13,7 +13,7 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
-  final _formKey=GlobalKey<FormState>(); 
+  final _formKey=GlobalKey<FormState>(); //to save the form
   String email='';
   String password='';
   String fullname='';
@@ -34,12 +34,12 @@ class _SignupPageState extends State<SignupPage> {
                 Color.fromARGB(255, 151, 196, 184),
                 Color.fromARGB(240, 151, 196, 184),
                 Color.fromARGB(220, 151, 196, 184),
-                
-                
+                // Color.fromARGB(200, 151, 196, 184),
+                // Color.fromARGB(160, 151, 196, 184),
               ],
             ),
           ),
-          
+          //color: Colors.white,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -48,6 +48,10 @@ class _SignupPageState extends State<SignupPage> {
 
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  // Image.asset(
+                  //
+                  //   'images/birds.png',
+                  // ),
                   const SizedBox(height: 70,),
                   Image.asset(
 
@@ -55,7 +59,48 @@ class _SignupPageState extends State<SignupPage> {
                     width: 200,
                   ),
                   const SizedBox(height: 70,),
-                  
+                  // ClipRRect(
+                  //   borderRadius: BorderRadius.circular(30),
+                  //   child:
+                  //
+                  //   TextButton.icon(
+                  //     icon: Icon(Icons.person),
+                  //     style: TextButton.styleFrom(
+                  //       foregroundColor: Colors.white,
+                  //       backgroundColor: Colors.blueGrey,
+                  //
+                  //       padding: const EdgeInsets.all(16.0),
+                  //       textStyle: const TextStyle(fontSize: 15),
+                  //       minimumSize: Size(350, 50),
+                  //
+                  //       elevation: 200,
+                  //     ),
+                  //     onPressed: ()  => {Navigator.pushNamed(context, 'login')},
+                  //     label: const Text('Enter Email'),
+                  //   ),
+                  //
+                  // ),
+                  // const SizedBox(height: 15,),
+                  // ClipRRect(
+                  //   borderRadius: BorderRadius.circular(30),
+                  //   child:
+                  //
+                  //   TextButton.icon(
+                  //     icon: Icon(Icons.lock),
+                  //     style: TextButton.styleFrom(
+                  //       foregroundColor: Colors.white,
+                  //       backgroundColor: Colors.blueGrey,
+                  //
+                  //       padding: const EdgeInsets.all(16.0),
+                  //       textStyle: const TextStyle(fontSize: 15),
+                  //       minimumSize: Size(350, 50),
+                  //       elevation: 200,
+                  //     ),
+                  //     onPressed: ()  => {Navigator.pushNamed(context, 'login')},
+                  //     label: const Text('Password'),
+                  //   ),
+                  //
+                  // ),
                   Form(
                     key: _formKey,
                     child: Container(
@@ -63,7 +108,7 @@ class _SignupPageState extends State<SignupPage> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          
+                          // ======== Full Name ========
                           login
                               ? Container()
                               : TextFormField(
@@ -85,7 +130,7 @@ class _SignupPageState extends State<SignupPage> {
                             },
                           ),
 
-                          
+                          // ======== Email ========
                           TextFormField(
                             key: ValueKey('email'),
                             decoration: InputDecoration(
@@ -104,7 +149,7 @@ class _SignupPageState extends State<SignupPage> {
                               });
                             },
                           ),
-                          
+                          // ======== Password ========
                           TextFormField(
                             key: ValueKey('password'),
                             obscureText: true,
@@ -152,9 +197,9 @@ class _SignupPageState extends State<SignupPage> {
                                 login = !login;
                               });
                             },
-                            
-                            
-                            
+                            // child: Text(login
+                            //     ? "Don't have an account? Signup"
+                            //     : "Already have an account? Login")
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -188,7 +233,53 @@ class _SignupPageState extends State<SignupPage> {
                       ),
                     ),
                   ),
-                  
+                  // const SizedBox(height: 15,),
+                  // ClipRRect(
+                  //   borderRadius: BorderRadius.circular(4),
+                  //   child:
+                  //
+                  //   TextButton.icon(
+                  //     icon: Icon(Icons.login),
+                  //     style: TextButton.styleFrom(
+                  //       foregroundColor: Colors.white,
+                  //       backgroundColor: Colors.teal,
+                  //       side: BorderSide(color: Colors.white60,width:2),
+                  //       padding: const EdgeInsets.all(16.0),
+                  //       textStyle: const TextStyle(fontSize: 20),
+                  //       minimumSize: Size(150, 50),
+                  //       elevation: 200,
+                  //     ),
+                  //     onPressed: ()  => {Navigator.pushNamed(context, 'login')},
+                  //     label: const Text('Login'),
+                  //   ),
+                  //
+                  // ),
+                  // const SizedBox(height: 15,),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.center,
+                  //   children: [
+                  //     Text(
+                  //       "Don't have an account? ",
+                  //         style: TextStyle(
+                  //           fontSize: 17,
+                  //           fontFamily: 'Inria',
+                  //           fontWeight: FontWeight.normal,
+                  //           color: Colors.white70,
+                  //         )
+                  //     ),
+                  //     TextButton(
+                  //         onPressed: () =>{Navigator.pushNamed(context, 'signup')},
+                  //         child: Text('Sign up',
+                  //             style: TextStyle(
+                  //               fontSize: 14,
+                  //               fontFamily: 'Inria',
+                  //               fontWeight: FontWeight.normal,
+                  //               color: Colors.blueGrey,
+                  //             )),
+                  //     )
+                  //   ],
+                  // ),
+
 
                 ],
               ),
