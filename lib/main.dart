@@ -9,7 +9,7 @@ import 'Land_Pollution/Product/list_of_product.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'Land_Pollution/Product/sellProduct.dart';
 import 'package:hive/hive.dart';
-
+import 'package:environment_app/Land_Pollution/Payment/payment_screen.dart';
 import 'Land_Pollution/Wishlist/Wishlist_item.dart';
 import 'Land_Pollution/models/product_model.dart';
 
@@ -57,7 +57,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       // home: HomeScreen(),
-      home:  Home(),
+      home: Home(),
       routes: {
         // CoffeeDetailsPage. : (ctx) =>  CoffeeDetailsPage(),
         // "list_of_product": (context) =>  CoffeeCard(),
