@@ -16,16 +16,15 @@ class ProductAdapter extends TypeAdapter<Product> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Product(
-      id: fields[0] as String,
-      Name: fields[1] as String,
-      Category: fields[2] as String,
-      Size: fields[4] as String,
-      Price: fields[3] as double,
-      Desc: fields[5] as String,
-      Short_Desc: fields[6] as String,
-      ImageUrl: fields[7] as String,
-    );
+    return Product()
+      ..id = fields[0] as String
+      ..Name = fields[1] as String
+      ..Category = fields[2] as String
+      ..Price = fields[3] as String
+      ..Size = fields[4] as String
+      ..Desc = fields[5] as String
+      ..Short_Desc = fields[6] as String
+      ..ImageUrl = fields[7] as String;
   }
 
   @override

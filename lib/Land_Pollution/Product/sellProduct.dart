@@ -9,6 +9,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
 class DataSetInputScreen extends StatefulWidget {
+  const DataSetInputScreen({Key? key }) : super(key: key);
 
   @override
   _DataSetInputScreenState createState() => _DataSetInputScreenState();

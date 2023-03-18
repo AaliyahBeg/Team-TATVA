@@ -96,6 +96,11 @@ flutter:
      - images/timothy-dykes-yd4ubMUNTG0-unsplash-removebg-preview.png
      - images/tyler-nix-nwdtkFzDfPY-unsplash.jpg
      - images/water-drop.svg
+     - images/airPollution.png
+     - images/soilPollution.png
+     - images/waterPollution.png
+     - images/lightPollution.png
+     - images/noisePollution.png
 #    - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

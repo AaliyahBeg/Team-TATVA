@@ -1,4 +1,7 @@
-
+import 'package:environment_app/Land_Pollution/models/product_model.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:environment_app/Land_Pollution/Wishlist//boxes.dart';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -21,14 +24,41 @@ class CoffeeDetailsPage extends State<thumb> {
   // static const routeName = '/project_detail';
   final String id;
   CoffeeDetailsPage( {required this.id}) ;
-  bool isLiked = false;
-  int numberOfLike = 0;
+
+  bool isLiked = true;
+
+  // @override
+  // void dispose() {
+  //   Hive.close();
+  //
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
+
     print (this.id);
     final id = this.id;
+
+    final box = Boxes.getTransactions();
+    // box.add(production);
+    // box.put(this.id, production);
+    // final mybox = Boxes.getTransactions();
+    final myTransaction = box.get(id);
+    isLiked = (myTransaction != null);
+
+    print(isLiked);
+    
+    print(myTransaction?.key);
+    print (myTransaction);
+    print (box.keys);
+    print (box.values);
+
+    // mybox.values;
+    // mybox.keys;
+
     return Scaffold(
+
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Padding(
@@ -135,12 +165,57 @@ class CoffeeDetailsPage extends State<thumb> {
                                                 children: [
                                                   LikeButton(
                                                     size: 20,
-                                                    likeCount: numberOfLike,
-                                                    // onTap: (isLike) async{
-                                                    //   this.isLiked = !isLiked;
-                                                    //   // numberOfLike += this.isLiked ? 1 : -1;
-                                                    //   return !isLiked;
-                                                    // },
+                                                    isLiked: isLiked,
+                                                    onTap: (isLiked) async{
+                                                      if(isLiked == true){
+
+                                                        deleteTransaction();
+                                                        print('product deleted');
+                                                      }
+                                                      else {
+                                                        addTransaction(
+                                                          (d as Map<
+                                                              String,
+                                                              dynamic>)['Name']
+                                                              ?.toString() ??
+                                                              '',
+                                                          (d as Map<
+                                                              String,
+                                                              dynamic>)['Categories']
+                                                              ?.toString() ??
+                                                              '',
+                                                          (d as Map<
+                                                              String,
+                                                              dynamic>)['Image']
+                                                              ?.toString() ??
+                                                              '',
+                                                          (d as Map<
+                                                              String,
+                                                              dynamic>)['Price']
+                                                              ?.toString() ??
+                                                              '',
+                                                          (d as Map<
+                                                              String,
+                                                              dynamic>)['short_desc']
+                                                              ?.toString() ??
+                                                              '',
+                                                          (d as Map<
+                                                              String,
+                                                              dynamic>)['desc']
+                                                              ?.toString() ??
+                                                              '',
+                                                          (d as Map<
+                                                              String,
+                                                              dynamic>)['size']
+                                                              ?.toString() ??
+                                                              '',
+                                                        );
+
+                                                        print('data saved');
+                                                      }
+                                                      return !isLiked;
+                                                    },
+
                                                   ),
                                                   SizedBox(
                                                     height: 4,
@@ -387,4 +462,56 @@ class CoffeeDetailsPage extends State<thumb> {
          child: child,
      ),
      );
+
+  Future addTransaction(String name,String categorie, String imagrUrl,String size ,String desc ,String short_desc, String price) async {
+    final production = Product()
+      ..id = this.id
+      ..Name = name
+      ..Category = categorie
+      ..Price = price
+      ..Desc = desc
+      ..ImageUrl = imagrUrl
+      ..Short_Desc = short_desc
+      ..Size =  size;
+      // ..createdDate = DateTime.now()
+      // ..amount = amount
+      // ..isExpense = isExpense;
+
+    final box = Boxes.getTransactions();
+    // box.add(production);
+    box.put(this.id, production);
+    // final mybox = Boxes.getTransactions();
+    // final myTransaction = mybox.get('key');
+    // mybox.values;
+    // mybox.keys;
+  }
+
+  void editTransaction(
+      Product production,
+      String name,String categorie, String imagrUrl,String size,String desc,String short_desc, String price
+      ) {
+    production.id = this.id;
+    production.Name = name;
+    production.Price = price ;
+    production.Category = categorie;
+    production.ImageUrl = imagrUrl;
+    production.Desc = desc;
+    production.Short_Desc = short_desc;
+    production.Size = size;
+
+    // final box = Boxes.getTransactions();
+    // box.put(transaction.key, transaction);
+
+    production.save();
+  }
+
+  void deleteTransaction() {
+    final box = Boxes.getTransactions();
+    box.delete(this.id);
+
+    // print(transaction.key);
+
+    // transaction.delete();
+    //setState(() => transactions.remove(transaction));
+  }
 }

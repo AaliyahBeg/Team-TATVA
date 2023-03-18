@@ -18,7 +18,7 @@ class CoffeeCard extends StatelessWidget {
   Widget build(BuildContext context) {
 
     print("Categorie is " + this.Categorie);
-    return  Flexible(
+    return  Container( //Flexible
 
         child: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance.collection('product').where("Categorie" ,isEqualTo: Categorie).snapshots(),
