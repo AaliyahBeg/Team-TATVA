@@ -4,14 +4,14 @@ import 'package:environment_app/widgets/general_button.dart';
 import 'package:flutter/material.dart';
 
 class PrimaryAppBar extends StatefulWidget {
-  const PrimaryAppBar({super.key});
-  
+  String page;
+  PrimaryAppBar({super.key, required this.page});
+
   @override
   State<PrimaryAppBar> createState() => _PrimaryAppBarState();
 }
 
 class _PrimaryAppBarState extends State<PrimaryAppBar> {
-
   @override
   Widget build(BuildContext context) {
     fillAccountList(context);
@@ -52,8 +52,8 @@ class _PrimaryAppBarState extends State<PrimaryAppBar> {
                   });
                   // getAPI();
                 },
-                itemBuilder: (BuildContext context) => accountDropdown.map<PopupMenuItem<GeneralButton>>(
-                    (GeneralButton value) {
+                itemBuilder: (BuildContext context) => accountDropdown
+                    .map<PopupMenuItem<GeneralButton>>((GeneralButton value) {
                   return PopupMenuItem<GeneralButton>(
                     value: value,
                     child: value,
@@ -65,7 +65,7 @@ class _PrimaryAppBarState extends State<PrimaryAppBar> {
           SizedBox(width: 15),
         ],
         bottom: PreferredSize(
-          child: SecondaryAppbar(),
+          child: SecondaryAppbar(page: widget.page,),
           preferredSize: const Size.fromHeight(48.0),
         ));
   }

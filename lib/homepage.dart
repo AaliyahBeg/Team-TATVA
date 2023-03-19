@@ -25,7 +25,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: PreferredSize(
-        child: PrimaryAppBar(),
+        child: PrimaryAppBar(page: 'homepage',),
         preferredSize: const Size.fromHeight(110.0),
       ),
       body: SingleChildScrollView(

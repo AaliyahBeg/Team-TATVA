@@ -104,7 +104,7 @@ class _aqiStatusState extends State<aqiStatus> {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(110.0),
-        child: PrimaryAppBar(),
+        child: PrimaryAppBar(page: 'homepage',),
       ),
       body: ListView(
         children: [

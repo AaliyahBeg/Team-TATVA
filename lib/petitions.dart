@@ -16,7 +16,7 @@ class Petitions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const PreferredSize(child: PrimaryAppBar(), preferredSize: const Size.fromHeight(110.0),),
+      appBar: PreferredSize(child: PrimaryAppBar(page: 'petitions',), preferredSize: const Size.fromHeight(110.0),),
       body: Padding(
           padding: EdgeInsets.symmetric(vertical: 25),
           child: Column(
