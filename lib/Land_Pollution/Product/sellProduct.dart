@@ -34,7 +34,7 @@ class _DataSetInputScreenState extends State<DataSetInputScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add DataSet'),
+        title: Text('Sell Your Own'),
         backgroundColor: Colors.green,
       ),
       body: Padding(
