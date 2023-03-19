@@ -77,12 +77,12 @@ class _AddpostState extends State<Addpost> {
             label: '',
             backgroundColor: Colors.black,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search,
-                color: _page == 1 ? Colors.green : Colors.black),
-            label: '',
-            backgroundColor: Colors.black,
-          ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.search,
+          //       color: _page == 1 ? Colors.green : Colors.black),
+          //   label: '',
+          //   backgroundColor: Colors.black,
+          // ),
           BottomNavigationBarItem(
             icon: Icon(Icons.add_circle,
                 color: _page == 2 ? Colors.green : Colors.black),
@@ -95,12 +95,12 @@ class _AddpostState extends State<Addpost> {
             label: '',
             backgroundColor: Colors.black,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person,
-                color: _page == 4 ? Colors.green : Colors.black),
-            label: '',
-            backgroundColor: Colors.black,
-          ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.person,
+          //       color: _page == 4 ? Colors.green : Colors.black),
+          //   label: '',
+          //   backgroundColor: Colors.black,
+          // ),
         ],
 
          onTap:navigationTapped,

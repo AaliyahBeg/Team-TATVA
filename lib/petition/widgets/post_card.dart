@@ -91,27 +91,27 @@ class PostCard extends StatelessWidget {
                 IconButton(
                   onPressed: () {},
                   icon: const Icon(
-                    Icons.favorite,
-                    color: Colors.red,
+                    Icons.add_circle_rounded,
+                    color: Colors.green,
                   ),
                 ),
                 IconButton(
                   onPressed: () {},
                   icon: const Icon(
-                    Icons.comment_outlined,
+                    Icons.chat_bubble_outline,
                   ),
                 ),
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.send,
-                  ),
-                ),
+                // IconButton(
+                //   onPressed: () {},
+                //   icon: const Icon(
+                //     Icons.report,
+                //   ),
+                // ),
                 Expanded(
                   child: Align(
                     alignment: Alignment.bottomRight,
                     child: IconButton(
-                      icon: const Icon(Icons.bookmark_border),
+                      icon: const Icon(Icons.archive_rounded),
                       onPressed: () {},
                     ),
                   ),
@@ -262,27 +262,27 @@ class PostCard extends StatelessWidget {
                 IconButton(
                   onPressed: () {},
                   icon: const Icon(
-                    Icons.favorite,
-                    color: Colors.red,
+                    Icons.add_circle_rounded,
+                    color: Colors.green,
                   ),
                 ),
                 IconButton(
                   onPressed: () {},
                   icon: const Icon(
-                    Icons.comment_outlined,
+                    Icons.chat_bubble_outline,
                   ),
                 ),
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.send,
-                  ),
-                ),
+                // IconButton(
+                //   onPressed: () {},
+                //   icon: const Icon(
+                //     Icons.save_alt_rounded,
+                //   ),
+                // ),
                 Expanded(
                   child: Align(
                     alignment: Alignment.bottomRight,
                     child: IconButton(
-                      icon: const Icon(Icons.bookmark_border),
+                      icon: const Icon(Icons.archive_rounded),
                       onPressed: () {},
                     ),
                   ),
