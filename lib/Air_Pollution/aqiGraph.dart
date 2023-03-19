@@ -6,6 +6,7 @@ import 'package:environment_app/Air_Pollution/data/historicalAQI/geo_coder_model
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:flutter/material.dart';
 import 'package:unixtime/unixtime.dart';
+import '../components/primary_appbar.dart';
 import 'components/create_dropdown_list.dart';
 import 'components/string_to_unix.dart';
 import 'data/confidential.dart';
@@ -176,6 +177,10 @@ class _aqiGraphState extends State<aqiGraph> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(110.0),
+        child: PrimaryAppBar(page: 'homepage',),
+      ),
       body: ListView(
         children: [
           Container(

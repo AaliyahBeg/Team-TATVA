@@ -28,15 +28,6 @@ class Page3 extends StatelessWidget {
   }
 }
 
-class Page4 extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Text('Content of page 4'),
-    );
-  }
-}
-
 class Page5 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

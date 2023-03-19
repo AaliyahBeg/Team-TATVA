@@ -63,13 +63,14 @@ class _AirFirstPageState extends State<AirFirstPage>
       duration: widget.duration,
       vsync: this,
     );
-    animation_ = Tween<double>(begin: widget.fromValue, end: widget.avgAQI.toDouble())
-        .animate(controller_!)
-      ..addListener(() {
-        setState(() {
-          number_ = animation_?.value.toStringAsFixed(0);
-        });
-      });
+    animation_ =
+        Tween<double>(begin: widget.fromValue, end: widget.avgAQI.toDouble())
+            .animate(controller_!)
+          ..addListener(() {
+            setState(() {
+              number_ = animation_?.value.toStringAsFixed(0);
+            });
+          });
     controller_?.forward();
     aqiColor_ = getAQIUpdate(widget.avgAQI);
   }
@@ -112,23 +113,37 @@ class _AirFirstPageState extends State<AirFirstPage>
       alignment: WrapAlignment.spaceAround,
       children: <Widget>[
         getDetailsRowItem(
-            color: aqiColor_, num: widget.avgpm25.toInt().toString(), label: "PM 2.5"),
+            color: aqiColor_,
+            num: widget.avgpm25.toInt().toString(),
+            label: "PM 2.5"),
         getDetailsRowItem(
-            color: Colors.green,
+            color: Color.fromARGB(0, 76, 175, 79),
             num: widget.avgpm10.toInt().toString(),
             label: "PM 10"),
         getDetailsRowItem(
-            color: Colors.green, num: widget.avgo3.toInt().toString(), label: "O3"),
+            color: Color.fromARGB(0, 76, 175, 79),
+            num: widget.avgo3.toInt().toString(),
+            label: "O3"),
         getDetailsRowItem(
-            color: Colors.green, num: widget.avgno.toInt().toString(), label: "NO"),
+            color: Color.fromARGB(0, 76, 175, 79),
+            num: widget.avgno.toInt().toString(),
+            label: "NO"),
         getDetailsRowItem(
-            color: Colors.green, num: widget.avgno2.toInt().toString(), label: "NO2"),
+            color: Color.fromARGB(0, 76, 175, 79),
+            num: widget.avgno2.toInt().toString(),
+            label: "NO2"),
         getDetailsRowItem(
-            color: Colors.green, num: widget.avgso2.toInt().toString(), label: "SO2"),
+            color: Color.fromARGB(0, 76, 175, 79),
+            num: widget.avgso2.toInt().toString(),
+            label: "SO2"),
         getDetailsRowItem(
-            color: Colors.green, num: widget.avgco.toInt().toString(), label: "CO"),
+            color: Color.fromARGB(0, 76, 175, 79),
+            num: widget.avgco.toInt().toString(),
+            label: "CO"),
         getDetailsRowItem(
-            color: Colors.green, num: widget.avgnh3.toInt().toString(), label: "NH3"),
+            color: Color.fromARGB(0, 76, 175, 79),
+            num: widget.avgnh3.toInt().toString(),
+            label: "NH3"),
       ],
     );
   }
@@ -160,13 +175,14 @@ class _AirFirstPageState extends State<AirFirstPage>
           Container(
             padding: EdgeInsets.all(20),
             decoration: BoxDecoration(
+              border: Border.all(width: 1),
               borderRadius: BorderRadius.circular(50),
               color: Color.fromARGB(255, 237, 226, 226),
             ),
             child: Text(
               num,
               style: TextStyle(
-                fontFamily: 'Inria',
+                  fontFamily: 'Inria',
                   color: Colors.black54,
                   fontSize: 12.0,
                   fontWeight: FontWeight.bold),
@@ -216,20 +232,24 @@ class _AirFirstPageState extends State<AirFirstPage>
                 children: <Widget>[
                   Text(
                     '$number_',
-                    style: GoogleFonts.saira(
-                        fontSize: 20.0, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Inria'),
                   ),
                   Text(
                     'AQI',
-                    style: GoogleFonts.saira(fontSize: 12.0),
+                    style: TextStyle(fontSize: 12.0, fontFamily: 'Inria'),
                   )
                 ],
               ),
               Text(
                 aqiStatus_!,
                 textAlign: TextAlign.center,
-                style: GoogleFonts.saira(
-                    fontSize: 14.0, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    fontSize: 14.0,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Inria'),
               ),
             ],
           ),
@@ -242,7 +262,7 @@ class _AirFirstPageState extends State<AirFirstPage>
     Color color = Colors.white;
 
     if (aqi < 50) {
-      color = Colors.green;
+      color = Color.fromARGB(255, 138, 227, 141);
       aqiStatus_ = "Good";
       aqiImage_ = aqi_1;
     }
@@ -254,24 +274,24 @@ class _AirFirstPageState extends State<AirFirstPage>
     }
 
     if (aqi >= 100 && aqi < 150) {
-      color = Colors.deepOrangeAccent;
+      color = Color.fromARGB(255, 253, 149, 237);
       aqiStatus_ = "Unhealthy\nfor\nSensitive Groups";
       aqiImage_ = aqi_3;
     }
 
     if (aqi >= 150 && aqi < 200) {
-      color = Colors.red;
+      color = Color.fromARGB(255, 244, 36, 36);
       aqiStatus_ = "Unhealthy";
       aqiImage_ = aqi_4;
     }
 
     if (aqi >= 200 && aqi < 300) {
-      color = Colors.deepPurpleAccent;
+      color = Color.fromARGB(255, 99, 46, 247);
       aqiStatus_ = "Very Unhealthy";
       aqiImage_ = aqi_5;
     }
     if (aqi >= 300) {
-      color = Colors.brown;
+      color = Color.fromARGB(255, 51, 22, 11);
       aqiStatus_ = "Hazardous";
       aqiImage_ = aqi_6;
     }
@@ -279,3 +299,4 @@ class _AirFirstPageState extends State<AirFirstPage>
     return color;
   }
 }
+
