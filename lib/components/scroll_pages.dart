@@ -1,10 +1,14 @@
+import 'package:environment_app/Air_Pollution/air_pollution_main.dart';
 import 'package:flutter/material.dart';
-import 'package:environment_app/Land_Pollution/Product/Products.dart';
+
+import '../Air_Pollution/aqiGraph.dart';
 
 class Page1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MainScreen();
+    return Container(
+      child: Text('Content of page 1'),
+    );
   }
 }
 
@@ -19,22 +23,8 @@ class Page2 extends StatelessWidget {
 
 class Page3 extends StatelessWidget {
   @override
-  // Widget build(BuildContext context) {
-  //   return historicalAirQuality();
-  // }
   Widget build(BuildContext context) {
-    return Container(
-      child: Text('Content of page 3'),
-    );
-  }
-}
-
-class Page4 extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Text('Content of page 4'),
-    );
+    return AirPollutionMain();
   }
 }
 

@@ -1,13 +1,21 @@
+import 'package:environment_app/components/container_list.dart';
 import 'package:environment_app/components/secondary_appbar.dart';
+import 'package:environment_app/widgets/general_button.dart';
 import 'package:flutter/material.dart';
 
-class PrimaryAppBar extends StatelessWidget {
-  const PrimaryAppBar({
-    Key? key,
-  }) : super(key: key);
+class PrimaryAppBar extends StatefulWidget {
+  String page;
+  PrimaryAppBar({super.key, required this.page});
 
   @override
+  State<PrimaryAppBar> createState() => _PrimaryAppBarState();
+}
+
+class _PrimaryAppBarState extends State<PrimaryAppBar> {
+  @override
   Widget build(BuildContext context) {
+    fillAccountList(context);
+    GeneralButton dropdownValue = accountDropdown[0];
     return AppBar(
         elevation: 0.0,
         backgroundColor: Colors.transparent,
@@ -29,10 +37,35 @@ class PrimaryAppBar extends StatelessWidget {
             color: Colors.black,
             size: 30,
           ),
+          const SizedBox(width: 15),
+          DropdownButtonHideUnderline(
+            child: ButtonTheme(
+              child: PopupMenuButton<GeneralButton>(
+                icon: const Icon(
+                  Icons.account_circle,
+                  size: 30,
+                  color: Colors.black,
+                ),
+                onSelected: (GeneralButton? value) {
+                  setState(() {
+                    dropdownValue = value!;
+                  });
+                  // getAPI();
+                },
+                itemBuilder: (BuildContext context) => accountDropdown
+                    .map<PopupMenuItem<GeneralButton>>((GeneralButton value) {
+                  return PopupMenuItem<GeneralButton>(
+                    value: value,
+                    child: value,
+                  );
+                }).toList(),
+              ),
+            ),
+          ),
           SizedBox(width: 15),
         ],
         bottom: PreferredSize(
-          child: SecondaryAppbar(),
+          child: SecondaryAppbar(page: widget.page,),
           preferredSize: const Size.fromHeight(48.0),
         ));
   }

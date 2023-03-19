@@ -12,34 +12,39 @@ class CardItem {
 }
 
 List<CardItem> items = [
-  CardItem(
-    assetImage: 'images/soilPollution.png',
-    title: "LAND POLLUTION",
-    desc: "",
-  ),
-  CardItem(
-    assetImage: 'images/waterPollution.png',
-    title: "WATER POLLUTION",
-    desc: "",
-  ),
-  CardItem(
-    assetImage: 'images/airPollution.png',
-    title: "AIR POLLUTION",
-    desc: "",
-  ),
-  CardItem(
-    assetImage: 'images/noisePollution.png',
-    title: "NOISE POLLUTION",
-    desc: "",
-  ),
-  CardItem(
-    assetImage: 'images/lightPollution.png',
-    title: "LIGHT POLLUTION",
-    desc: "",
-  ),
-];
+    CardItem(
+      assetImage:
+          'images/soilPollution.png',
+      title: "LAND POLLUTION",
+      desc: "",
+    ),
+    CardItem(
+      assetImage:
+          'images/waterPollution.png',
+      title: "WATER POLLUTION",
+      desc: "",
+    ),
+    CardItem(
+      assetImage:
+          'images/airPollution.png',
+      title: "AIR POLLUTION",
+      desc: "",
+    ),
+    CardItem(
+      assetImage:
+          'images/noisePollution.png',
+      title: "NOISE POLLUTION",
+      desc: "",
+    ),
+    CardItem(
+      assetImage:
+          'images/lightPollution.png',
+      title: "LIGHT POLLUTION",
+      desc: "",
+    ),
+  ];
 
-Widget buildCard({
+  Widget buildCard({
   required CardItem item,
 }) =>
     Container(
@@ -48,7 +53,7 @@ Widget buildCard({
         children: [
           Expanded(
             child: AspectRatio(
-              aspectRatio: 4 / 3,
+              aspectRatio: 4/3,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
                 child: Image.asset(
@@ -102,14 +107,14 @@ Widget getWidget(String title) {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-// SizedBox(height: 20,),
-// Text(
-//   "AQI GRAPHS",
-//   style: TextStyle(
-//     fontWeight: FontWeight.w400,
-//     fontSize: 20,
-//   ),
-// ),
+          // SizedBox(height: 20,),
+          // Text(
+          //   "AQI GRAPHS",
+          //   style: TextStyle(
+          //     fontWeight: FontWeight.w400,
+          //     fontSize: 20,
+          //   ),
+          // ),
         ],
       ),
     );

@@ -3,10 +3,15 @@ import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:scroll_snap_list/scroll_snap_list.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:environment_app/components/scroll_pages.dart';
 
-import 'components/card_item.dart';
+import 'components/card_items.dart';
 import 'components/primary_appbar.dart';
-import 'components/scroll_page.dart';
+import 'Noise_Pollution/main_page.dart';
+import 'components/card_items.dart';
+import 'components/primary_appbar.dart';
+import 'components/scroll_pages.dart';
+import 'login.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -19,14 +24,15 @@ class _HomeState extends State<Home> {
   int _currentIndex = 0;
   final CarouselController _controller = CarouselController();
 
-
   @override
   Widget build(BuildContext context) {
-    // Size size = MediaQuery.of(context).size;
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
-      resizeToAvoidBottomInset : false,
-      appBar: const PreferredSize(
-        child: PrimaryAppBar(),
+      resizeToAvoidBottomInset: false,
+      appBar: PreferredSize(
+        child: PrimaryAppBar(
+          page: 'homepage',
+        ),
         preferredSize: const Size.fromHeight(110.0),
       ),
       body: SingleChildScrollView(
@@ -64,6 +70,19 @@ class _HomeState extends State<Home> {
                     initialIndex: 0,
                     onReachEnd: () => {},
                   ),
+                  // CarouselSlider(
+                  //     items:
+                  //         items.map((item) => buildCard(item: item)).toList(),
+                  //     options: CarouselOptions(
+                  //       aspectRatio: 16 / 9,
+                  //       viewportFraction: 0.5,
+                  //       onPageChanged: (index, reason) {
+                  //         setState(() {
+                  //           _currentIndex = index;
+                  //         });
+                  //       },
+                  //       enlargeCenterPage: true,
+                  //     )),
                 ),
               ],
             ),
@@ -78,15 +97,15 @@ class _HomeState extends State<Home> {
 
   Widget _getPage(int index) {
     switch (index) {
-      case 0:
+      case 0: //Land_Pollution
         return Page1();
-      case 1:
+      case 1: //Water_Pollution
         return Page2();
-      case 2:
+      case 2: //Air Pollution
         return Page3();
-      case 3:
+      case 3: //Noise_Pollution
         return Page4();
-      case 4:
+      case 4: //Light_Pollution
         return Page5();
       default:
         return Container();
