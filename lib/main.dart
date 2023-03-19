@@ -1,4 +1,10 @@
+import 'package:environment_app/Air_Pollution/aqi.dart';
+import 'package:environment_app/Air_Pollution/aqiGraph.dart';
+import 'package:environment_app/Connect/connect.dart';
 import 'package:environment_app/petitions.dart';
+import 'package:environment_app/sign_up.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:environment_app/homepage.dart';
 import 'package:environment_app/Welcome_Screen.dart';
@@ -9,6 +15,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart'; // state management
 import 'package:google_sign_in/google_sign_in.dart';
+
+import 'components/profile.dart';
 Future main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -18,12 +26,12 @@ Future main() async{
   await Permission.activityRecognition.request();
   await Permission.location.request();
   await Permission.sms.request();
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
+  MyApp({Key? key}) : super(key: key);
+  String uid = '';
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -43,19 +51,22 @@ class MyApp extends StatelessWidget {
           }
         },
       ),
-      theme: ThemeData(
-        primaryColor:Colors.grey,
-        backgroundColor: Colors.white,
-      ),
       routes: {
         'petitions': (context) => const Petitions(),
         'homepage': (context) => const Home(),
         'login': (context) => const LoginPage(),
         'signup': (context) => const SignupPage(),
+        'aqiGraph': (context) => const aqiGraph(),
+        'connect': (context) => const Connect(),
+        'login': (context) => const LoginPage(),
+        'signup': (context) => const SignupPage(),
+        'aqi': (context) => const aqiStatus(),
+        'profile': (context) => Profile(uid: uid, collection: 'users'),
       },
     );
   }
 }
+
 
 // class GoogleSignInProvider {
 //   final GoogleSignIn _googleSignIn = GoogleSignIn(
