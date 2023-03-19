@@ -18,10 +18,13 @@ class Petitions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      
+      
       appBar: AppBar(
+        
           elevation: 0.0,
         backgroundColor: Colors.transparent,
-        title: Text('NATURALEZA',
+        title: Text('TATV',
             style: TextStyle(
               fontSize: 22,
               fontFamily: 'Inter',
@@ -35,8 +38,10 @@ class Petitions extends StatelessWidget {
           SizedBox(width: 15),
         ]
       ),
+      
       body: Padding(
           padding: EdgeInsets.symmetric(vertical: 25),
+            child: SingleChildScrollView(
           child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
@@ -106,7 +111,7 @@ class Petitions extends StatelessWidget {
             alignment: Alignment.centerLeft,
             margin: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
             child: Text(
-              'ONGOING PETITIONS',
+              'RAISE PETITIONS',
               style: TextStyle(
                 fontFamily: 'Inria',
                 fontSize: 22,
@@ -161,20 +166,28 @@ class Petitions extends StatelessWidget {
                 )
               ),
           ),
-
+ SizedBox(height: 25),
+           CircleAvatar(
+                    radius: 76,
+                    backgroundImage: NetworkImage(
+                        'https://images.unsplash.com/photo-1534294228306-bd54eb9a7ba8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80'),
+                  ),
+   SizedBox(height: 5),
           Container(
-            alignment: Alignment.centerLeft,
+            alignment: Alignment.center,
             margin: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
             child: Text(
-              'SOME SUCCESS STORIES',
+              'SOME ONGOING  STORIES',
+            textAlign: TextAlign.center,
               style: TextStyle(
                 fontFamily: 'Inria',
-                fontSize: 22,
+                fontSize: 28,
+              
               ),
             ),
           ),
 
-           SizedBox(height: 225),
+           SizedBox(height: 15),
 
              TextButton(
               onPressed: () {
@@ -203,7 +216,8 @@ class Petitions extends StatelessWidget {
           ),
         ]
       )
-      )
+      ),
+      ),
     );
   }
 }
