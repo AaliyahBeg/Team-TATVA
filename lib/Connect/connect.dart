@@ -1,13 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:environment_app/Connect/components/cards.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '../components/organization_profile.dart';
-import '../components/primary_appbar.dart';
 import '../components/profile.dart';
-import 'dbResources/firestore_methods.dart';
+import '../components/primary_appbar.dart';
 
 class Connect extends StatefulWidget {
   const Connect({super.key});
@@ -21,7 +18,9 @@ class _ConnectState extends State<Connect> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: PreferredSize(
-          child: PrimaryAppBar(page: 'connect',),
+          child: PrimaryAppBar(
+            page: 'connect',
+          ),
           preferredSize: const Size.fromHeight(110.0),
         ),
         body: Padding(
@@ -66,17 +65,11 @@ class _ConnectState extends State<Connect> {
                                     onPressed: () {
                                       print(item['uid']);
                                       Navigator.of(context).pushReplacement(
-                                        MaterialPageRoute(
-                                          builder: (context) => OrganizationProfile(
+                                        MaterialPageRoute(builder: (context) {
+                                          return Profile(
                                               uid: item['uid'],
-                                              collection: 'organizations',
-                                              imageUrl: item['photourl'],
-                                              followers: item['followers'],
-                                              following: item['following'],
-                                              name: item['name'],
-                                              mission: item['mission']
-                                          )
-                                        ),
+                                              collection: 'organizations');
+                                        }),
                                       );
                                     },
                                   ))
@@ -128,17 +121,11 @@ class _ConnectState extends State<Connect> {
                                     color: Color.fromARGB(255, 221, 223, 221),
                                     onPressed: () {
                                       Navigator.of(context).pushReplacement(
-                                        MaterialPageRoute(
-                                          builder: (context) => OrganizationProfile(
-                                              uid: item['uid'],
-                                              collection: 'organizations',
-                                              imageUrl: item['photourl'],
-                                              followers: item['followers'],
-                                              following: item['following'],
-                                              name: item['name'],
-                                              mission: item['mission']
-                                          ))
-                                      );
+                                          MaterialPageRoute(
+                                              builder: (context) => Profile(
+                                                  uid: item['uid'],
+                                                  collection:
+                                                      'organizations')));
                                     },
                                   ))
                               .toList(),
@@ -192,16 +179,9 @@ class _ConnectState extends State<Connect> {
                                     onPressed: () {
                                       Navigator.of(context).pushReplacement(
                                         MaterialPageRoute(
-                                          builder: (context) => OrganizationProfile(
-                                              uid: item['uid'],
-                                              collection: 'organizations',
-                                              imageUrl: item['photourl'],
-                                              followers: item['followers'],
-                                              following: item['following'],
-                                              name: item['name'],
-                                              mission: item['mission']
-                                          )
-                                        ),
+                                            builder: (context) => Profile(
+                                                uid: item['uid'],
+                                                collection: 'organizations')),
                                       );
                                     },
                                   ))

@@ -12,4 +12,16 @@ class FirestoreServices {
       'photourl': ''
     });
   }
+
+  static saveOrganization(String name, email, uid) async {
+    await FirebaseFirestore.instance.collection('organizations').doc(uid).set({
+      'uid': uid,
+      'email': email,
+      'name': name,
+      'mission': '',
+      'followers': 0,
+      'following': 0,
+      'photourl': ''
+    });
+  }
 }

@@ -1,8 +1,8 @@
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:environment_app/Connect/dbResources/models/post.dart';
-import 'package:environment_app/Connect/dbResources/storage_methods.dart';
+import 'package:environment_app/Connect/components/models/post.dart';
+import 'package:environment_app/services/storage_methods.dart';
 import 'package:uuid/uuid.dart';
 
 class FireStoreMethods {
@@ -20,7 +20,7 @@ class FireStoreMethods {
         description: description,
         uid: uid,
         username: username,
-        likes: [],
+        supports: [],
         postId: postId,
         datePublished: DateTime.now(),
         postUrl: photoUrl,
@@ -34,18 +34,18 @@ class FireStoreMethods {
     return res;
   }
 
-  Future<String> likePost(String postId, String uid, List likes) async {
+  Future<String> supportPost(String postId, String uid, List supports) async {
     String res = "Some error occurred";
     try {
-      if (likes.contains(uid)) {
-        // if the likes list contains the user uid, we need to remove it
+      if (supports.contains(uid)) {
+        // if the supports list contains the user uid, we need to remove it
         _firestore.collection('posts').doc(postId).update({
-          'likes': FieldValue.arrayRemove([uid])
+          'supports': FieldValue.arrayRemove([uid])
         });
       } else {
-        // else we need to add uid to the likes array
+        // else we need to add uid to the supports array
         _firestore.collection('posts').doc(postId).update({
-          'likes': FieldValue.arrayUnion([uid])
+          'supports': FieldValue.arrayUnion([uid])
         });
       }
       res = 'success';
@@ -61,7 +61,7 @@ class FireStoreMethods {
     String res = "Some error occurred";
     try {
       if (text.isNotEmpty) {
-        // if the likes list contains the user uid, we need to remove it
+        // if the supports list contains the user uid, we need to remove it
         String commentId = const Uuid().v1();
         _firestore
             .collection('posts')

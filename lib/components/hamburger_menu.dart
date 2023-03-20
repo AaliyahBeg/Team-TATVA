@@ -2,7 +2,7 @@ import 'package:environment_app/services/authFunctions.dart';
 import 'package:environment_app/widgets/general_button.dart';
 import 'package:flutter/material.dart';
 
-import '../Connect/dbResources/auth_methods.dart';
+import '../services/authFunctions.dart';
 import '../login.dart';
 
 List<GeneralButton> accountDropdown = [];
@@ -15,10 +15,15 @@ void fillAccountList(BuildContext context) {
             const Icon(
               Icons.person,
               color: Colors.black,
-              size: 30,
+              size: 20,
             ),
-            const SizedBox(height: 5),
-            const Text("My Profile")
+            const SizedBox(width: 5),
+            const Text("My Profile",
+                style: TextStyle(
+                  color: Colors.black,
+                  fontFamily: 'Inter',
+                  fontSize: 10,
+                ))
           ],
         )),
     GeneralButton(
@@ -28,10 +33,15 @@ void fillAccountList(BuildContext context) {
             const Icon(
               Icons.settings,
               color: Colors.black,
-              size: 30,
+              size: 20,
             ),
-            const SizedBox(height: 5),
-            const Text("Settings")
+            const SizedBox(width: 5),
+            const Text("Settings",
+                style: TextStyle(
+                  color: Colors.black,
+                  fontFamily: 'Inter',
+                  fontSize: 10,
+                ))
           ],
         )),
     GeneralButton(
@@ -50,10 +60,15 @@ void fillAccountList(BuildContext context) {
             const Icon(
               Icons.logout,
               color: Colors.black,
-              size: 30,
+              size: 20,
             ),
-            const SizedBox(height: 5),
-            const Text("Logout")
+            const SizedBox(width: 5),
+            const Text("Logout",
+                style: TextStyle(
+                  color: Colors.black,
+                  fontFamily: 'Inter',
+                  fontSize: 10,
+                ))
           ],
         )),
   ];

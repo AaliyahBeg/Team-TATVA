@@ -4,19 +4,21 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:environment_app/components/primary_appbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:environment_app/Connect/dbResources/firestore_methods.dart';
+import 'package:environment_app/services/firestore_methods.dart';
 import 'package:environment_app/login.dart';
 import 'package:environment_app/utils/utils.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../Connect/dbResources/storage_methods.dart';
+import '../services/storage_methods.dart';
 import '../services/authFunctions.dart';
 import '../widgets/general_button.dart';
 
 class Profile extends StatefulWidget {
   final String uid;
   final String collection;
-  const Profile({Key? key, required this.uid, required this.collection})
+  Function? callback;
+  Profile(
+      {Key? key, required this.uid, required this.collection, this.callback})
       : super(key: key);
 
   @override
@@ -24,6 +26,7 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  String? desc;
   var userData = {};
   int postLen = 0;
   int followers = 0;
@@ -33,6 +36,7 @@ class _ProfileState extends State<Profile> {
   String imageUrl =
       'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png';
   bool imageUploaded = false;
+  bool enabledField = false;
   late Uint8List file;
   @override
   void initState() {
@@ -45,23 +49,28 @@ class _ProfileState extends State<Profile> {
       isLoading = true;
     });
     try {
+      print('Userid: ${widget.uid}');
+      print('Collection: ${widget.collection}');
       var userSnap = await FirebaseFirestore.instance
           .collection(widget.collection)
           .doc(widget.uid)
           .get();
 
       // get post lENGTH
-      // var postSnap = await FirebaseFirestore.instance
-      //     .collection('posts')
-      //     .where('uid', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
-      //     .get();
+      var postSnap = await FirebaseFirestore.instance
+          .collection('posts')
+          .where('uid', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+          .get();
 
-      // postLen = postSnap.docs.length;
+      postLen = postSnap.docs.length;
       print("Error in next line");
       userData = userSnap.data()!;
       print("Userdata for uid=${widget.uid} = ${userData}");
       followers = userSnap.data()!['followers'];
       following = userSnap.data()!['following'];
+      desc = widget.collection == "users"
+          ? userSnap.data()!['bio']
+          : userSnap.data()!['mission'];
       // isFollowing = userSnap
       //     .data()!['followers']
       //     .contains(FirebaseAuth.instance.currentUser!.uid);
@@ -72,7 +81,7 @@ class _ProfileState extends State<Profile> {
     } catch (e) {
       showSnackBar(
         context,
-        "The Error in Profile is" + e.toString(),
+        "The Error in Profile is: " + e.toString(),
       );
     }
     if (userData != null) {
@@ -102,14 +111,18 @@ class _ProfileState extends State<Profile> {
         ? Scaffold(
             appBar: PreferredSize(
               preferredSize: Size.fromHeight(110.0),
-              child: PrimaryAppBar(page: 'homepage',),
+              child: PrimaryAppBar(
+                page: 'homepage',
+              ),
             ),
             body: Center(child: CircularProgressIndicator()),
           )
         : Scaffold(
             appBar: PreferredSize(
               preferredSize: Size.fromHeight(110.0),
-              child: PrimaryAppBar(page: 'homepage',),
+              child: PrimaryAppBar(
+                page: 'homepage',
+              ),
             ),
             body: ListView(
               children: [
@@ -124,15 +137,19 @@ class _ProfileState extends State<Profile> {
                             backgroundImage: NetworkImage(imageUrl),
                             radius: 40,
                           ),
-                          GeneralButton(
-                              onPressed: selectImage,
-                              child: Text(
-                                  imageUploaded ? 'Edit Image' : 'Upload Image',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontFamily: 'Inter',
-                                    fontSize: 10,
-                                  )))
+                          widget.uid == FirebaseAuth.instance.currentUser!.uid
+                              ? GeneralButton(
+                                  onPressed: selectImage,
+                                  child: Text(
+                                      imageUploaded
+                                          ? 'Edit Image'
+                                          : 'Upload Image',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontFamily: 'Inter',
+                                        fontSize: 10,
+                                      )))
+                              : Container(),
                         ],
                       ),
                       SizedBox(height: 15),
@@ -232,19 +249,62 @@ class _ProfileState extends State<Profile> {
                                     )
                         ],
                       ),
+
+                      SizedBox(height: 20),
+                      Text(widget.collection == 'users' ? "BIO" : "OUR MISSION",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'Inria',
+                          )),
                       Container(
                         alignment: Alignment.center,
                         padding: const EdgeInsets.only(
                           top: 1,
                         ),
-                        child: Text(widget.collection == 'users'
-                            ? userData['bio'] == null
-                                ? 'Your Bio'
-                                : userData['bio']
-                            : userData['mission'] == null
-                                ? 'Your Mission'
-                                : userData['mission']),
+                        child: TextFormField(
+                          keyboardType: TextInputType.multiline,
+                          decoration: InputDecoration(
+                              hintText: widget.collection == 'users'
+                                  ? desc == null
+                                      ? 'Bio'
+                                      : desc
+                                  : desc == null
+                                      ? 'Mission'
+                                      : desc),
+                          enabled: enabledField,
+                        ),
                       ),
+
+                      widget.uid == FirebaseAuth.instance.currentUser!.uid
+                          ? GeneralButton(
+                              onPressed: () async {
+                                if (!enabledField) {
+                                  setState(() {
+                                    enabledField = true;
+                                  });
+                                } else {
+                                  setState(() {
+                                    enabledField = false;
+                                  });
+
+                                  await FirebaseFirestore.instance
+                                      .collection(widget.collection)
+                                      .doc(widget.uid)
+                                      .update({'mission': desc});
+                                }
+                              },
+                              child: Text(
+                                  enabledField
+                                      ? 'Save'
+                                      : widget.collection == 'users'
+                                          ? 'Edit Bio'
+                                          : 'Edit Mission',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontFamily: 'Inter',
+                                    fontSize: 10,
+                                  )))
+                          : Container(),
                     ],
                   ),
                 ),
