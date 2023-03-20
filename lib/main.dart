@@ -1,4 +1,5 @@
 import 'package:environment_app/petitions.dart';
+import 'package:environment_app/news.dart';
 import 'package:flutter/material.dart';
 import 'package:environment_app/homepage.dart';
 import 'package:environment_app/Welcome_Screen.dart';
@@ -49,6 +50,7 @@ class MyApp extends StatelessWidget {
       ),
       routes: {
         'petitions': (context) => const Petitions(),
+        'news': (context) => News(),
         'homepage': (context) => const Home(),
         'login': (context) => const LoginPage(),
         'signup': (context) => const SignupPage(),

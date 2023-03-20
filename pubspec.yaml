@@ -45,7 +45,7 @@ dependencies:
   get: ^4.6.5
   noise_meter: ^3.1.0
   syncfusion_flutter_charts: ^20.4.53
-
+  http: ^0.13.5
 
 dev_dependencies:
   flutter_test:
