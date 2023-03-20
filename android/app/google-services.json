@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "935513097411",
-    "project_id": "tatva-8d252",
-    "storage_bucket": "tatva-8d252.appspot.com"
+    "project_number": "1083472669008",
+    "project_id": "tatva-25d61",
+    "storage_bucket": "tatva-25d61.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:935513097411:android:2e7eb2bf6704396f520e76",
+        "mobilesdk_app_id": "1:1083472669008:android:f37666c030a6310baf2455",
         "android_client_info": {
           "package_name": "com.example.environment_app"
         }
       },
       "oauth_client": [
         {
-          "client_id": "935513097411-88efflqonsr5ulm33el8iiq4foo2baod.apps.googleusercontent.com",
+          "client_id": "1083472669008-6baem3ulabhp245ret2rjmhvmd3e2daa.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAsdk-u1mgZ8gtePEUU9sY3fQpf6gQkMos"
+          "current_key": "AIzaSyB0_PtMnrgGizaIGV8-b-T8ptKNvDLOFlc"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "935513097411-88efflqonsr5ulm33el8iiq4foo2baod.apps.googleusercontent.com",
+              "client_id": "1083472669008-6baem3ulabhp245ret2rjmhvmd3e2daa.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

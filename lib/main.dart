@@ -7,19 +7,41 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:environment_app/homepage.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'Land_Pollution/models/product_model.dart';
+
 import 'package:environment_app/Welcome_Screen.dart';
 import 'package:environment_app/login.dart';
-import 'package:environment_app/sign_up.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:provider/provider.dart'; // state management
-import 'package:google_sign_in/google_sign_in.dart';
 
 import 'components/profile.dart';
-Future main() async{
+
+// void main() {
+//   runApp(const MyApp());
+// }
+//
+// class MyApp extends StatelessWidget {
+//   const MyApp({Key? key}) : super(key: key);
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       debugShowCheckedModeBanner: false,
+//       initialRoute: 'homepage',
+//       routes: {
+//         'petitions': (context) => const Petitions(),
+//         'homepage': (context) => const Home(),
+//       },
+//     );
+//   }
+// }
+
+Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await Hive.initFlutter();
+  Hive.registerAdapter(ProductAdapter());
+  await Hive.openBox<Product>('production');
   await Permission.camera.request();
   await Permission.microphone.request();
   await Permission.phone.request();
@@ -37,16 +59,17 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Tatv',
-      home: StreamBuilder( //This code is using the Flutter StreamBuilder widget
+      home: StreamBuilder(
+        //This code is using the Flutter StreamBuilder widget
         // to determine the UI to display. It listens to the stream of authentication
         // state changes from FirebaseAuth. If the snapshot of the stream has data,
         // it returns a Home widget, otherwise it returns a WelcomeScreen widget.
         // This is likely used to determine if the user is logged in or not.
         stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context,snapshot){
-          if(snapshot.hasData){
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
             return Home();
-          }else{
+          } else {
             return WelcomeScreen();
           }
         },
@@ -58,8 +81,6 @@ class MyApp extends StatelessWidget {
         'signup': (context) => const SignupPage(),
         'aqiGraph': (context) => const aqiGraph(),
         'connect': (context) => const Connect(),
-        'login': (context) => const LoginPage(),
-        'signup': (context) => const SignupPage(),
         'aqi': (context) => const aqiStatus(),
         'profile': (context) => Profile(uid: uid, collection: 'users'),
       },
