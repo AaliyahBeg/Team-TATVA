@@ -1,15 +1,17 @@
+
 import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:scroll_snap_list/scroll_snap_list.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:environment_app/components/scroll_pages.dart';
 
-import 'package:environment_app/Air_Pollution/main_page.dart';
-import 'package:environment_app/Land_Pollution/main_page.dart';
-import 'package:environment_app/Light_Pollution/main_page.dart';
-import 'package:environment_app/Noise_Pollution/main_page.dart';
-import 'package:environment_app/Water_Pollution/main_page.dart';
-import 'package:environment_app/news.dart';
-import 'package:environment_app/petitions.dart';
+import 'components/card_items.dart';
+import 'components/primary_appbar.dart';
+import 'Noise_Pollution/main_page.dart';
+import 'components/card_items.dart';
+import 'components/primary_appbar.dart';
+import 'components/scroll_pages.dart';
+import 'login.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -17,223 +19,79 @@ class Home extends StatefulWidget {
   @override
   State<Home> createState() => _HomeState();
 }
-class CardItem{
-  final String urlImage;
-  final String title;
-  final String desc;
-  const CardItem({
-    required this.urlImage,
-    required this.title,
-    required this.desc,
-  });
-}
 
 class _HomeState extends State<Home> {
   int _currentIndex = 0;
-  String _pageSelected="";
-  List<CardItem> items =[
-    CardItem(
-      urlImage: 'https://4.bp.blogspot.com/-N_WdeyPGz10/TocPGEkD1YI/AAAAAAAAAGU/h8Abdw5Ukdw/s1600/Soil+pollution2.jpg',
-      title:"LAND POLLUTION",
-      desc: "",
-    ),
-    CardItem(
-      urlImage:'https://th.bing.com/th/id/OIP.L2Q2NieXVo4DQbkHnNOTQgHaE8?pid=ImgDet&rs=1' ,
-      title:"WATER POLLUTION",
-      desc: "",
-    ),
-    CardItem(
-      urlImage: 'https://hhp-blog.s3.amazonaws.com/2020/07/GettyImages-1098018152.jpg',
-      title:"AIR POLLUTION",
-      desc: "",
-    ),
-    CardItem(
-      urlImage: 'https://buzznigeria.com/wp-content/uploads/2016/06/noise-pollution.jpg',
-      title:"NOISE POLLUTION",
-      desc: "",
-    ),
-    CardItem(
-      urlImage: 'https://th.bing.com/th/id/R.a9eb12ffaa1b41e866e0201c4ab8ec0e?rik=TdI6r%2b9Fv%2bT7Wg&riu=http%3a%2f%2f3.bp.blogspot.com%2f-LAxx2eW-LxM%2fVpugCSfkuxI%2fAAAAAAAABJQ%2fwA0P-9iSi9c%2fs1600%2fstreet-light.jpg&ehk=fuBrNPLvM5PWNh2PWc1SbIkYhclbBB%2fnofgJ%2fsM5tms%3d&risl=&pid=ImgRaw&r=0',
-      title:"LIGHT POLLUTION",
-      desc: "",
-    ),
-  ];
+  final CarouselController _controller = CarouselController();
 
-  // Widget _currentPage(String title) {
-  //   return InkWell(
-  //     child: Container(
-  //       padding: EdgeInsets.all(6.0),
-  //       height: 70,
-  //       // width: 90,
-  //       decoration: BoxDecoration(
-  //         borderRadius: BorderRadius.circular(15),
-  //         color: _pageSelected == title
-  //             ? Color.fromARGB(97, 243, 217, 140)
-  //             : Color.fromARGB(255, 174, 117, 136),
-  //       ),
-  //       child: Center(
-  //         child: Text(
-  //           title,
-  //           style: TextStyle(
-  //             fontSize: 18,
-  //             color: _pageSelected == title
-  //                 ? Color.fromARGB(96, 14, 11, 4)
-  //                 : Colors.white70,
-  //           ),
-  //         ),
-  //       ),
-  //     ),
-  //     onTap: () {
-  //       setState(() {
-  //         _pageSelected = title;
-  //       });
-  //     },
-  //   );
-  // }
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(
-          elevation: 0.0,
-          backgroundColor: Colors.transparent,
-          title: Text('TATV',
-              style: TextStyle(
-                fontSize: 22,
-                fontFamily: 'Inter',
-                fontWeight: FontWeight.w400,
-                color: Colors.black,
-              )
-          ),
-          leading: Icon(Icons.energy_savings_leaf_rounded, color: Colors.black, size: 35,),
-          actions: [
-            Icon(Icons.search, color: Colors.black, size: 30,),
-            SizedBox(width: 15),
-          ]
+      resizeToAvoidBottomInset: false,
+      appBar: PreferredSize(
+        child: PrimaryAppBar(
+          page: 'homepage',
+        ),
+        preferredSize: const Size.fromHeight(110.0),
       ),
-      body:
-      Padding(
-          padding: EdgeInsets.symmetric(vertical: 25),
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
+      body: SingleChildScrollView(
+        child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+          SizedBox(height: 12),
+          Container(
+            color: Colors.grey[200],
+            child: Column(
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    GestureDetector(
-                        onTap: () => {Navigator.pushNamed(context, 'homepage')},
-                        child: Container(
-                          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            gradient: LinearGradient(
-                                begin: Alignment.centerLeft,
-                                end: Alignment.centerRight,
-                                stops: [0.3, 0.75, 0.9],
-                                colors: [
-                                  const Color(0xFF3DA35D),
-                                  const Color(0xFF96E072),
-                                  const Color(0xFFE8FCCF),
-                                ]
-                            ),
-                          ),
-                          child: Text(
-                              'Home',
-                              style: TextStyle(
-                                fontFamily: 'Inter',
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              )
-                          ),
-                        )
-                    ),
-
-                    GestureDetector(
-                        onTap: () => {Navigator.pushNamed(context, 'petitions')},
-                        child: Container(
-                          child: Text('Petitions',
-                              style: TextStyle(
-                                fontFamily: 'Inter',
-                                fontWeight: FontWeight.bold,
-                              )),
-                        )
-                    ),
-                    GestureDetector(
-                        onTap: () => {Navigator.pushNamed(context, 'connect')},
-                        child: Container(
-                            child: Text('Connect',
-                                style: TextStyle(
-                                  fontFamily: 'Inter',
-                                  fontWeight: FontWeight.bold,
-                                )))
-                    ),
-                    GestureDetector(
-                        onTap: () => {Navigator.pushNamed(context, 'news')},
-                        child: Container(
-                            child: Text('News',
-                                style: TextStyle(
-                                  fontFamily: 'Inter',
-                                  fontWeight: FontWeight.bold,
-                                )))
-                    ),
-                  ],
-                ),
-                SizedBox(height:12),
-
-                Container(
-                  color: Colors.grey[200],
-                  child: Column(
-                    children: [
-                      SizedBox(height:20),
-                      Text(
-                        "CONTROL",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-
-                      ),
-                      Container(
-                        height: 256,
-                        child: ScrollSnapList(
-
-                          padding: EdgeInsets.fromLTRB(16,12,16,12),
-                          scrollDirection: Axis.horizontal,
-                          onItemFocus:(index){
-                            setState(() {
-                              _currentIndex = index;
-                            });
-                          },
-                          itemSize: 200,
-                          dynamicItemSize: true,
-                          // itemBuilder: (context,_)=> SizedBox(width:12),
-                          itemBuilder: (context,index) {
-
-                            int iindex=index;
-                            if (index == items.length) {
-                              index = 0;
-                            }
-                            return buildCard(item: items[iindex]);
-                          },
-                          itemCount: items.length,
-                          initialIndex: 0,
-
-                        ),
-                      ),
-                    ],
+                SizedBox(height: 20),
+                Text(
+                  "CONTROL",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-
-
-                Expanded(
-                  child: _getPage(_currentIndex),
+                Container(
+                  height: 256,
+                  child: ScrollSnapList(
+                    padding: EdgeInsets.fromLTRB(16, 12, 16, 12),
+                    scrollDirection: Axis.horizontal,
+                    onItemFocus: (index) {
+                      setState(() {
+                        _currentIndex = index;
+                      });
+                    },
+                    itemSize: 200,
+                    dynamicItemSize: true,
+                    // itemBuilder: (context,_)=> SizedBox(width:12),
+                    itemBuilder: (context, index) =>
+                        buildCard(item: items[index]),
+                    itemCount: 5,
+                    initialIndex: 0,
+                    onReachEnd: () => {},
+                  ),
+                  // CarouselSlider(
+                  //     items:
+                  //         items.map((item) => buildCard(item: item)).toList(),
+                  //     options: CarouselOptions(
+                  //       aspectRatio: 16 / 9,
+                  //       viewportFraction: 0.5,
+                  //       onPageChanged: (index, reason) {
+                  //         setState(() {
+                  //           _currentIndex = index;
+                  //         });
+                  //       },
+                  //       enlargeCenterPage: true,
+                  //     )),
                 ),
-
-
-              ]
-          )
+              ],
+            ),
+          ),
+          Container(
+            child: _getPage(_currentIndex),
+          ),
+        ]),
       ),
-
     );
   }
 
@@ -254,108 +112,3 @@ class _HomeState extends State<Home> {
     }
   }
 }
-
-Widget buildCard({
-  required CardItem item,
-}) => Container(
-  width: 200,
-  child: Column(
-    children: [
-      Expanded(
-        child: AspectRatio(
-          aspectRatio: 4/3,
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(20),
-            child: Image.network(
-              item.urlImage,
-              fit:BoxFit.cover,
-            ),
-          ),
-        ),
-      ),
-      const SizedBox(height: 5,),
-      Text(
-        item.title,
-        style: TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-        ),
-
-      ),
-      Text(
-        item.desc,
-        style: TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.w100,
-          color: Colors.grey,
-        ),
-      ),
-      // Container(
-      //
-      //   child:getWidget(item.title),
-      //
-      // ),
-
-
-    ],
-  ),
-);
-// Widget getWidget(String title){
-//   if(title=='LAND POLLUTION')
-//     return Container(
-//       child:Column(
-//         crossAxisAlignment: CrossAxisAlignment.stretch,
-//         children: [
-//
-//         ],
-//       ),
-//     );
-//   else if(title=='WATER POLLUTION')
-//     return Container(
-//       child:Column(
-//         crossAxisAlignment: CrossAxisAlignment.stretch,
-//         children: [
-//
-//         ],
-//       ),
-//     );
-//   else if(title=='AIR POLLUTION')
-//     return Container(
-//       child:Column(
-//
-//         crossAxisAlignment: CrossAxisAlignment.stretch,
-//         children: [
-//           // SizedBox(height: 20,),
-//           // Text(
-//           //   "AQI GRAPHS",
-//           //   style: TextStyle(
-//           //     fontWeight: FontWeight.w400,
-//           //     fontSize: 20,
-//           //   ),
-//           // ),
-//
-//         ],
-//       ),
-//     );
-//   else if(title=='NOISE POLLUTION')
-//     return Container(
-//       child:Column(
-//         crossAxisAlignment: CrossAxisAlignment.stretch,
-//         children: [
-//
-//         ],
-//       ),
-//     );
-//   else if(title=='LIGHT POLLUTION')
-//     return Container(
-//       child:Column(
-//         crossAxisAlignment: CrossAxisAlignment.stretch,
-//         children: [
-//
-//         ],
-//       ),
-//     );
-//   else return Container(
-//
-//     );
-// }

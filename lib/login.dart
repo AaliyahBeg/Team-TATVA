@@ -13,23 +13,21 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final _formKey=GlobalKey<FormState>(); //to save the form
-  String email='';
-  String password='';
-  String fullname='';
-  bool login=true;
+  final _formKey = GlobalKey<FormState>();
+  String email = '';
+  String password = '';
+  String fullname = '';
+  bool login = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
-
           decoration: const BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: <Color>[
-
                 Colors.white,
                 Color.fromARGB(255, 151, 196, 184),
                 Color.fromARGB(240, 151, 196, 184),

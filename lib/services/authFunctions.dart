@@ -45,4 +45,8 @@ class AuthServices {
       }
     }
   }
+
+  static signOut() async {
+    await FirebaseAuth.instance.signOut();
+  }
 }
