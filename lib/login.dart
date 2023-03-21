@@ -178,10 +178,17 @@ class _LoginPageState extends State<LoginPage> {
                                 onPressed: () async {
                                   if (_formKey.currentState!.validate()) {
                                     _formKey.currentState!.save();
-                                    login
-                                        ? AuthServices.signinUser(email, password, context)
-                                        : AuthServices.signupUser(
-                                        email, password, fullname, context);
+                                    if(login)
+                                        {
+                                      AuthServices.signinUser(email, password, context);
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => Home()),
+                                    );
+                                    }
+                                        else {AuthServices.signupUser(email, password, fullname, context);
+                                          login=!login;
+                                    }
                                   }
                                 },
                                 child: Text(login ? 'Login' : 'Signup')),
