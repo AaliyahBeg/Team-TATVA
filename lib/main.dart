@@ -3,6 +3,7 @@ import 'package:environment_app/Air_Pollution/aqiGraph.dart';
 import 'package:environment_app/Connect/connect.dart';
 import 'package:environment_app/petitions.dart';
 import 'package:environment_app/sign_up.dart';
+import 'package:environment_app/utils/user_type.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -57,7 +58,7 @@ class MyApp extends StatelessWidget {
         'aqiGraph': (context) => const aqiGraph(),
         'connect': (context) => const Connect(),
         'aqi': (context) => const aqiStatus(),
-        'profile': (context) => Profile(uid: uid, collection: 'users'),
+        'profile': (context) => Profile(uid: uid, collection: user_type),
       },
     );
   }

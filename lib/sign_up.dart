@@ -1,4 +1,5 @@
 import 'dart:core';
+import 'package:environment_app/utils/user_type.dart';
 import 'package:flutter/material.dart';
 import 'package:environment_app/services/authFunctions.dart';
 import 'package:get/get.dart';
@@ -118,16 +119,17 @@ class _SignupPageState extends State<SignupPage> {
                                   : Row(
                                       key: ValueKey('user'),
                                       children: [
-                                      Text('User'),
-                                      Radio<userType>(
-                                        value: userType.user,
-                                        groupValue: type,
-                                        onChanged: (userType? value) {
-                                          setState(() {
-                                            type = value;
-                                          });
-                                        },
-                                      ),
+                                        Text('User'),
+                                        Radio<userType>(
+                                          value: userType.user,
+                                          groupValue: type,
+                                          onChanged: (userType? value) {
+                                            setState(() {
+                                              type = value;
+                                              setUserType('users');
+                                            });
+                                          },
+                                        ),
                                       ],
                                     ),
                               SizedBox(width: 5),
@@ -136,16 +138,17 @@ class _SignupPageState extends State<SignupPage> {
                                   : Row(
                                       key: ValueKey('organization'),
                                       children: [
-                                      Text('Organization'),
-                                      Radio<userType>(
-                                        value: userType.organization,
-                                        groupValue: type,
-                                        onChanged: (userType? value) {
-                                          setState(() {
-                                            type = value;
-                                          });
-                                        },
-                                      ),
+                                        Text('Organization'),
+                                        Radio<userType>(
+                                          value: userType.organization,
+                                          groupValue: type,
+                                          onChanged: (userType? value) {
+                                            setState(() {
+                                              type = value;
+                                              setUserType('organizations');
+                                            });
+                                          },
+                                        ),
                                       ],
                                     ),
                             ],
@@ -225,10 +228,15 @@ class _SignupPageState extends State<SignupPage> {
                                     _formKey.currentState!.save();
                                     login
                                         ? AuthServices.signinUser(
-                                            email, password, context) 
-                                        : type==userType.user? AuthServices.signupUser(
-                                            email, password, fullname, context): AuthServices.signupOrganization(
-                                            email, password, fullname, context);
+                                            email, password, context)
+                                        : type == userType.user
+                                            ? AuthServices.signupUser(email,
+                                                password, fullname, context)
+                                            : AuthServices.signupOrganization(
+                                                email,
+                                                password,
+                                                fullname,
+                                                context);
                                   }
                                 },
                                 child: Text(login ? 'Login' : 'Signup')),

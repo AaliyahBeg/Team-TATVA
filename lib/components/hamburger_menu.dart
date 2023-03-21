@@ -1,5 +1,8 @@
+import 'package:environment_app/components/profile.dart';
 import 'package:environment_app/services/authFunctions.dart';
+import 'package:environment_app/utils/user_type.dart';
 import 'package:environment_app/widgets/general_button.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../services/authFunctions.dart';
@@ -9,7 +12,17 @@ List<GeneralButton> accountDropdown = [];
 void fillAccountList(BuildContext context) {
   accountDropdown = [
     GeneralButton(
-        onPressed: () => {Navigator.pushNamed(context, 'profile')},
+        onPressed: () => {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (context) {
+                  print("User Type is: ${user_type}");
+                  return Profile(
+                    uid: FirebaseAuth.instance.currentUser!.uid,
+                    collection: user_type,
+                  );
+                }),
+              )
+            },
         child: Row(
           children: [
             const Icon(
