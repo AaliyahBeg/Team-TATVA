@@ -2,7 +2,7 @@ import 'package:environment_app/Air_Pollution/aqi.dart';
 import 'package:environment_app/Air_Pollution/aqiGraph.dart';
 import 'package:environment_app/Connect/connect.dart';
 import 'package:environment_app/petitions.dart';
-import 'package:environment_app/news.dart';
+import 'package:environment_app/News/news_home.dart';
 import 'package:environment_app/sign_up.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -77,7 +77,7 @@ class MyApp extends StatelessWidget {
       ),
       routes: {
         'petitions': (context) => const Petitions(),
-        'news': (context) => News(),
+        'news': (context) => News_home(),
         'homepage': (context) => const Home(),
         'login': (context) => const LoginPage(),
         'signup': (context) => const SignupPage(),
