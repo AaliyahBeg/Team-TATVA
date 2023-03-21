@@ -15,6 +15,7 @@ import 'package:permission_handler/permission_handler.dart';
 // import 'package:google_sign_in/google_sign_in.dart';
 
 import 'components/profile.dart';
+import 'news.dart';
 Future main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -59,6 +60,7 @@ class MyApp extends StatelessWidget {
         'connect': (context) => const Connect(),
         'aqi': (context) => const aqiStatus(),
         'profile': (context) => Profile(uid: uid, collection: user_type),
+        'news': (context) => News(),
       },
     );
   }
