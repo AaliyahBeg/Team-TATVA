@@ -13,23 +13,21 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
-  final _formKey=GlobalKey<FormState>(); //to save the form
-  String email='';
-  String password='';
-  String fullname='';
-  bool login=false;
+  final _formKey = GlobalKey<FormState>(); //to save the form
+  String email = '';
+  String password = '';
+  String fullname = '';
+  bool login = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
-
           decoration: const BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: <Color>[
-
                 Colors.white,
                 Color.fromARGB(255, 151, 196, 184),
                 Color.fromARGB(240, 151, 196, 184),
@@ -43,22 +41,23 @@ class _SignupPageState extends State<SignupPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-
               Column(
-
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   // Image.asset(
                   //
                   //   'images/birds.png',
                   // ),
-                  const SizedBox(height: 70,),
+                  const SizedBox(
+                    height: 70,
+                  ),
                   Image.asset(
-
                     'images/R.png',
                     width: 200,
                   ),
-                  const SizedBox(height: 70,),
+                  const SizedBox(
+                    height: 70,
+                  ),
                   // ClipRRect(
                   //   borderRadius: BorderRadius.circular(30),
                   //   child:
@@ -112,23 +111,23 @@ class _SignupPageState extends State<SignupPage> {
                           login
                               ? Container()
                               : TextFormField(
-                            key: ValueKey('fullname'),
-                            decoration: InputDecoration(
-                              hintText: 'Enter Full Name',
-                            ),
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'Please Enter Full Name';
-                              } else {
-                                return null;
-                              }
-                            },
-                            onSaved: (value) {
-                              setState(() {
-                                fullname = value!;
-                              });
-                            },
-                          ),
+                                  key: ValueKey('fullname'),
+                                  decoration: InputDecoration(
+                                    hintText: 'Enter Full Name',
+                                  ),
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return 'Please Enter Full Name';
+                                    } else {
+                                      return null;
+                                    }
+                                  },
+                                  onSaved: (value) {
+                                    setState(() {
+                                      fullname = value!;
+                                    });
+                                  },
+                                ),
 
                           // ======== Email ========
                           TextFormField(
@@ -180,10 +179,19 @@ class _SignupPageState extends State<SignupPage> {
                                 onPressed: () async {
                                   if (_formKey.currentState!.validate()) {
                                     _formKey.currentState!.save();
-                                    login
-                                        ? AuthServices.signinUser(email, password, context)
-                                        : AuthServices.signupUser(
-                                        email, password, fullname, context);
+                                    if (login) {
+                                      AuthServices.signinUser(
+                                          email, password, context);
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => Home()),
+                                      );
+                                    } else {
+                                      AuthServices.signupUser(
+                                          email, password, fullname, context);
+                                      login = !login;
+                                    }
                                   }
                                 },
                                 child: Text(login ? 'Login' : 'Signup')),
@@ -212,20 +220,14 @@ class _SignupPageState extends State<SignupPage> {
                                       fontFamily: 'Inria',
                                       fontWeight: FontWeight.normal,
                                       color: Colors.white70,
-                                    )
-                                ),
-                                Text(
-                                    login
-                                        ? "Signup "
-                                        : "Login ",
+                                    )),
+                                Text(login ? "Signup " : "Login ",
                                     style: TextStyle(
                                       fontSize: 14,
                                       fontFamily: 'Inria',
                                       fontWeight: FontWeight.normal,
                                       color: Colors.blueGrey,
-                                    )
-                                ),
-
+                                    )),
                               ],
                             ),
                           )
@@ -279,16 +281,14 @@ class _SignupPageState extends State<SignupPage> {
                   //     )
                   //   ],
                   // ),
-
-
                 ],
               ),
-              const SizedBox(height: 50,),
+              const SizedBox(
+                height: 50,
+              ),
               Image.asset(
-
                 'images/earthf.png',
               ),
-
             ],
           ),
         ),
