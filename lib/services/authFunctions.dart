@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:environment_app/services/firebaseFunctions.dart';
 import 'package:environment_app/Connect/components/models/user.dart' as model;
 
-class AuthServices {  
+class AuthServices {
   static FirebaseFirestore _firestore = FirebaseFirestore.instance;
   static FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -41,7 +41,8 @@ class AuthServices {
 
       await _auth.currentUser!.updateDisplayName(name);
       await _auth.currentUser!.updateEmail(email);
-      await FirestoreServices.saveOrganization(name, email, userCredential.user!.uid);
+      await FirestoreServices.saveOrganization(
+          name, email, userCredential.user!.uid);
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text('Registration Successful')));
     } on FirebaseAuthException catch (e) {
@@ -60,8 +61,7 @@ class AuthServices {
 
   static signinUser(String email, String password, BuildContext context) async {
     try {
-      await _auth
-          .signInWithEmailAndPassword(email: email, password: password);
+      await _auth.signInWithEmailAndPassword(email: email, password: password);
 
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text('You are Logged in')));
@@ -76,17 +76,23 @@ class AuthServices {
     }
   }
 
-  
-
   static signOut() async {
     await _auth.signOut();
   }
 
   Future<model.User> getUserDetails() async {
-    User currentUser = _auth.currentUser!;
-
     DocumentSnapshot documentSnapshot =
-        await _firestore.collection('users').doc(currentUser.uid).get();
+        await _firestore.collection('users').doc(_auth.currentUser!.uid).get();
+    if (documentSnapshot.data() == null) {
+      print("Getting data from organizations.....");
+      documentSnapshot = await _firestore
+          .collection('organizations')
+          .doc(_auth.currentUser!.uid)
+          .get();
+    }
+    if (documentSnapshot.data() == null) {
+      print("Didn't get data from organizations.....");
+    }
 
     return model.User.fromSnap(documentSnapshot);
   }

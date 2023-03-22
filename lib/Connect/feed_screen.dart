@@ -4,6 +4,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:environment_app/utils/global_variables.dart';
 import 'package:environment_app/widgets/post_card.dart';
 
+import '../components/primary_appbar.dart';
+
 class FeedScreen extends StatefulWidget {
   const FeedScreen({Key? key}) : super(key: key);
 
@@ -16,27 +18,7 @@ class _FeedScreenState extends State<FeedScreen> {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
 
-    return Scaffold(
-      appBar: width > webScreenSize
-          ? null
-          : AppBar(
-              centerTitle: false,
-              title: SvgPicture.asset(
-                'assets/ic_instagram.svg',
-                color: Colors.black,
-                height: 32,
-              ),
-              actions: [
-                IconButton(
-                  icon: const Icon(
-                    Icons.messenger_outline,
-                    color: Colors.black,
-                  ),
-                  onPressed: () {},
-                ),
-              ],
-            ),
-      body: StreamBuilder(
+    return StreamBuilder(
         stream: FirebaseFirestore.instance.collection('posts').snapshots(),
         builder: (context,
             AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
@@ -45,20 +27,21 @@ class _FeedScreenState extends State<FeedScreen> {
               child: CircularProgressIndicator(),
             );
           }
-          return ListView.builder(
-            itemCount: snapshot.data!.docs.length,
-            itemBuilder: (ctx, index) => Container(
-              margin: EdgeInsets.symmetric(
-                horizontal: width > webScreenSize ? width * 0.3 : 0,
-                vertical: width > webScreenSize ? 15 : 0,
-              ),
-              child: PostCard(
-                snap: snapshot.data!.docs[index].data(),
+          return Expanded(
+            child: ListView.builder(
+              itemCount: snapshot.data!.docs.length,
+              itemBuilder: (ctx, index) => Container(
+                margin: EdgeInsets.symmetric(
+                  horizontal: width > webScreenSize ? width * 0.3 : 0,
+                  vertical: width > webScreenSize ? 15 : 0,
+                ),
+                child: PostCard(
+                  snap: snapshot.data!.docs[index].data(),
+                ),
               ),
             ),
           );
         },
-      ),
-    );
+      );
   }
 }

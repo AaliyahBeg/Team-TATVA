@@ -6,7 +6,20 @@ class UserProvider with ChangeNotifier {
   User? _user;
   final AuthServices _authServices = AuthServices();
 
-  User get getUser => _user!;
+  User? get getUser {
+    refreshUser();
+    if (_user == null)
+      return const User(
+          uid: 'abc',
+          name: 'user',
+          bio: 'user uses',
+          photourl: 'abc',
+          email: 'abc@gmail.com',
+          followers: 0,
+          following: 0);
+    else
+      return _user;
+  }
 
   Future<void> refreshUser() async {
     User user = await _authServices.getUserDetails();

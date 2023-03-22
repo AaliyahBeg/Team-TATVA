@@ -31,7 +31,7 @@ dependencies:
   cloud_firestore: ^4.4.4
   cupertino_icons: ^1.0.2
   dartleaf: ^1.1.4
-  date_util: ^0.1.4
+  date_utils: ^0.2.0
   dropdown_button2: ^2.0.0
   firebase_auth: ^4.2.2
   firebase_core: ^2.7.1
@@ -57,12 +57,6 @@ dependencies:
   weather_icons: ^3.0.0
 
 dev_dependencies:
-
-  # The "flutter_lints" package below contains a set of recommended lints to
-  # encourage good coding practices. The lint set provided by the package is
-  # activated in the `analysis_options.yaml` file located at the root of your
-  # package. See that file for information about deactivating specific lint
-  # rules and activating additional ones.
   flutter_lints: ^2.0.0
   flutter_test:
     sdk: flutter

@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:environment_app/Connect/add_post.dart';
 import 'package:environment_app/components/primary_appbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -81,14 +82,12 @@ class _ProfileState extends State<Profile> {
     } catch (e) {
       showSnackBar(
         context,
-        "The Error in Profile is: " + e.toString(),
+        "The Error in Profile is: $e",
       );
     }
-    if (userData != null) {
-      setState(() {
-        isLoading = false;
-      });
-    }
+    setState(() {
+      isLoading = false;
+    });
   }
 
   selectImage() async {
@@ -110,16 +109,16 @@ class _ProfileState extends State<Profile> {
     return isLoading
         ? Scaffold(
             appBar: PreferredSize(
-              preferredSize: Size.fromHeight(110.0),
+              preferredSize: const Size.fromHeight(110.0),
               child: PrimaryAppBar(
                 page: 'homepage',
               ),
             ),
-            body: Center(child: CircularProgressIndicator()),
+            body: const Center(child: CircularProgressIndicator()),
           )
         : Scaffold(
             appBar: PreferredSize(
-              preferredSize: Size.fromHeight(110.0),
+              preferredSize: const Size.fromHeight(110.0),
               child: PrimaryAppBar(
                 page: 'homepage',
               ),
@@ -144,7 +143,7 @@ class _ProfileState extends State<Profile> {
                                       imageUploaded
                                           ? 'Edit Image'
                                           : 'Upload Image',
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         color: Colors.black,
                                         fontFamily: 'Inter',
                                         fontSize: 10,
@@ -152,7 +151,7 @@ class _ProfileState extends State<Profile> {
                               : Container(),
                         ],
                       ),
-                      SizedBox(height: 15),
+                      const SizedBox(height: 15),
                       //UserName
                       Container(
                         alignment: Alignment.center,
@@ -160,14 +159,14 @@ class _ProfileState extends State<Profile> {
                           top: 15,
                         ),
                         child: Text(
-                          userData['name'] == null ? 'User' : userData['name'],
-                          style: TextStyle(
+                          userData['name'] ?? 'User',
+                          style: const TextStyle(
                             fontWeight: FontWeight.bold,
                           ),
                           textAlign: TextAlign.center,
                         ),
                       ),
-                      SizedBox(height: 15),
+                      const SizedBox(height: 15),
 
                       //Followers, Following, Posts
                       Row(
@@ -186,7 +185,7 @@ class _ProfileState extends State<Profile> {
                           buildStatColumn(followers, "petitions")
                         ],
                       ),
-                      SizedBox(height: 15),
+                      const SizedBox(height: 15),
 
                       //Button
                       Row(
@@ -194,7 +193,7 @@ class _ProfileState extends State<Profile> {
                         children: [
                           FirebaseAuth.instance.currentUser!.uid == widget.uid
                               ? GeneralButton(
-                                  child: Text('Sign Out',
+                                  child: const Text('Sign Out',
                                       style: TextStyle(
                                         color: Colors.black,
                                         fontFamily: 'Inter',
@@ -210,7 +209,7 @@ class _ProfileState extends State<Profile> {
                                 )
                               : isFollowing
                                   ? GeneralButton(
-                                      child: Text('Unfollow',
+                                      child: const Text('Unfollow',
                                           style: TextStyle(
                                             color: Colors.black,
                                             fontFamily: 'Inter',
@@ -229,7 +228,7 @@ class _ProfileState extends State<Profile> {
                                       },
                                     )
                                   : GeneralButton(
-                                      child: Text('Follow',
+                                      child: const Text('Follow',
                                           style: TextStyle(
                                             color: Colors.black,
                                             fontFamily: 'Inter',
@@ -250,9 +249,9 @@ class _ProfileState extends State<Profile> {
                         ],
                       ),
 
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       Text(widget.collection == 'users' ? "BIO" : "OUR MISSION",
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.black,
                             fontFamily: 'Inria',
                           )),
@@ -265,12 +264,8 @@ class _ProfileState extends State<Profile> {
                           keyboardType: TextInputType.multiline,
                           decoration: InputDecoration(
                               hintText: widget.collection == 'users'
-                                  ? desc == null
-                                      ? 'Bio'
-                                      : desc
-                                  : desc == null
-                                      ? 'Mission'
-                                      : desc),
+                                  ? desc ?? 'Bio'
+                                  : desc ?? 'Mission'),
                           enabled: enabledField,
                         ),
                       ),
@@ -299,7 +294,7 @@ class _ProfileState extends State<Profile> {
                                       : widget.collection == 'users'
                                           ? 'Edit Bio'
                                           : 'Edit Mission',
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     color: Colors.black,
                                     fontFamily: 'Inter',
                                     fontSize: 10,
@@ -309,42 +304,55 @@ class _ProfileState extends State<Profile> {
                   ),
                 ),
                 const Divider(),
-                // FutureBuilder(
-                //   future: FirebaseFirestore.instance
-                //       .collection('posts')
-                //       .where('uid', isEqualTo: widget.uid)
-                //       .get(),
-                //   builder: (context, snapshot) {
-                //     if (snapshot.connectionState == ConnectionState.waiting) {
-                //       return const Center(
-                //         child: CircularProgressIndicator(),
-                //       );
-                //     }
+                widget.uid == FirebaseAuth.instance.currentUser!.uid?
+                GeneralButton(
+                    child: const Text('Add Post',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontFamily: 'Inter',
+                        )),
+                    onPressed: () => Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                AddPostScreen(),
+                          ),
+                        )): Container(),
+                FutureBuilder(
+                  future: FirebaseFirestore.instance
+                      .collection('posts')
+                      .where('uid', isEqualTo: widget.uid)
+                      .get(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
 
-                //     return GridView.builder(
-                //       shrinkWrap: true,
-                //       itemCount: (snapshot.data! as dynamic).docs.length,
-                //       gridDelegate:
-                //           const SliverGridDelegateWithFixedCrossAxisCount(
-                //         crossAxisCount: 3,
-                //         crossAxisSpacing: 5,
-                //         mainAxisSpacing: 1.5,
-                //         childAspectRatio: 1,
-                //       ),
-                //       itemBuilder: (context, index) {
-                //         DocumentSnapshot snap =
-                //             (snapshot.data! as dynamic).docs[index];
+                    return GridView.builder(
+                      shrinkWrap: true,
+                      itemCount: (snapshot.data! as dynamic).docs.length,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        crossAxisSpacing: 5,
+                        mainAxisSpacing: 1.5,
+                        childAspectRatio: 1,
+                      ),
+                      itemBuilder: (context, index) {
+                        DocumentSnapshot snap =
+                            (snapshot.data! as dynamic).docs[index];
 
-                //         return Container(
-                //           child: Image(
-                //             image: NetworkImage(snap['postUrl']),
-                //             fit: BoxFit.cover,
-                //           ),
-                //         );
-                //       },
-                //     );
-                //   },
-                // )
+                        return Container(
+                          child: Image(
+                            image: NetworkImage(snap['postUrl']),
+                            fit: BoxFit.cover,
+                          ),
+                        );
+                      },
+                    );
+                  },
+                )
               ],
             ),
           );

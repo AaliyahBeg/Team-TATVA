@@ -2,13 +2,15 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:environment_app/Connect/components/user_provider.dart';
+import 'package:environment_app/Connect/components/providers/user_provider.dart';
 import 'package:environment_app/services/firestore_methods.dart';
 import 'package:environment_app/utils/utils.dart';
 import 'package:provider/provider.dart';
 
+import '../components/primary_appbar.dart';
+
 class AddPostScreen extends StatefulWidget {
-  const AddPostScreen({Key? key}) : super(key: key);
+  AddPostScreen({Key? key}) : super(key: key);
 
   @override
   _AddPostScreenState createState() => _AddPostScreenState();
@@ -17,6 +19,7 @@ class AddPostScreen extends StatefulWidget {
 class _AddPostScreenState extends State<AddPostScreen> {
   Uint8List? _file;
   bool isLoading = false;
+  bool fileReceived = false;
   final TextEditingController _descriptionController = TextEditingController();
 
   _selectImage(BuildContext parentContext) async {
@@ -43,8 +46,11 @@ class _AddPostScreenState extends State<AddPostScreen> {
                   Navigator.of(context).pop();
                   Uint8List file = await pickImage(ImageSource.gallery);
                   setState(() {
+                    print("State set in Choose From Gallery...");
                     _file = file;
+                    fileReceived = true;
                   });
+                  print('Onpressed complete..');
                 }),
             SimpleDialogOption(
               padding: const EdgeInsets.all(20),
@@ -68,7 +74,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
       // upload to storage and db
       String res = await FireStoreMethods().uploadPost(
         _descriptionController.text,
-        _file!,
+        _file,
         uid,
         username,
         profImage,
@@ -99,6 +105,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
   void clearImage() {
     setState(() {
       _file = null;
+      fileReceived = false;
     });
   }
 
@@ -112,88 +119,101 @@ class _AddPostScreenState extends State<AddPostScreen> {
   Widget build(BuildContext context) {
     final UserProvider userProvider = Provider.of<UserProvider>(context);
 
-    return _file == null
-        ? Center(
-            child: IconButton(
-              icon: const Icon(
-                Icons.upload,
-              ),
-              onPressed: () => _selectImage(context),
+    return Scaffold(
+      appBar: AppBar(
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                  stops: [
+                0.3,
+                0.75,
+                0.9
+              ],
+                  colors: [
+                Color(0xFF3DA35D),
+                Color(0xFF96E072),
+                Color(0xFFE8FCCF),
+              ])),
+        ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: clearImage,
+        ),
+        title: const Text(
+          'Create a Post',
+        ),
+        centerTitle: false,
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => postImage(
+              userProvider.getUser!.uid,
+              userProvider.getUser!.name,
+              userProvider.getUser!.photourl,
+            ),
+            child: const Text(
+              "Post",
+              style: TextStyle(
+                  color: Colors.black54,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16.0),
             ),
           )
-        : Scaffold(
-            appBar: AppBar(
-              leading: IconButton(
-                icon: const Icon(Icons.arrow_back),
-                onPressed: clearImage,
-              ),
-              title: const Text(
-                'Post to',
-              ),
-              centerTitle: false,
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () => postImage(
-                    userProvider.getUser.uid,
-                    userProvider.getUser.username,
-                    userProvider.getUser.photoUrl,
-                  ),
-                  child: const Text(
-                    "Post",
-                    style: TextStyle(
-                        color: Colors.blueAccent,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16.0),
-                  ),
-                )
-              ],
-            ),
-            // POST FORM
-            body: Column(
-              children: <Widget>[
-                isLoading
-                    ? const LinearProgressIndicator()
-                    : const Padding(padding: EdgeInsets.only(top: 0.0)),
-                const Divider(),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    CircleAvatar(
-                      backgroundImage: NetworkImage(
-                        userProvider.getUser.photoUrl,
-                      ),
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.3,
-                      child: TextField(
-                        controller: _descriptionController,
-                        decoration: const InputDecoration(
-                            hintText: "Write a caption...",
-                            border: InputBorder.none),
-                        maxLines: 8,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 45.0,
-                      width: 45.0,
-                      child: AspectRatio(
-                        aspectRatio: 487 / 451,
-                        child: Container(
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                            fit: BoxFit.fill,
-                            alignment: FractionalOffset.topCenter,
-                            image: MemoryImage(_file!),
-                          )),
-                        ),
-                      ),
-                    ),
-                  ],
+        ],
+      ),
+      // POST FORM
+      body: Column(
+        children: <Widget>[
+          isLoading
+              ? const LinearProgressIndicator()
+              : const Padding(padding: EdgeInsets.only(top: 0.0)),
+          const Divider(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              CircleAvatar(
+                backgroundImage: NetworkImage(
+                  userProvider.getUser!.photourl,
                 ),
-                const Divider(),
-              ],
-            ),
-          );
+              ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.3,
+                child: TextField(
+                  controller: _descriptionController,
+                  decoration: const InputDecoration(
+                      hintText: "Write a caption...", border: InputBorder.none),
+                  maxLines: 8,
+                ),
+              ),
+              SizedBox(
+                child: fileReceived
+                    ? Container(
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                          fit: BoxFit.fill,
+                          alignment: FractionalOffset.topCenter,
+                          image: MemoryImage(_file!),
+                        )),
+                      )
+                    : Container(
+                        child: IconButton(
+                        icon: const Icon(
+                          Icons.upload,
+                        ),
+                        onPressed: () => _selectImage(context),
+                      )),
+              ),
+              IconButton(
+                icon: const Icon(Icons.cancel),
+                onPressed: clearImage,
+              )
+            ],
+          ),
+          const Divider(),
+        ],
+      ),
+    );
   }
 }

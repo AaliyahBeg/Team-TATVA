@@ -1,5 +1,4 @@
 import 'dart:core';
-import 'package:environment_app/utils/user_type.dart';
 import 'package:flutter/material.dart';
 import 'package:environment_app/services/authFunctions.dart';
 import 'package:get/get.dart';
@@ -126,7 +125,6 @@ class _SignupPageState extends State<SignupPage> {
                                           onChanged: (userType? value) {
                                             setState(() {
                                               type = value;
-                                              setUserType('users');
                                             });
                                           },
                                         ),
@@ -145,7 +143,6 @@ class _SignupPageState extends State<SignupPage> {
                                           onChanged: (userType? value) {
                                             setState(() {
                                               type = value;
-                                              setUserType('organizations');
                                             });
                                           },
                                         ),
