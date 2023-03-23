@@ -1,6 +1,7 @@
 import 'dart:io';
-import 'package:environment_app/petition/Ongoing_petition_5_.dart';
-import 'package:environment_app/petition/user_detail_petition.dart';
+import 'package:environment_app/petition/petitions_1_.dart';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -50,6 +51,7 @@ class ImagePickerExample extends StatefulWidget {
 class _ImagePickerExampleState extends State<ImagePickerExample> {
 
   GlobalKey<FormState> key=GlobalKey();
+  String uid = FirebaseAuth.instance.currentUser!.uid;
   String imageUrl='';
   String? textNote;
   String? textNote1;
@@ -61,7 +63,7 @@ class _ImagePickerExampleState extends State<ImagePickerExample> {
 
   _ImagePickerExampleState(
       {this.textNote, this.textNote1, this.textNote2, this.textNote3});
-  CollectionReference user = FirebaseFirestore.instance.collection('user');
+  CollectionReference user = FirebaseFirestore.instance.collection('Petition');
 
   File? _pickedImage;
   File? _pickedVideo;
@@ -247,6 +249,7 @@ class _ImagePickerExampleState extends State<ImagePickerExample> {
                   }
                   print("Path URL in onPressed: ${pathUrl}");
                   await user.add({
+                    'uid': uid,
                     'Title':textNote,
                     'Scope':textNote1,
                     'Topic':textNote2,
@@ -258,7 +261,7 @@ class _ImagePickerExampleState extends State<ImagePickerExample> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: ((context) => Addpost()),
+                        builder: ((context) =>Petitions()),
                       ));
                 },
                 style: ButtonStyle(
