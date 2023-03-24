@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:geolocator/geolocator.dart';
-import 'components/primary_appbar.dart';
+import '../components/primary_appbar.dart';
 
 /// Determine the current position of the device.
 ///
@@ -69,111 +69,123 @@ class _NewsState extends State<News> {
       'https://media.istockphoto.com/id/167231386/photo/detail-of-white-smoke-polluted-sky.jpg?b=1&s=170667a&w=0&k=20&c=GKnZABKAO6ItSF0yuLWwgF57QewpMi6-zMNUwrzyrU0=';
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PreferredSize(
-        child: PrimaryAppBar(
-          page: 'news',
-        ),
-        preferredSize: const Size.fromHeight(110.0),
-      ),
-      body: FutureBuilder<List>(
-        future: getNews(tag),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            final articles = snapshot.data;
-            // int? x;
-            // if(articles?.length==Null) x=0;
-            // else x=articles?.length;
-            return ListView.builder(
-              //itemCount:x,
-              itemBuilder: (context, index) {
-                final article = articles?[index];
-                return Stack(
-                  children: [
-                    Card(
-                      elevation: 5,
-                      shape: RoundedRectangleBorder(
-                          side: BorderSide(width: 0.5, color: Colors.white60),
-                          borderRadius: BorderRadius.circular(
-                            20,
-                          )),
-                      child: Container(
-                        //margin: EdgeInsets.all(10),
-                        child: Column(
-                          children: [
-                            Image(
-                              image: NetworkImage(article['urlToImage'] == null
-                                  ? img
-                                  : article['urlToImage']),
-                            ),
-                            Container(
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Color.fromARGB(255, 35, 86, 81),
-                                  borderRadius: BorderRadius.only(
-                                      bottomLeft: Radius.circular(20),
-                                      bottomRight: Radius.circular(20)),
-                                ),
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      padding: EdgeInsets.all(10),
-                                      child: Text(
-                                        article['title'],
-                                        style: TextStyle(
-                                          color: Colors.grey[50],
-                                          fontSize: 14.0,
-                                        ),
+    // ignore: deprecated_member_use
+    List<Widget> vector = <Widget>[];
+    vector.add(Card(
+      elevation: 5,
+      shape: RoundedRectangleBorder(
+          side: BorderSide(width: 0.5, color: Colors.white60),
+          borderRadius: BorderRadius.circular(
+            20,
+          )),
+    ));
+    vector.add(FutureBuilder<List>(
+      future: getNews(tag),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          final articles = snapshot.data;
+          // int? x;
+          // if(articles?.length==Null) x=0;
+          // else x=articles?.length;
+          return ListView.builder(
+            //itemCount:x,
+            itemBuilder: (context, index) {
+              final article = articles?[index];
+              return Stack(
+                children: [
+                  Card(
+                    elevation: 5,
+                    shape: RoundedRectangleBorder(
+                        side: BorderSide(width: 0.5, color: Colors.white60),
+                        borderRadius: BorderRadius.circular(
+                          20,
+                        )),
+                    child: Container(
+                      //margin: EdgeInsets.all(10),
+                      child: Column(
+                        children: [
+                          Image(
+                            image: NetworkImage(article['urlToImage'] == null
+                                ? img
+                                : article['urlToImage']),
+                          ),
+                          Container(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Color.fromARGB(255, 35, 86, 81),
+                                borderRadius: BorderRadius.only(
+                                    bottomLeft: Radius.circular(20),
+                                    bottomRight: Radius.circular(20)),
+                              ),
+                              child: Column(
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.all(10),
+                                    child: Text(
+                                      article['title'],
+                                      style: TextStyle(
+                                        color: Colors.grey[50],
+                                        fontSize: 14.0,
                                       ),
                                     ),
-                                    Container(
-                                      padding: EdgeInsets.all(10),
-                                      child: Text(
-                                        article['description'],
-                                        style: TextStyle(
-                                          color: Color.fromARGB(
-                                              255, 153, 151, 151),
-                                          fontSize: 10.0,
-                                        ),
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.all(10),
+                                    child: Text(
+                                      article['description'],
+                                      style: TextStyle(
+                                        color:
+                                            Color.fromARGB(255, 153, 151, 151),
+                                        fontSize: 10.0,
                                       ),
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
-                  ],
-                );
-                // return ListTile(
-                //   title: Text(
-                //       // article['title'] == null ? 'Title' :
-                //       article['title']),
-                //   subtitle: Text(
-                //       // article['description'] == null
-                //       //   ? 'description'
-                //       //   :
-                //       article['description']),
-                //   leading: Image.network(article['urlToImage'] == null
-                //       ? img
-                //       : article['urlToImage']),
-                // );
-              },
-            );
-          } else if (snapshot.hasError) {
-            return Center(
-              child: Text('${snapshot.error}'),
-            );
-          } else {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-        },
-      ),
-    );
+                  ),
+                ],
+              );
+              // return ListTile(
+              //   title: Text(
+              //       // article['title'] == null ? 'Title' :
+              //       article['title']),
+              //   subtitle: Text(
+              //       // article['description'] == null
+              //       //   ? 'description'
+              //       //   :
+              //       article['description']),
+              //   leading: Image.network(article['urlToImage'] == null
+              //       ? img
+              //       : article['urlToImage']),
+              // );
+            },
+          );
+        } else if (snapshot.hasError) {
+          return Center(
+            child: Text('${snapshot.error}'),
+          );
+        } else {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      },
+    ));
+    return Scaffold(
+        appBar: PreferredSize(
+          child: PrimaryAppBar(
+            page: 'news',
+          ),
+          preferredSize: const Size.fromHeight(110.0),
+        ),
+        body: ListBody(
+          children: vector,
+        ));
   }
 }
 
