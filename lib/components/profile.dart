@@ -39,6 +39,7 @@ class _ProfileState extends State<Profile> {
   bool imageUploaded = false;
   bool enabledField = false;
   late Uint8List file;
+  final TextEditingController _descriptionController = TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -60,21 +61,21 @@ class _ProfileState extends State<Profile> {
       // get post lENGTH
       var postSnap = await FirebaseFirestore.instance
           .collection('posts')
-          .where('uid', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+          .where('uid', isEqualTo: widget.uid)
           .get();
 
       postLen = postSnap.docs.length;
       print("Error in next line");
       userData = userSnap.data()!;
       print("Userdata for uid=${widget.uid} = ${userData}");
-      followers = userSnap.data()!['followers'];
-      following = userSnap.data()!['following'];
+      followers = userSnap.data()!['followers'].length;
+      following = userSnap.data()!['following'].length;
       desc = widget.collection == "users"
           ? userSnap.data()!['bio']
           : userSnap.data()!['mission'];
-      // isFollowing = userSnap
-      //     .data()!['followers']
-      //     .contains(FirebaseAuth.instance.currentUser!.uid);
+      isFollowing = userSnap
+          .data()!['followers']
+          .contains(FirebaseAuth.instance.currentUser!.uid);
       setState(() {
         imageUrl = userSnap.data()!['photourl'];
         if (imageUrl.isNotEmpty) imageUploaded = true;
@@ -216,10 +217,11 @@ class _ProfileState extends State<Profile> {
                                           )),
                                       onPressed: () async {
                                         await FireStoreMethods().followUser(
-                                          FirebaseAuth
-                                              .instance.currentUser!.uid,
-                                          userData['uid'],
-                                        );
+                                            FirebaseAuth
+                                                .instance.currentUser!.uid,
+                                            userData['uid'],
+                                            'users',
+                                            widget.collection);
 
                                         setState(() {
                                           isFollowing = false;
@@ -235,10 +237,11 @@ class _ProfileState extends State<Profile> {
                                           )),
                                       onPressed: () async {
                                         await FireStoreMethods().followUser(
-                                          FirebaseAuth
-                                              .instance.currentUser!.uid,
-                                          userData['uid'],
-                                        );
+                                            FirebaseAuth
+                                                .instance.currentUser!.uid,
+                                            userData['uid'],
+                                            'users',
+                                            widget.collection);
 
                                         setState(() {
                                           isFollowing = true;
@@ -261,7 +264,10 @@ class _ProfileState extends State<Profile> {
                           top: 1,
                         ),
                         child: TextFormField(
+                          controller: _descriptionController,
                           keyboardType: TextInputType.multiline,
+                          textAlignVertical: TextAlignVertical.center,
+                          textAlign: TextAlign.center,
                           decoration: InputDecoration(
                               hintText: widget.collection == 'users'
                                   ? desc ?? 'Bio'
@@ -280,12 +286,17 @@ class _ProfileState extends State<Profile> {
                                 } else {
                                   setState(() {
                                     enabledField = false;
+                                    desc = _descriptionController.text;
                                   });
-
-                                  await FirebaseFirestore.instance
-                                      .collection(widget.collection)
-                                      .doc(widget.uid)
-                                      .update({'mission': desc});
+                                  widget.collection == "users"
+                                      ? await FirebaseFirestore.instance
+                                          .collection(widget.collection)
+                                          .doc(widget.uid)
+                                          .update({'bio': desc})
+                                      : await FirebaseFirestore.instance
+                                          .collection(widget.collection)
+                                          .doc(widget.uid)
+                                          .update({'mission': desc});
                                 }
                               },
                               child: Text(
@@ -304,19 +315,24 @@ class _ProfileState extends State<Profile> {
                   ),
                 ),
                 const Divider(),
-                widget.uid == FirebaseAuth.instance.currentUser!.uid?
-                GeneralButton(
-                    child: const Text('Add Post',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontFamily: 'Inter',
-                        )),
-                    onPressed: () => Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                AddPostScreen(),
-                          ),
-                        )): Container(),
+                widget.uid == FirebaseAuth.instance.currentUser!.uid
+                    ? Container(
+                      margin: EdgeInsets.symmetric(horizontal: 30),
+                      padding: EdgeInsets.symmetric(horizontal: 70),
+                      child: GeneralButton(
+                          child: const Text('Add Post',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontFamily: 'Inter',
+                                fontSize: 10
+                              )),
+                          onPressed: () => Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                  builder: (context) => AddPostScreen(),
+                                ),
+                              )),
+                    )
+                    : Container(),
                 FutureBuilder(
                   future: FirebaseFirestore.instance
                       .collection('posts')

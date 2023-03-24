@@ -12,12 +12,15 @@ class LoginPage extends StatefulWidget {
   State<LoginPage> createState() => _LoginPageState();
 }
 
+enum userType { user, organization }
+
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   String email = '';
   String password = '';
   String fullname = '';
   bool login = true;
+  userType? type = userType.user;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -106,6 +109,46 @@ class _LoginPageState extends State<LoginPage> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
+                          // ======== User Type ========
+                          Row(
+                            children: [
+                              login
+                                  ? Container()
+                                  : Row(
+                                      key: ValueKey('user'),
+                                      children: [
+                                        Text('User'),
+                                        Radio<userType>(
+                                          value: userType.user,
+                                          groupValue: type,
+                                          onChanged: (userType? value) {
+                                            setState(() {
+                                              type = value;
+                                            });
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                              SizedBox(width: 5),
+                              login
+                                  ? Container()
+                                  : Row(
+                                      key: ValueKey('organization'),
+                                      children: [
+                                        Text('Organization'),
+                                        Radio<userType>(
+                                          value: userType.organization,
+                                          groupValue: type,
+                                          onChanged: (userType? value) {
+                                            setState(() {
+                                              type = value;
+                                            });
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                            ],
+                          ),
                           // ======== Full Name ========
                           login
                               ? Container()
@@ -178,10 +221,14 @@ class _LoginPageState extends State<LoginPage> {
                                 onPressed: () async {
                                   if (_formKey.currentState!.validate()) {
                                     _formKey.currentState!.save();
-                                    login
-                                        ? AuthServices.signinUser(email, password, context)
-                                        : AuthServices.signupUser(
-                                        email, password, fullname, context);
+                                    if(login)
+                                        {
+                                      AuthServices.signinUser(email, password, context);
+                                    Navigator.pushNamed(context, 'homepage');
+                                    }
+                                        else {AuthServices.signupUser(email, password, fullname, context);
+                                          login=!login;
+                                    }
                                   }
                                 },
                                 child: Text(login ? 'Login' : 'Signup')),

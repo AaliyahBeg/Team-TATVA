@@ -7,8 +7,8 @@ class FirestoreServices {
       'email': email,
       'name': name,
       'bio': '',
-      'followers': 0,
-      'following': 0,
+      'followers': [],
+      'following': [],
       'photourl': ''
     });
   }
@@ -19,8 +19,8 @@ class FirestoreServices {
       'email': email,
       'name': name,
       'mission': '',
-      'followers': 0,
-      'following': 0,
+      'followers': [],
+      'following': [],
       'photourl': ''
     });
   }

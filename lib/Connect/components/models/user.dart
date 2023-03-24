@@ -7,10 +7,10 @@ class User {
   final String name;
   final String? bio;
   final String? mission;
-  // final List followers;
-  // final List following;
-  final int followers;
-  final int following;
+  final List followers;
+  final List following;
+  // final int followers;
+  // final int following;
   const User(
       {required this.name,
       required this.uid,

@@ -4,7 +4,7 @@ import 'package:environment_app/Connect/components/models/user.dart' as model;
 import 'package:environment_app/Connect/components/providers/user_provider.dart';
 import 'package:environment_app/services/firestore_methods.dart';
 
-import 'package:environment_app/utils/global_variables.dart';
+// import 'package:environment_app/utils/global_variables.dart';
 import 'package:environment_app/utils/utils.dart';
 import 'package:environment_app/widgets/support_animation.dart';
 import 'package:intl/intl.dart';
@@ -104,23 +104,21 @@ class _PostCardState extends State<PostCard> {
                     widget.snap['profImage'].toString(),
                   ),
                 ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                      left: 8,
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          widget.snap['username'].toString(),
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: 8,
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        widget.snap['username'].toString(),
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
                 Container(
@@ -135,9 +133,9 @@ class _PostCardState extends State<PostCard> {
               ],
             ),
           ),
-
+    
           //Description
-
+    
           Container(
             margin: EdgeInsets.symmetric(vertical: 15),
             width: double.infinity,
@@ -155,7 +153,7 @@ class _PostCardState extends State<PostCard> {
               ),
             ),
           ),
-
+    
           GestureDetector(
             onDoubleTap: () {
               FireStoreMethods().supportPost(
@@ -274,46 +272,48 @@ class _PostCardState extends State<PostCard> {
                               ),
                             }),
                             
-                widget.snap['uid'].toString() == user!.uid
-                    ? IconButton(
-                        onPressed: () {
-                          showDialog(
-                            useRootNavigator: false,
-                            context: context,
-                            builder: (context) {
-                              return Dialog(
-                                child: ListView(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 16),
-                                    shrinkWrap: true,
-                                    children: [
-                                      'Delete',
-                                    ]
-                                        .map(
-                                          (e) => InkWell(
-                                              child: Container(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        vertical: 12,
-                                                        horizontal: 16),
-                                                child: Text(e),
-                                              ),
-                                              onTap: () {
-                                                deletePost(
-                                                  widget.snap['postId']
-                                                      .toString(),
-                                                );
-
-                                                Navigator.of(context).pop();
-                                              }),
-                                        )
-                                        .toList()),
-                              );
-                            },
-                          );
-                        },
-                        icon: const Icon(Icons.more_vert),
-                      )
+                widget.snap['uid'].toString() == user.uid
+                    ? Expanded(
+                      child: IconButton(
+                          onPressed: () {
+                            showDialog(
+                              useRootNavigator: false,
+                              context: context,
+                              builder: (context) {
+                                return Dialog(
+                                  child: ListView(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 16),
+                                      shrinkWrap: true,
+                                      children: [
+                                        'Delete',
+                                      ]
+                                          .map(
+                                            (e) => InkWell(
+                                                child: Container(
+                                                  padding:
+                                                      const EdgeInsets.symmetric(
+                                                          vertical: 12,
+                                                          horizontal: 16),
+                                                  child: Text(e),
+                                                ),
+                                                onTap: () {
+                                                  deletePost(
+                                                    widget.snap['postId']
+                                                        .toString(),
+                                                  );
+                        
+                                                  Navigator.of(context).pop();
+                                                }),
+                                          )
+                                          .toList()),
+                                );
+                              },
+                            );
+                          },
+                          icon: const Icon(Icons.more_vert),
+                        ),
+                    )
                     : Container(),
                   ],
                   

@@ -17,9 +17,9 @@ class Recommendations extends StatefulWidget {
 class _RecommendationsState extends State<Recommendations> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-          padding: EdgeInsets.symmetric(vertical: 25),
-          child: Expanded(
+    return Expanded(
+      child: Padding(
+            padding: EdgeInsets.symmetric(vertical: 25),
             child: ListView(
               shrinkWrap: true,
               children: [
@@ -50,14 +50,14 @@ class _RecommendationsState extends State<Recommendations> {
                             child: Center(child: CircularProgressIndicator()),
                           );
                         }
-          
+            
                         return CarouselSlider(
                             items: (snapshot.data! as dynamic)
                                 .docs
                                 .map<Widget>((item) => buildCard(
                                       profileImage: item['photourl'],
                                       username: item['name'],
-                                      followers: item['followers'],
+                                      followers: item['followers'].length,
                                       onPressed: () {
                                         print(item['uid']);
                                         Navigator.of(context).pushReplacement(
@@ -106,14 +106,14 @@ class _RecommendationsState extends State<Recommendations> {
                             child: Center(child: CircularProgressIndicator()),
                           );
                         }
-          
+            
                         return CarouselSlider(
                             items: (snapshot.data! as dynamic)
                                 .docs
                                 .map<Widget>((item) => item['uid']!=FirebaseAuth.instance.currentUser!.uid ? buildCard(
                                       profileImage: item['photourl'],
                                       username: item['name'],
-                                      followers: item['followers'],
+                                      followers: item['followers'].length,
                                       color: Color.fromARGB(255, 221, 223, 221),
                                       onPressed: () {
                                         Navigator.of(context).pushReplacement(
@@ -161,14 +161,14 @@ class _RecommendationsState extends State<Recommendations> {
                             child: Center(child: CircularProgressIndicator()),
                           );
                         }
-          
+            
                         return CarouselSlider(
                             items: (snapshot.data! as dynamic)
                                 .docs
                                 .map<Widget>((item) => buildCard(
                                       profileImage: item['photourl'],
                                       username: item['name'],
-                                      followers: item['followers'],
+                                      followers: item['followers'].length,
                                       color: Color.fromARGB(0, 218, 242, 206),
                                       borderColor:
                                           Color.fromARGB(255, 51, 51, 50),
@@ -191,6 +191,6 @@ class _RecommendationsState extends State<Recommendations> {
               ],
             ),
           ),
-        );
+    );
   }
 }

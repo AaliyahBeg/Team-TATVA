@@ -15,8 +15,8 @@ class UserProvider with ChangeNotifier {
           bio: 'user uses',
           photourl: 'abc',
           email: 'abc@gmail.com',
-          followers: 0,
-          following: 0);
+          followers: [],
+          following: []);
     else
       return _user;
   }

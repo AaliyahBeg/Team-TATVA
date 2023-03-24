@@ -223,17 +223,15 @@ class _SignupPageState extends State<SignupPage> {
                                 onPressed: () async {
                                   if (_formKey.currentState!.validate()) {
                                     _formKey.currentState!.save();
-                                    login
-                                        ? AuthServices.signinUser(
-                                            email, password, context)
-                                        : type == userType.user
-                                            ? AuthServices.signupUser(email,
-                                                password, fullname, context)
-                                            : AuthServices.signupOrganization(
-                                                email,
-                                                password,
-                                                fullname,
-                                                context);
+                                    if (login) {
+                                      AuthServices.signinUser(
+                                          email, password, context);
+                                      Navigator.pushNamed(context, 'homepage');
+                                    } else {
+                                      AuthServices.signupUser(
+                                          email, password, fullname, context);
+                                      login = !login;
+                                    }
                                   }
                                 },
                                 child: Text(login ? 'Login' : 'Signup')),

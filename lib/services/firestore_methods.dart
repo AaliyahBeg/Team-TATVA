@@ -100,26 +100,28 @@ class FireStoreMethods {
 
   Future<void> followUser(
     String uid,
-    String followId
+    String followId,
+    String collection1,
+    String collection2
   ) async {
     try {
-      DocumentSnapshot snap = await _firestore.collection('users').doc(uid).get();
+      DocumentSnapshot snap = await _firestore.collection(collection1).doc(uid).get();
       List following = (snap.data()! as dynamic)['following'];
 
       if(following.contains(followId)) {
-        await _firestore.collection('users').doc(followId).update({
+        await _firestore.collection(collection2).doc(followId).update({
           'followers': FieldValue.arrayRemove([uid])
         });
 
-        await _firestore.collection('users').doc(uid).update({
+        await _firestore.collection(collection1).doc(uid).update({
           'following': FieldValue.arrayRemove([followId])
         });
       } else {
-        await _firestore.collection('users').doc(followId).update({
+        await _firestore.collection(collection2).doc(followId).update({
           'followers': FieldValue.arrayUnion([uid])
         });
 
-        await _firestore.collection('users').doc(uid).update({
+        await _firestore.collection(collection1).doc(uid).update({
           'following': FieldValue.arrayUnion([followId])
         });
       }

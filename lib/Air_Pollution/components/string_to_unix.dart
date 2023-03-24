@@ -50,6 +50,7 @@ int getUnix(String date, String time) {
 }
 
 List<int> getMonthUnix(String m) {
+  // print("Entered getMonthUnix");
   String month = "";
   switch (m) {
     case "January":
@@ -104,12 +105,12 @@ List<int> getMonthUnix(String m) {
 
   var date = DateTime(year, int.parse(month));
   start += month + "-01 00:00:00.000";
-  end += month +
-      "-" +
-      DateUtils.daysInMonth(date).toString() +
-      " 23:59:59.000";
+  end += month + "-" + DateUtils.lastDayOfMonth(date).toString().substring(8,10) + " 23:59:59.000";
+  // print("Problem here");
   start_end[0] = DateTime.parse(start).unixtime;
   start_end[1] = DateTime.parse(end).unixtime;
+
+  // print("Exited getMonthUnix");
 
   return start_end;
 }

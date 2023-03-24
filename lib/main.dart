@@ -9,6 +9,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:environment_app/homepage.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'Land_Pollution/models/product_model.dart';
+
 import 'package:environment_app/Welcome_Screen.dart';
 import 'package:environment_app/login.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -23,6 +26,9 @@ import 'news.dart';
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await Hive.initFlutter();
+  Hive.registerAdapter(ProductAdapter());
+  await Hive.openBox<Product>('production');
   await Permission.camera.request();
   await Permission.microphone.request();
   await Permission.phone.request();
@@ -80,10 +86,9 @@ class MyApp extends StatelessWidget {
           'login': (context) => const LoginPage(),
           'signup': (context) => const SignupPage(),
           'aqiGraph': (context) => const aqiGraph(),
-          'connect': (context) => const Connect(),
+          'connect': (context) => Connect(collection: collection),
           'aqi': (context) => const aqiStatus(),
           'profile': (context) => Profile(uid: uid, collection: collection),
-          'settings': (context) => FeedScreen(),
           'news': (context) => News(),
         },
       ),
