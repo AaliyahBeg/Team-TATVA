@@ -54,8 +54,10 @@ class _headlinesState extends State<headlines> {
                   return InkWell(
                     onDoubleTap: () {
                       Navigator.push(context, MaterialPageRoute(builder: (_) {
+                        final Uri _url = Uri.parse(article['url']);
                         return newscontent(
-                            url: article['url'],
+                            urlstring: article['url'],
+                            url: _url,
                             img: article['urlToImage'],
                             title: article['title'],
                             desc: article['description'],
@@ -68,6 +70,7 @@ class _headlinesState extends State<headlines> {
                       children: [
                         Card(
                           elevation: 5,
+                          clipBehavior: Clip.antiAlias,
                           shape: RoundedRectangleBorder(
                               side:
                                   BorderSide(width: 0.5, color: Colors.white60),

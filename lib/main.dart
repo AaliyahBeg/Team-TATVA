@@ -1,6 +1,7 @@
 import 'package:environment_app/Air_Pollution/aqi.dart';
 import 'package:environment_app/Air_Pollution/aqiGraph.dart';
 import 'package:environment_app/Connect/connect.dart';
+import 'package:environment_app/News/datenews_home.dart';
 import 'package:environment_app/petitions.dart';
 import 'package:environment_app/News/news_home.dart';
 import 'package:environment_app/sign_up.dart';
@@ -21,7 +22,7 @@ import 'package:environment_app/News/datenews.dart';
 import 'package:environment_app/News/headlines.dart';
 import 'package:environment_app/News/localnews.dart';
 import 'package:environment_app/News/savednews.dart';
-import 'package:environment_app/News/newscontent.dart';
+
 // void main() {
 //   runApp(const MyApp());
 // }
@@ -92,7 +93,7 @@ class MyApp extends StatelessWidget {
         'profile': (context) => Profile(uid: uid, collection: 'users'),
         'news_page1': (context) => const headlines(),
         'news_page2': (context) => const localnews(),
-        'news_page3': (context) => const datenews(),
+        'news_page3': (context) => const datenews_home(),
         'saved_news': (context) => const savednews(),
       },
     );

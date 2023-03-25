@@ -72,6 +72,9 @@ dependencies:
   image_picker: ^0.8.7
   noise_meter: ^3.1.0
   google_sign_in: ^6.0.2
+  url_launcher: ^6.1.10
+  table_calendar: ^3.0.9
+
 
 dev_dependencies:
   flutter_test:
