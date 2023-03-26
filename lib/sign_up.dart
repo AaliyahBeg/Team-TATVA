@@ -228,9 +228,14 @@ class _SignupPageState extends State<SignupPage> {
                                           email, password, context);
                                       Navigator.pushNamed(context, 'homepage');
                                     } else {
-                                      AuthServices.signupUser(
-                                          email, password, fullname, context);
-                                      login = !login;
+                                      type == userType.user
+                                          ? AuthServices.signupUser(email,
+                                              password, fullname, context)
+                                          : AuthServices.signupOrganization(
+                                              email,
+                                              password,
+                                              fullname,
+                                              context);
                                     }
                                   }
                                 },

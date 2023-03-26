@@ -44,22 +44,23 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-
               Column(
-
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   // Image.asset(
                   //
                   //   'images/birds.png',
                   // ),
-                  const SizedBox(height: 70,),
+                  const SizedBox(
+                    height: 70,
+                  ),
                   Image.asset(
-
                     'images/R.png',
                     width: 200,
                   ),
-                  const SizedBox(height: 70,),
+                  const SizedBox(
+                    height: 70,
+                  ),
                   // ClipRRect(
                   //   borderRadius: BorderRadius.circular(30),
                   //   child:
@@ -153,23 +154,23 @@ class _LoginPageState extends State<LoginPage> {
                           login
                               ? Container()
                               : TextFormField(
-                            key: ValueKey('fullname'),
-                            decoration: InputDecoration(
-                              hintText: 'Enter Full Name',
-                            ),
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'Please Enter Full Name';
-                              } else {
-                                return null;
-                              }
-                            },
-                            onSaved: (value) {
-                              setState(() {
-                                fullname = value!;
-                              });
-                            },
-                          ),
+                                  key: ValueKey('fullname'),
+                                  decoration: InputDecoration(
+                                    hintText: 'Enter Full Name',
+                                  ),
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return 'Please Enter Full Name';
+                                    } else {
+                                      return null;
+                                    }
+                                  },
+                                  onSaved: (value) {
+                                    setState(() {
+                                      fullname = value!;
+                                    });
+                                  },
+                                ),
 
                           // ======== Email ========
                           TextFormField(
@@ -221,13 +222,23 @@ class _LoginPageState extends State<LoginPage> {
                                 onPressed: () async {
                                   if (_formKey.currentState!.validate()) {
                                     _formKey.currentState!.save();
-                                    if(login)
-                                        {
-                                      AuthServices.signinUser(email, password, context);
-                                    Navigator.pushNamed(context, 'homepage');
-                                    }
-                                        else {AuthServices.signupUser(email, password, fullname, context);
-                                          login=!login;
+                                    if (login) {
+                                      bool loggedin =
+                                          await AuthServices.signinUser(
+                                              email, password, context);
+                                      if (loggedin)
+                                        Navigator.pushNamed(
+                                            context, 'homepage');
+                                    } else {
+                                      type == userType.user
+                                          ? AuthServices.signupUser(email,
+                                              password, fullname, context)
+                                          : AuthServices.signupOrganization(
+                                              email,
+                                              password,
+                                              fullname,
+                                              context);
+                                      login = !login;
                                     }
                                   }
                                 },
@@ -237,42 +248,36 @@ class _LoginPageState extends State<LoginPage> {
                             height: 10,
                           ),
                           TextButton(
-                              onPressed: () {
-                                setState(() {
-                                  login = !login;
-                                });
-                              },
-                              // child: Text(login
-                              //     ? "Don't have an account? Signup"
-                              //     : "Already have an account? Login")
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                      login
-                                      ? "Don't have an account? "
-                                      : "Already have an account? ",
-                                      style: TextStyle(
-                                        fontSize: 17,
-                                        fontFamily: 'Inria',
-                                        fontWeight: FontWeight.normal,
-                                        color: Colors.white70,
-                                      )
-                                  ),
-                                  Text(
-                                      login
-                                          ? "Signup "
-                                          : "Login ",
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        fontFamily: 'Inria',
-                                        fontWeight: FontWeight.normal,
-                                        color: Colors.blueGrey,
-                                      )
-                                  ),
-
-                                ],
-                              ),
+                            onPressed: () {
+                              setState(() {
+                                login = !login;
+                              });
+                            },
+                            // child: Text(login
+                            //     ? "Don't have an account? Signup"
+                            //     : "Already have an account? Login")
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                    login
+                                        ? "Don't have an account? "
+                                        : "Already have an account? ",
+                                    style: TextStyle(
+                                      fontSize: 17,
+                                      fontFamily: 'Inria',
+                                      fontWeight: FontWeight.normal,
+                                      color: Colors.white70,
+                                    )),
+                                Text(login ? "Signup " : "Login ",
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontFamily: 'Inria',
+                                      fontWeight: FontWeight.normal,
+                                      color: Colors.blueGrey,
+                                    )),
+                              ],
+                            ),
                           )
                         ],
                       ),
@@ -324,16 +329,14 @@ class _LoginPageState extends State<LoginPage> {
                   //     )
                   //   ],
                   // ),
-
-
                 ],
               ),
-              const SizedBox(height: 50,),
+              const SizedBox(
+                height: 50,
+              ),
               Image.asset(
-
                 'images/earthf.png',
               ),
-
             ],
           ),
         ),

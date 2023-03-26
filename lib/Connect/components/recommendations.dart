@@ -123,7 +123,7 @@ class _RecommendationsState extends State<Recommendations> {
                                                     collection:
                                                         'organizations')));
                                       },
-                                    ): SizedBox(width: 0))
+                                    ): Container())
                                 .toList(),
                             options: CarouselOptions(
                               aspectRatio: 16 / 9,
