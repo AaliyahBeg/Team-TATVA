@@ -89,6 +89,15 @@ class _aqiStatusState extends State<aqiStatus> {
       avgpm10 += dayData.list![i].components!.pm10!;
       avgnh3 += dayData.list![i].components!.nh3!;
     }
+    avgAQI /= dayData.list!.length;
+    avgco /= dayData.list!.length;
+    avgno /= dayData.list!.length;
+    avgno2 /= dayData.list!.length;
+    avgo3 /= dayData.list!.length;
+    avgso2 /= dayData.list!.length;
+    avgpm25 /= dayData.list!.length;
+    avgpm10 /= dayData.list!.length;
+    avgnh3 /= dayData.list!.length;
   }
 
   @override
@@ -104,7 +113,9 @@ class _aqiStatusState extends State<aqiStatus> {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(110.0),
-        child: PrimaryAppBar(page: 'homepage',),
+        child: PrimaryAppBar(
+          page: 'homepage',
+        ),
       ),
       body: ListView(
         children: [
@@ -128,8 +139,7 @@ class _aqiStatusState extends State<aqiStatus> {
                 child: TextFormField(
                   onChanged: (String text) async {
                     if (_debounce?.isActive ?? false) _debounce!.cancel();
-                    _debounce =
-                        Timer(const Duration(milliseconds: 1000), () {
+                    _debounce = Timer(const Duration(milliseconds: 1000), () {
                       getAPI();
                     });
                   },
@@ -167,8 +177,7 @@ class _aqiStatusState extends State<aqiStatus> {
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: DropdownButton<String>(
-                  value:
-                      dayDropdownValue.isNotEmpty ? dayDropdownValue : null,
+                  value: dayDropdownValue.isNotEmpty ? dayDropdownValue : null,
                   icon: const Icon(Icons.expand_more),
                   elevation: 16,
                   style: const TextStyle(

@@ -5,8 +5,6 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../components/primary_appbar.dart';
-import 'package:table_calendar/table_calendar.dart';
-
 import 'package:geolocator/geolocator.dart';
 
 /// Determine the current position of the device.
@@ -59,7 +57,8 @@ class localnews_home extends StatefulWidget {
 
 class _localnews_homeState extends State<localnews_home> {
   late MapShapeSource dataSource = MapShapeSource.asset(
-    "https://cdn.syncfusion.com/maps/map-data/world-map.json",
+    //"https://cdn.syncfusion.com/maps/map-data/world-map.json",
+    'assets/world_map.json',
     shapeDataField: 'continent',
   );
   @override

@@ -7,7 +7,7 @@ import '../Land_Pollution/Product/Products.dart';
 class Page1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(child: MainScreen());
+    return MainScreen();
   }
 }
 
