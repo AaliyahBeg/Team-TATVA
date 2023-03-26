@@ -2,6 +2,7 @@ import 'package:environment_app/Air_Pollution/aqi.dart';
 import 'package:environment_app/Air_Pollution/aqiGraph.dart';
 import 'package:environment_app/Connect/connect.dart';
 import 'package:environment_app/News/datenews_home.dart';
+import 'package:environment_app/News/localnews_home.dart';
 import 'package:environment_app/petitions.dart';
 import 'package:environment_app/News/news_home.dart';
 import 'package:environment_app/sign_up.dart';
@@ -92,7 +93,7 @@ class MyApp extends StatelessWidget {
         'aqi': (context) => const aqiStatus(),
         'profile': (context) => Profile(uid: uid, collection: 'users'),
         'news_page1': (context) => const headlines(),
-        'news_page2': (context) => const localnews(),
+        'news_page2': (context) => const localnews_home(),
         'news_page3': (context) => const datenews_home(),
         'saved_news': (context) => const savednews(),
       },

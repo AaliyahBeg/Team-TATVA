@@ -59,7 +59,7 @@ dependencies:
   open_street_map_search_and_pick: ^0.0.15
   flutter_map: ^3.1.0
   dartleaf: ^1.1.4
-  syncfusion_flutter_charts: ^20.4.52
+  syncfusion_flutter_charts: ^21.1.35
   unixtime: ^1.0.0
   date_util: ^0.1.4
   firebase_core: ^2.7.1
@@ -74,6 +74,7 @@ dependencies:
   google_sign_in: ^6.0.2
   url_launcher: ^6.1.10
   table_calendar: ^3.0.9
+  syncfusion_flutter_maps: ^21.1.35
 
 
 dev_dependencies:
@@ -136,6 +137,7 @@ flutter:
      - assets/images/5.png
      - assets/images/6.png
      - images/.
+     - assets/.
 #    - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
