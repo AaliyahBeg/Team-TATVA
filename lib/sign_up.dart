@@ -224,9 +224,12 @@ class _SignupPageState extends State<SignupPage> {
                                   if (_formKey.currentState!.validate()) {
                                     _formKey.currentState!.save();
                                     if (login) {
-                                      AuthServices.signinUser(
-                                          email, password, context);
-                                      Navigator.pushNamed(context, 'homepage');
+                                       bool loggedin =
+                                          await AuthServices.signinUser(
+                                              email, password, context);
+                                      if (loggedin)
+                                        Navigator.pushNamed(
+                                            context, 'homepage');
                                     } else {
                                       type == userType.user
                                           ? AuthServices.signupUser(email,
@@ -236,6 +239,7 @@ class _SignupPageState extends State<SignupPage> {
                                               password,
                                               fullname,
                                               context);
+                                      login = !login;
                                     }
                                   }
                                 },
