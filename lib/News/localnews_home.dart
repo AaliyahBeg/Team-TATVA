@@ -66,7 +66,7 @@ class _localnews_homeState extends State<localnews_home> {
   void initState() {
     dataSource = MapShapeSource.asset(
       //"https://cdn.syncfusion.com/maps/map-data/world-map.json",
-      'assets/custom.geo.json',
+      'assets/world_map.json',
       shapeDataField: 'continent',
     );
 
