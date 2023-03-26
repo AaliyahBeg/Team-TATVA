@@ -76,7 +76,7 @@ class ComponentList {
 class Main {
   int? aqi;
 
-  Main(num avgAQI, {this.aqi});
+  Main({this.aqi});
 
   Main.fromJson(Map<String, dynamic> json) {
     aqi = json['aqi'];
@@ -99,7 +99,7 @@ class Components {
   num? pm10;
   num? nh3;
 
-  Components(num avgco, num avgno, num avgno2, num avgo3, num avgso2, num avgpm25, num avgpm10, num avgnh3, 
+  Components(
       {this.co,
       this.no,
       this.no2,

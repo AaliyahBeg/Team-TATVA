@@ -7,8 +7,20 @@ class FirestoreServices {
       'email': email,
       'name': name,
       'bio': '',
-      'followers': 0,
-      'following': 0,
+      'followers': [],
+      'following': [],
+      'photourl': ''
+    });
+  }
+
+  static saveOrganization(String name, email, uid) async {
+    await FirebaseFirestore.instance.collection('organizations').doc(uid).set({
+      'uid': uid,
+      'email': email,
+      'name': name,
+      'mission': '',
+      'followers': [],
+      'following': [],
       'photourl': ''
     });
   }

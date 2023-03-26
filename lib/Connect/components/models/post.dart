@@ -4,7 +4,7 @@ class Post {
   final String description;
   final String uid;
   final String username;
-  final likes;
+  final supports;
   final String postId;
   final DateTime datePublished;
   final String postUrl;
@@ -14,7 +14,7 @@ class Post {
       {required this.description,
       required this.uid,
       required this.username,
-      required this.likes,
+      required this.supports,
       required this.postId,
       required this.datePublished,
       required this.postUrl,
@@ -27,7 +27,7 @@ class Post {
     return Post(
       description: snapshot["description"],
       uid: snapshot["uid"],
-      likes: snapshot["likes"],
+      supports: snapshot["supports"],
       postId: snapshot["postId"],
       datePublished: snapshot["datePublished"],
       username: snapshot["username"],
@@ -39,7 +39,7 @@ class Post {
    Map<String, dynamic> toJson() => {
         "description": description,
         "uid": uid,
-        "likes": likes,
+        "supports": supports,
         "username": username,
         "postId": postId,
         "datePublished": datePublished,

@@ -1,33 +1,42 @@
 {
   "project_info": {
-    "project_number": "1083472669008",
-    "project_id": "tatva-25d61",
-    "storage_bucket": "tatva-25d61.appspot.com"
+    "project_number": "224925105652",
+    "firebase_url": "https://environment-app-d3698-default-rtdb.firebaseio.com",
+    "project_id": "environment-app-d3698",
+    "storage_bucket": "environment-app-d3698.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1083472669008:android:f37666c030a6310baf2455",
+        "mobilesdk_app_id": "1:224925105652:android:6025f4160cbac2396d8da1",
         "android_client_info": {
           "package_name": "com.example.environment_app"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1083472669008-6baem3ulabhp245ret2rjmhvmd3e2daa.apps.googleusercontent.com",
+          "client_id": "224925105652-9q4pupq6inq68kb767c6mmptqgf216il.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.environment_app",
+            "certificate_hash": "219a5b2d7ff39dcf4957635da30e7f27030c3dea"
+          }
+        },
+        {
+          "client_id": "224925105652-v1cmr377f2b1jh7qrogn7la4lb94i7hh.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyB0_PtMnrgGizaIGV8-b-T8ptKNvDLOFlc"
+          "current_key": "AIzaSyA-J0JgkS5R3w7KFDJlkdkQMz9i2tDR_Gk"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1083472669008-6baem3ulabhp245ret2rjmhvmd3e2daa.apps.googleusercontent.com",
+              "client_id": "224925105652-5agf8ri3ttborrc3p30kqe1nb97en5c4.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

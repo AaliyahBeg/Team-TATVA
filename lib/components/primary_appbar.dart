@@ -1,6 +1,8 @@
-import 'package:environment_app/components/container_list.dart';
+import 'package:environment_app/components/hamburger_menu.dart';
+import 'package:environment_app/components/profile.dart';
 import 'package:environment_app/components/secondary_appbar.dart';
 import 'package:environment_app/widgets/general_button.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class PrimaryAppBar extends StatefulWidget {
@@ -12,6 +14,9 @@ class PrimaryAppBar extends StatefulWidget {
 }
 
 class _PrimaryAppBarState extends State<PrimaryAppBar> {
+  String userDP =
+      'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png';
+
   @override
   Widget build(BuildContext context) {
     fillAccountList(context);
@@ -41,10 +46,10 @@ class _PrimaryAppBarState extends State<PrimaryAppBar> {
           DropdownButtonHideUnderline(
             child: ButtonTheme(
               child: PopupMenuButton<GeneralButton>(
-                icon: const Icon(
-                  Icons.account_circle,
-                  size: 30,
-                  color: Colors.black,
+                icon: CircleAvatar(
+                  backgroundColor: Colors.grey,
+                  backgroundImage: NetworkImage(userDP),
+                  radius: 30,
                 ),
                 onSelected: (GeneralButton? value) {
                   setState(() {
@@ -65,7 +70,9 @@ class _PrimaryAppBarState extends State<PrimaryAppBar> {
           SizedBox(width: 15),
         ],
         bottom: PreferredSize(
-          child: SecondaryAppbar(page: widget.page,),
+          child: SecondaryAppbar(
+            page: widget.page,
+          ),
           preferredSize: const Size.fromHeight(48.0),
         ));
   }

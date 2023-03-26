@@ -1,5 +1,5 @@
 import 'package:unixtime/unixtime.dart';
-import 'package:date_util/date_util.dart';
+import 'package:date_utils/date_utils.dart';
 
 int getUnix(String date, String time) {
   int unix;
@@ -50,6 +50,7 @@ int getUnix(String date, String time) {
 }
 
 List<int> getMonthUnix(String m) {
+  // print("Entered getMonthUnix");
   String month = "";
   switch (m) {
     case "January":
@@ -89,10 +90,9 @@ List<int> getMonthUnix(String m) {
       month = "12";
       break;
   }
-  List<int> start_end = [1,2];
+  List<int> start_end = [1, 2];
   int curMon = DateTime.now().month;
   String start = "", end = "";
-  var dateUtility = new DateUtil();
   int year = DateTime.now().year;
   if (int.parse(month) > curMon) {
     start = (year - 1).toString() + "-";
@@ -101,13 +101,16 @@ List<int> getMonthUnix(String m) {
     start = year.toString() + "-";
     end = year.toString() + "-";
   }
+  // example
+
+  var date = DateTime(year, int.parse(month));
   start += month + "-01 00:00:00.000";
-  end += month +
-      "-" +
-      dateUtility.daysInMonth(int.parse(month), year).toString() +
-      " 23:59:59.000";
+  end += month + "-" + DateUtils.lastDayOfMonth(date).toString().substring(8,10) + " 23:59:59.000";
+  // print("Problem here");
   start_end[0] = DateTime.parse(start).unixtime;
   start_end[1] = DateTime.parse(end).unixtime;
+
+  // print("Exited getMonthUnix");
 
   return start_end;
 }
