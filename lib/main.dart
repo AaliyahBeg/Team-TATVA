@@ -4,6 +4,7 @@ import 'package:environment_app/Air_Pollution/aqiGraph.dart';
 import 'package:environment_app/Connect/connect.dart';
 import 'package:environment_app/Connect/feed_screen.dart';
 import 'package:environment_app/petitions.dart';
+import 'package:environment_app/News/news_home.dart';
 import 'package:environment_app/sign_up.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -21,7 +22,31 @@ import 'package:provider/provider.dart';
 
 import 'Connect/components/providers/user_provider.dart';
 import 'components/profile.dart';
-import 'news.dart';
+
+import 'package:environment_app/News/datenews.dart';
+import 'package:environment_app/News/headlines.dart';
+import 'package:environment_app/News/localnews.dart';
+import 'package:environment_app/News/savednews.dart';
+import 'package:environment_app/News/newscontent.dart';
+// void main() {
+//   runApp(const MyApp());
+// }
+//
+// class MyApp extends StatelessWidget {
+//   const MyApp({Key? key}) : super(key: key);
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       debugShowCheckedModeBanner: false,
+//       initialRoute: 'homepage',
+//       routes: {
+//         'petitions': (context) => const Petitions(),
+//         'homepage': (context) => const Home(),
+//       },
+//     );
+//   }
+// }
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -80,19 +105,22 @@ class MyApp extends StatelessWidget {
             }
           },
         ),
-        routes: {
-          'petitions': (context) => const Petitions(),
-          'homepage': (context) => const Home(),
-          'login': (context) => const LoginPage(),
-          'signup': (context) => const SignupPage(),
-          'aqiGraph': (context) => const aqiGraph(),
-          'connect': (context) => Connect(collection: collection),
-          'aqi': (context) => const aqiStatus(),
-          'profile': (context) => Profile(uid: uid, collection: collection),
-          'news': (context) => News(),
-        },
-      ),
-    );
+      routes: {
+        'petitions': (context) => const Petitions(),
+        'news': (context) => News_home(),
+        'homepage': (context) => const Home(),
+        'login': (context) => const LoginPage(),
+        'signup': (context) => const SignupPage(),
+        'aqiGraph': (context) => const aqiGraph(),
+        'connect': (context) => Connect(collection: collection,),
+        'aqi': (context) => const aqiStatus(),
+        'profile': (context) => Profile(uid: uid, collection: collection),
+        'news_page1': (context) => const headlines(),
+        'news_page2': (context) => const localnews(),
+        'news_page3': (context) => const datenews(),
+        'saved_news': (context) => const savednews(),
+      },
+    ));
   }
 }
 
