@@ -8,6 +8,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:environment_app/homepage.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'Land_Pollution/Cart_Add/CartSystem.dart';
+import 'Land_Pollution/Product/Products.dart';
 import 'Land_Pollution/models/product_model.dart';
 
 import 'package:environment_app/Welcome_Screen.dart';
@@ -42,6 +44,7 @@ Future main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(ProductAdapter());
   await Hive.openBox<Product>('production');
+  await Hive.openBox<Product>('cart');
   await Permission.camera.request();
   await Permission.microphone.request();
   await Permission.phone.request();
@@ -68,9 +71,9 @@ class MyApp extends StatelessWidget {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return Home();
+            return MainScreen();
           } else {
-            return WelcomeScreen();
+            return MainScreen();
           }
         },
       ),

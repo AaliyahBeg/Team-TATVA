@@ -34,8 +34,16 @@ class _DataSetInputScreenState extends State<DataSetInputScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sell Your Own'),
-        backgroundColor: Colors.green,
+        title: Text(
+            'Sell Your Own',
+          style: TextStyle(
+            fontFamily: 'Inria',
+            fontSize: 30,
+            fontWeight: FontWeight.w700,
+            color: Colors.black26,
+          ),
+        ),
+        backgroundColor: Colors.white,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

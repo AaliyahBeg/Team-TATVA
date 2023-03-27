@@ -17,8 +17,16 @@ class _wishItemState extends State<wishItem>{
 
     return Scaffold(
         appBar: AppBar(
-        title: Text('WishList'),
-    backgroundColor: Colors.green,
+        title: Text(
+            'WishList' ,
+          style: TextStyle(
+          fontFamily: 'Inria',
+          fontSize: 30,
+          fontWeight: FontWeight.w700,
+              color: Colors.black26,
+        ),
+        ),
+    backgroundColor: Colors.white,
     ),
       body:GridView.builder(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
