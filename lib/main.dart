@@ -3,7 +3,7 @@ import 'package:environment_app/Air_Pollution/aqi.dart';
 import 'package:environment_app/Air_Pollution/aqiGraph.dart';
 import 'package:environment_app/Connect/connect.dart';
 import 'package:environment_app/Connect/feed_screen.dart';
-import 'package:environment_app/petitions.dart';
+
 import 'package:environment_app/News/news_home.dart';
 import 'package:environment_app/sign_up.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:environment_app/homepage.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'Land_Pollution/models/product_model.dart';
+import 'package:environment_app/petition/petitions_1_.dart';
 
 import 'package:environment_app/Welcome_Screen.dart';
 import 'package:environment_app/login.dart';
