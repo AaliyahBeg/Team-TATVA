@@ -32,6 +32,7 @@ class ImagePickerExample extends StatefulWidget {
   String? textNote1;
   String? textNote2;
   String? textNote3;
+  // int ? support;
  
 
   ImagePickerExample(
@@ -60,6 +61,7 @@ class _ImagePickerExampleState extends State<ImagePickerExample> {
   String imgTitle = ""; // title_of_img
   String pathUrl = ""; // pathurl
   String location = '-'; //location
+  int support=0;
 
   _ImagePickerExampleState(
       {this.textNote, this.textNote1, this.textNote2, this.textNote3});
@@ -90,7 +92,7 @@ class _ImagePickerExampleState extends State<ImagePickerExample> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'NATURALEZA',
+          'TATV',
         ),
         backgroundColor: Color.fromARGB(255, 123, 187, 91),
       ),
@@ -257,6 +259,7 @@ class _ImagePickerExampleState extends State<ImagePickerExample> {
                     'imgTitle': imgTitle,
                     'pathurl': imageUrl,
                     'location': location,
+                    // 'support':support,
                   }).then((value) => print('User added'));
                   Navigator.push(
                       context,

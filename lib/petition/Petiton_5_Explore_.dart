@@ -10,6 +10,7 @@ import 'package:environment_app/login.dart';
 // import 'package:environment_app/utils/utils.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:environment_app/petition/petitions_1_.dart';
+import 'package:like_button/like_button.dart';
 import 'package:scroll_snap_list/scroll_snap_list.dart';
 
 // import '../services/storage_methods.dart';
@@ -33,9 +34,16 @@ class _ProfileState extends State<Profile> {
       Topic = 'Topic',
       Story = 'Story',
       location = 'location';
+      // Support='support';
+      
   String pathurl =
       "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png";
   late Uint8List file;
+  int ?numberOflikes=120;
+  bool ?isLiked=false;
+  int ? count;
+  String? text;
+
   @override
   void initState() {
     super.initState();
@@ -57,6 +65,7 @@ class _ProfileState extends State<Profile> {
       Story = petitionSnap.data()!['Story'];
       location = petitionSnap.data()!['location'];
       pathurl = petitionSnap.data()!['pathurl'];
+      // Support=petitionSnap.data()!['support'];
     } catch (e) {
       showSnackBar(
         context,
@@ -299,6 +308,47 @@ class _ProfileState extends State<Profile> {
                                     pathurl,
                                   ),
                                   fit: BoxFit.cover)),
+
+                                  
+                                  child :LikeButton(
+                                    size:60,
+                                    likeCount: numberOflikes,
+                                    isLiked: isLiked,
+                                    countPostion: CountPostion.bottom,
+                                   
+                                    likeBuilder: (isLiked){
+                                      final color=isLiked?Colors.green:Color.fromARGB(255, 228, 221, 165);
+
+                                      return Icon(Icons.favorite, color:color,size: 60);
+                                    },
+                                    likeCountPadding: EdgeInsets.only(left: 12),
+                                   countBuilder:(count ,isLiked,text){
+                                    final color=isLiked? Colors.black:Colors.grey;
+                                   
+                 
+
+                                      return Text(
+                                        text,
+                                        style: TextStyle(
+                                          color: color,
+                                          fontSize: 34,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      );
+
+                                    },
+                                    onTap: (isLiked) async{
+                                     
+                                     
+                                      numberOflikes = numberOflikes! + ((this.isLiked!) ? 1:-1);
+                                      
+                                       this.isLiked=!isLiked;
+
+                                       return !isLiked;
+                                    },
+                                    
+
+                                  ),
                         ),
                       ),
 
@@ -376,6 +426,20 @@ class _ProfileState extends State<Profile> {
                                   color: Colors.black,
                                   fontFamily: 'Inria',
                                 )),
+
+                            //          SizedBox(height: 20),
+                            // Text("SUPPORT",
+                            //     style: TextStyle(
+                            //       color: Colors.black,
+                            //       fontFamily: 'Inria',
+                            //       fontWeight: FontWeight.bold,
+                            //       fontSize: 35,
+                            //     )),
+                            // Text(Support,
+                            //     style: TextStyle(
+                            //       color: Colors.black,
+                            //       fontFamily: 'Inria',
+                            //     )),
                           ],
                         ),
                       ) //

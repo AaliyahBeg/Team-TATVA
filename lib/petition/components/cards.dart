@@ -17,6 +17,7 @@ Widget buildCard({
   required String imgTitle,
   required String pathurl,
   required String location,
+  // required int support,
   void Function()? onPressed,
 }) =>
     Container(
@@ -70,6 +71,19 @@ Widget buildCard({
             fontWeight: FontWeight.bold,
           ),
         ),
+
+        //     const SizedBox(
+        //   height: 5,
+        // ),
+        // Text(
+        //   support as String,
+        //   style: const TextStyle(
+        //     fontFamily: 'Inria',
+        //        fontSize: 20,
+        //     fontWeight: FontWeight.bold,
+        //   ),
+        // ),
+
         GeneralButton(
          child: const Text('VIEW',
               style: TextStyle(
