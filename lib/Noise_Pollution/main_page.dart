@@ -88,6 +88,31 @@ class _Page4State extends State<Page4> {
     }
   }
 
+  Widget getGraph1() {
+    start();
+    List<ChartData> chartData = [];
+    for (int i = 0; i < values.length; i++) {
+      chartData.add(ChartData(i, double.parse(values[i])));
+    }
+    if (chartData.length >= 25) {
+      chartData.removeAt(0);
+    }
+
+    return Container(
+      padding: EdgeInsets.all(16.0),
+      child: SfCartesianChart(
+        primaryXAxis: NumericAxis(),
+        series: <LineSeries<ChartData, num>>[
+          LineSeries<ChartData, num>(
+            dataSource: chartData,
+            xValueMapper: (ChartData data, _) => data.x,
+            yValueMapper: (ChartData data, _) => data.y,
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget getGraph() {
     // List<ChartData> chartData = values
     //     .asMap()
@@ -150,7 +175,8 @@ class _Page4State extends State<Page4> {
       home: Scaffold(
         body: SingleChildScrollView(
           child: Center(
-              child: Column(mainAxisAlignment: MainAxisAlignment.center,
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   //children: getContent())),
                   children: <Widget>[
                 const SizedBox(
@@ -176,7 +202,7 @@ class _Page4State extends State<Page4> {
                 const SizedBox(
                   height: 50,
                 ),
-                getGraph(),
+                getGraph1(),
                 const SizedBox(
                   height: 50,
                 ),

@@ -95,6 +95,13 @@ class _localnews_homeState extends State<localnews_home> {
 
   void updateMarkerChange(Offset position) {
     _markerPosition = _controller.pixelToLatLng(position);
+    setState(() {
+      lat:
+      _markerPosition.latitude;
+      lng:
+      _markerPosition.longitude;
+      print(lat.toString() + lng.toString());
+    });
 
     /// Removed [MapTileLayer.initialMarkersCount] property and updated
     /// markers only when the user taps.
@@ -135,13 +142,6 @@ class _localnews_homeState extends State<localnews_home> {
                   zoomPanBehavior: _mapZoomPanBehavior,
                   controller: _controller,
                   markerBuilder: (BuildContext context, int index) {
-                    setState(() {
-                      lat:
-                      _markerPosition.latitude;
-                      lng:
-                      _markerPosition.longitude;
-                      print(lat.toString() + lng.toString());
-                    });
                     return MapMarker(
                         latitude: _markerPosition.latitude,
                         longitude: _markerPosition.longitude,
@@ -164,7 +164,7 @@ class _localnews_homeState extends State<localnews_home> {
               ],
             ),
             SizedBox(
-              height: 20,
+              height: 5,
             ),
             IconButton(
               onPressed: () {
