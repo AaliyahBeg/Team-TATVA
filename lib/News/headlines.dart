@@ -48,9 +48,12 @@ class _headlinesState extends State<headlines> {
               // if(articles?.length==Null) x=0;
               // else x=articles?.length;
               return ListView.builder(
-                //itemCount:x,
+                itemCount: articles?.length,
                 itemBuilder: (context, index) {
                   final article = articles?[index];
+                  if (articles == Null) {
+                    return Text('Sorry, no Headlines was recorded as of now.');
+                  }
                   return InkWell(
                     onDoubleTap: () {
                       Navigator.push(context, MaterialPageRoute(builder: (_) {
