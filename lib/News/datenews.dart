@@ -51,9 +51,13 @@ class _datenewsState extends State<datenews> {
               // else x=articles?.length;
 
               return ListView.builder(
-                //itemCount:x,
+                itemCount: articles?.length,
                 itemBuilder: (context, index) {
                   final article = articles?[index];
+                  if (articles == Null) {
+                    return Text(
+                        'Sorry, no News was recorded as of now for the given Date');
+                  }
                   return InkWell(
                     onDoubleTap: () {
                       Navigator.push(context, MaterialPageRoute(builder: (_) {
