@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import '../components/primary_appbar.dart';
 import 'components/create_dropdown_list.dart';
 import 'components/string_to_unix.dart';
+import 'data/AQI/aqiData.dart';
 import 'data/confidential.dart';
-import 'data/historicalAQI/historical_aqi_model.dart';
 import 'package:http/http.dart' as http;
 
 class aqiStatus extends StatefulWidget {
@@ -20,13 +20,13 @@ class aqiStatus extends StatefulWidget {
 class _aqiStatusState extends State<aqiStatus> {
   double? lat;
   double? lon;
-  int? start, monthStart;
-  int? end, monthEnd;
-  late historicalAqiModel dayData, monthData = historicalAqiModel();
+  int? start;
+  int? end;
+  late AQI_Data dayData;
   late GeoCoderModel latlong;
   String? address;
   String dayDropdownValue = dayDropdownValues.last;
-  String aqiDropdownValue = aqiDropdownValues.first;
+  // String aqiDropdownValue = aqiDropdownValues.first;
   final latlongurl =
       'http://api.positionstack.com/v1/forward?access_key=${addressLatLongKey}&query=';
 
@@ -67,37 +67,18 @@ class _aqiStatusState extends State<aqiStatus> {
     print(latlongdata);
 
     latlong = GeoCoderModel.fromJson(latlongdata);
+    if (latlong.data == null || latlong.data!.isEmpty) return;
     lat = latlong.data![0].latitude;
     lon = latlong.data![0].longitude;
     start = getUnix(dayDropdownValue, "00:00:00.000");
     end = getUnix(dayDropdownValue, "23:59:59.000");
     final response = await http.get(Uri.parse(
-        'http://api.openweathermap.org/data/2.5/air_pollution/history?lat=${lat}&lon=${lon}&start=${start}&end=${end}&appid=${historicalDataAPIKey}'));
+        'http://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${historicalDataAPIKey}'));
 
     var data = jsonDecode(response.body.toString());
     print(data);
     _streamController!.add(data);
-    dayData = historicalAqiModel.fromJson(data);
-    for (int i = 0; i < dayData.list!.length; i++) {
-      avgAQI += dayData.list![i].main!.aqi!;
-      avgco += dayData.list![i].components!.co!;
-      avgno += dayData.list![i].components!.no!;
-      avgno2 += dayData.list![i].components!.no2!;
-      avgo3 += dayData.list![i].components!.o3!;
-      avgso2 += dayData.list![i].components!.so2!;
-      avgpm25 += dayData.list![i].components!.pm25!;
-      avgpm10 += dayData.list![i].components!.pm10!;
-      avgnh3 += dayData.list![i].components!.nh3!;
-    }
-    avgAQI /= dayData.list!.length;
-    avgco /= dayData.list!.length;
-    avgno /= dayData.list!.length;
-    avgno2 /= dayData.list!.length;
-    avgo3 /= dayData.list!.length;
-    avgso2 /= dayData.list!.length;
-    avgpm25 /= dayData.list!.length;
-    avgpm10 /= dayData.list!.length;
-    avgnh3 /= dayData.list!.length;
+    dayData = AQI_Data.fromJson(data);
   }
 
   @override
@@ -155,52 +136,24 @@ class _aqiStatusState extends State<aqiStatus> {
           ),
 
           //By Day
-          Row(
-            children: [
-              Container(
-                margin: const EdgeInsets.fromLTRB(10, 5, 10, 20),
-                child: const Text(
-                  'Select Date',
-                  style: TextStyle(
-                    fontFamily: 'Inria',
-                    fontSize: 22,
-                    fontWeight: FontWeight.w700,
+          Container(
+            width: 200,
+            padding: EdgeInsets.all(10),
+            margin: EdgeInsets.symmetric(horizontal: 10),
+            child: Row(
+              children: [
+                Icon(Icons.calculate_outlined),
+                SizedBox(width: 10),
+                Container(
+                  margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Text(
+                    dayDropdownValue,
+                    style: TextStyle(fontFamily: 'Inria', fontSize: 16),
                   ),
-                  textAlign: TextAlign.left,
                 ),
-              ),
-              Container(
-                margin: const EdgeInsets.fromLTRB(10, 5, 10, 20),
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black54),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: DropdownButton<String>(
-                  value: dayDropdownValue.isNotEmpty ? dayDropdownValue : null,
-                  icon: const Icon(Icons.expand_more),
-                  elevation: 16,
-                  style: const TextStyle(
-                      fontFamily: 'Inria',
-                      fontSize: 17,
-                      fontWeight: FontWeight.w200,
-                      color: Colors.black54),
-                  onChanged: (String? value) {
-                    setState(() {
-                      dayDropdownValue = value!;
-                    });
-                    getAPI();
-                  },
-                  items: dayDropdownValues
-                      .map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
 
           StreamBuilder(
@@ -227,15 +180,15 @@ class _aqiStatusState extends State<aqiStatus> {
                   }
                   return AirFirstPage(
                     address: address,
-                    avgAQI: avgAQI,
-                    avgco: avgco,
-                    avgnh3: avgnh3,
-                    avgno2: avgno2,
-                    avgno: avgno,
-                    avgo3: avgo3,
-                    avgpm10: avgpm10,
-                    avgpm25: avgpm25,
-                    avgso2: avgso2,
+                    avgAQI: dayData.list![0].main!.aqi!,
+                    avgco: dayData.list![0].components!.co!,
+                    avgnh3: dayData.list![0].components!.nh3!,
+                    avgno2: dayData.list![0].components!.no2!,
+                    avgno: dayData.list![0].components!.no!,
+                    avgo3: dayData.list![0].components!.o3!,
+                    avgpm10: dayData.list![0].components!.pm10!,
+                    avgpm25: dayData.list![0].components!.pm25!,
+                    avgso2: dayData.list![0].components!.so2!,
                   );
                 }
                 return Container();
