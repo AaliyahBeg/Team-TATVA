@@ -48,6 +48,21 @@ Future<Position> _determinePosition() async {
   return await Geolocator.getCurrentPosition();
 }
 
+typedef MapTapCallback = void Function(Offset position);
+
+class _CustomZoomPanBehavior extends MapZoomPanBehavior {
+  _CustomZoomPanBehavior();
+  late MapTapCallback onTap;
+
+  @override
+  void handleEvent(PointerEvent event) {
+    if (event is PointerUpEvent) {
+      onTap(event.localPosition);
+    }
+    super.handleEvent(event);
+  }
+}
+
 class localnews_home extends StatefulWidget {
   const localnews_home({super.key});
 
@@ -61,8 +76,14 @@ class _localnews_homeState extends State<localnews_home> {
     'assets/world_map.json',
     shapeDataField: 'continent',
   );
+  late double lat = 0, lng = 0;
+  late MapLatLng _markerPosition;
+  late _CustomZoomPanBehavior _mapZoomPanBehavior;
+  late MapShapeLayerController _controller;
   @override
   void initState() {
+    _controller = MapShapeLayerController();
+    _mapZoomPanBehavior = _CustomZoomPanBehavior()..onTap = updateMarkerChange;
     dataSource = MapShapeSource.asset(
       //"https://cdn.syncfusion.com/maps/map-data/world-map.json",
       'assets/world_map.json',
@@ -70,6 +91,17 @@ class _localnews_homeState extends State<localnews_home> {
     );
 
     super.initState();
+  }
+
+  void updateMarkerChange(Offset position) {
+    _markerPosition = _controller.pixelToLatLng(position);
+
+    /// Removed [MapTileLayer.initialMarkersCount] property and updated
+    /// markers only when the user taps.
+    if (_controller.markersCount > 0) {
+      _controller.clearMarkers();
+    }
+    _controller.insertMarker(0);
   }
 
   Widget build(BuildContext context) {
@@ -100,6 +132,25 @@ class _localnews_homeState extends State<localnews_home> {
               layers: [
                 MapShapeLayer(
                   source: dataSource,
+                  zoomPanBehavior: _mapZoomPanBehavior,
+                  controller: _controller,
+                  markerBuilder: (BuildContext context, int index) {
+                    setState(() {
+                      lat:
+                      _markerPosition.latitude;
+                      lng:
+                      _markerPosition.longitude;
+                      print(lat.toString() + lng.toString());
+                    });
+                    return MapMarker(
+                        latitude: _markerPosition.latitude,
+                        longitude: _markerPosition.longitude,
+                        child: Icon(
+                          Icons.location_on,
+                          color: Color.fromARGB(255, 83, 139, 87),
+                          size: 20,
+                        ));
+                  },
                   loadingBuilder: (BuildContext context) {
                     return Container(
                       height: 25,
