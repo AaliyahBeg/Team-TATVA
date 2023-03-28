@@ -33,11 +33,6 @@ Widget news_title(String news_img, String news_text, String news_route,
     },
     child: Card(
       elevation: 5,
-      shape: RoundedRectangleBorder(
-          side: BorderSide(width: 0.5, color: Colors.white60),
-          borderRadius: BorderRadius.circular(
-            20,
-          )),
       child: Container(
         child: Row(
           children: [

@@ -8,11 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
-
 void main() => runApp(ImagePickerExample());
 
 class MyApp extends StatelessWidget {
-
   MyApp({Key? key}) : super(key: key);
 
   late DatabaseReference dbRef;
@@ -27,32 +25,27 @@ class MyApp extends StatelessWidget {
 }
 
 class ImagePickerExample extends StatefulWidget {
-  
   String? textNote;
   String? textNote1;
   String? textNote2;
   String? textNote3;
- 
 
   ImagePickerExample(
       {this.textNote, this.textNote1, this.textNote2, this.textNote3});
 
   @override
   _ImagePickerExampleState createState() => _ImagePickerExampleState(
-    
         textNote: textNote,
         textNote1: textNote1,
         textNote2: textNote2,
         textNote3: textNote3,
-        
       );
 }
 
 class _ImagePickerExampleState extends State<ImagePickerExample> {
-
-  GlobalKey<FormState> key=GlobalKey();
+  GlobalKey<FormState> key = GlobalKey();
   String uid = FirebaseAuth.instance.currentUser!.uid;
-  String imageUrl='';
+  String imageUrl = '';
   String? textNote;
   String? textNote1;
   String? textNote2;
@@ -84,8 +77,6 @@ class _ImagePickerExampleState extends State<ImagePickerExample> {
     });
   }
 
- 
-   
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -222,7 +213,8 @@ class _ImagePickerExampleState extends State<ImagePickerExample> {
                   } catch (error) {}
                   //Store the file
 
-                  pathUrl = referenceImageToUpload.putFile(File(file!.path)) as String;
+                  pathUrl = referenceImageToUpload.putFile(File(file!.path))
+                      as String;
                   print("Path URL after : ${pathUrl}");
                 },
                 icon: Icon(Icons.camera_alt),
@@ -240,20 +232,20 @@ class _ImagePickerExampleState extends State<ImagePickerExample> {
               SizedBox(height: 10),
 
               SizedBox(height: 5),
-              
+
               TextButton(
                 onPressed: () async {
-                  
-                  if(imageUrl.isEmpty){
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Please upload an image')));
+                  if (imageUrl.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Please upload an image')));
                   }
                   print("Path URL in onPressed: ${pathUrl}");
                   await user.add({
                     'uid': uid,
-                    'Title':textNote,
-                    'Scope':textNote1,
-                    'Topic':textNote2,
-                    'Story':textNote3,
+                    'Title': textNote,
+                    'Scope': textNote1,
+                    'Topic': textNote2,
+                    'Story': textNote3,
                     'imgTitle': imgTitle,
                     'pathurl': imageUrl,
                     'location': location,
@@ -261,7 +253,7 @@ class _ImagePickerExampleState extends State<ImagePickerExample> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: ((context) =>Petitions()),
+                        builder: ((context) => Petitions()),
                       ));
                 },
                 style: ButtonStyle(

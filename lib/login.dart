@@ -217,6 +217,17 @@ class _LoginPageState extends State<LoginPage> {
                             height: 55,
                             width: double.infinity,
                             child: ElevatedButton(
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.resolveWith(
+                                          (states) {
+                                    if (states
+                                        .contains(MaterialState.hovered)) {
+                                      return Color.fromARGB(255, 198, 218, 198);
+                                    } else
+                                      return Color.fromARGB(255, 8, 43, 40);
+                                  }),
+                                ),
                                 onPressed: () async {
                                   if (_formKey.currentState!.validate()) {
                                     _formKey.currentState!.save();
