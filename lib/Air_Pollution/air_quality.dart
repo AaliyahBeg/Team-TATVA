@@ -1,5 +1,10 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
+import 'package:syncfusion_flutter_gauges/gauges.dart';
+import 'package:water_bottle/water_bottle.dart';
 import 'data/AQI/app_images.dart';
 
 class AirFirstPage extends StatefulWidget {
@@ -42,7 +47,7 @@ class _AirFirstPageState extends State<AirFirstPage>
   AnimationController? controller_;
 
   String? number_;
-  Color? aqiColor_;
+  Color? aqiColor;
   String? aqiStatus_;
   String? aqiImage_;
   double? screenWidth, screenHeight;
@@ -51,7 +56,7 @@ class _AirFirstPageState extends State<AirFirstPage>
       {this.animation_,
       this.controller_,
       this.number_,
-      this.aqiColor_,
+      this.aqiColor,
       this.aqiStatus_,
       this.aqiImage_,
       this.screenWidth,
@@ -72,7 +77,7 @@ class _AirFirstPageState extends State<AirFirstPage>
             });
           });
     controller_?.forward();
-    aqiColor_ = getAQIUpdate(widget.avgAQI);
+    aqiColor = getAQIUpdate(widget.avgAQI);
   }
 
   @override
@@ -113,147 +118,124 @@ class _AirFirstPageState extends State<AirFirstPage>
       alignment: WrapAlignment.spaceAround,
       children: <Widget>[
         getDetailsRowItem(
-            color: aqiColor_,
+            color: aqiColor,
             num: widget.avgpm25.toInt().toString(),
-            label: "PM 2.5"),
+            label: "PM 2.5",
+            max: 600),
         getDetailsRowItem(
-            color: Color.fromARGB(0, 76, 175, 79),
+            color: aqiColor,
             num: widget.avgpm10.toInt().toString(),
-            label: "PM 10"),
+            label: "PM 10",
+            max: 250),
         getDetailsRowItem(
-            color: Color.fromARGB(0, 76, 175, 79),
+            color: aqiColor,
             num: widget.avgo3.toInt().toString(),
-            label: "O3"),
+            label: "O3", 
+            max: 200),
         getDetailsRowItem(
-            color: Color.fromARGB(0, 76, 175, 79),
+            color: aqiColor,
             num: widget.avgno.toInt().toString(),
-            label: "NO"),
+            label: "NO",
+            max: 250),
         getDetailsRowItem(
-            color: Color.fromARGB(0, 76, 175, 79),
+            color: aqiColor,
             num: widget.avgno2.toInt().toString(),
-            label: "NO2"),
+            label: "NO2",
+            max: 250),
         getDetailsRowItem(
-            color: Color.fromARGB(0, 76, 175, 79),
+            color: aqiColor,
             num: widget.avgso2.toInt().toString(),
-            label: "SO2"),
+            label: "SO2",
+            max: 400),
         getDetailsRowItem(
-            color: Color.fromARGB(0, 76, 175, 79),
+            color: aqiColor,
             num: widget.avgco.toInt().toString(),
-            label: "CO"),
+            label: "CO",
+            max: 16000),
         getDetailsRowItem(
-            color: Color.fromARGB(0, 76, 175, 79),
+            color: aqiColor,
             num: widget.avgnh3.toInt().toString(),
-            label: "NH3"),
+            label: "NH3",
+            max: 200),
       ],
     );
   }
 
-  Widget getDetailsRowItem({Color? color, required String num, String? label}) {
+  Widget getDetailsRowItem({Color? color, required String num, required double max, String? label}) {
     return Container(
-      margin: const EdgeInsets.all(20.0),
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: Colors.white.withOpacity(0.3),
-            offset: const Offset(-6.0, -6.0),
-            blurRadius: 16.0,
-          ),
-          BoxShadow(
-            color: Colors.black.withOpacity(0.2),
-            offset: const Offset(6.0, 6.0),
-            blurRadius: 16.0,
-          ),
-        ],
-        color: color,
-        borderRadius: BorderRadius.circular(20.0),
-      ),
-      width: screenWidth! / 3,
-      height: screenHeight! / 6,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: <Widget>[
-          Container(
-            padding: EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              border: Border.all(width: 1),
-              borderRadius: BorderRadius.circular(50),
-              color: Color.fromARGB(255, 237, 226, 226),
-            ),
-            child: Text(
-              num,
-              style: TextStyle(
-                  fontFamily: 'Inria',
-                  color: Colors.black54,
-                  fontSize: 12.0,
-                  fontWeight: FontWeight.bold),
-            ),
-          ),
-          Text(label!)
-        ],
-      ),
-    );
+        margin: const EdgeInsets.all(20.0),
+        width: screenWidth! / 3,
+        height: screenHeight! / 6,
+        child: LiquidCircularProgressIndicator(
+          value: double.parse(num) / max,
+          valueColor: AlwaysStoppedAnimation(color!),
+          backgroundColor: Colors.white,
+          borderWidth: 1.0,
+          borderColor: Color.fromARGB(0, 244, 67, 54),
+          direction: Axis.vertical,
+          center: Text(label! + "\n" + num, textAlign: TextAlign.center,),
+        ));
   }
 
   Widget getMainAQIInfo() {
-    return Stack(
-      alignment: Alignment.center,
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        Container(
-          margin: const EdgeInsets.all(20.0),
-          width: screenWidth,
-          height: screenHeight! / 8,
-          decoration: BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                color: aqiColor_!.withOpacity(0.3),
-                offset: const Offset(-6.0, -6.0),
-                blurRadius: 16.0,
-              ),
-              BoxShadow(
-                color: aqiColor_!.withOpacity(0.2),
-                offset: const Offset(6.0, 6.0),
-                blurRadius: 16.0,
-              ),
-            ],
-            color: aqiColor_,
-            borderRadius: BorderRadius.circular(12.0),
-          ),
+        Text("AQI", style: TextStyle(fontFamily: 'Inria', fontSize: 22)),
+        SizedBox(
+          height: 20,
         ),
-        Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              Image.asset(
-                aqiImage_!,
-                width: screenWidth! / 5,
-              ),
-              Column(
-                children: <Widget>[
-                  Text(
-                    '$number_',
-                    style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Inria'),
-                  ),
-                  Text(
-                    'AQI',
-                    style: TextStyle(fontSize: 12.0, fontFamily: 'Inria'),
+        Container(
+          width: 250,
+          height: 250,
+          child: SfRadialGauge(axes: <RadialAxis>[
+            RadialAxis(
+                minimum: 0,
+                maximum: 600,
+                showLabels: false,
+                showTicks: false,
+                axisLineStyle: AxisLineStyle(
+                  thickness: 0.3,
+                  cornerStyle: CornerStyle.bothCurve,
+                  color: Color.fromARGB(30, 0, 169, 181),
+                  thicknessUnit: GaugeSizeUnit.factor,
+                ),
+                pointers: <GaugePointer>[
+                  RangePointer(
+                    value: max(widget.avgpm25,widget.avgpm10).toDouble(),
+                    cornerStyle: CornerStyle.bothCurve,
+                    color: aqiColor,
+                    width: 0.3,
+                    sizeUnit: GaugeSizeUnit.factor,
                   )
                 ],
-              ),
-              Text(
-                aqiStatus_!,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontSize: 14.0,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Inria'),
-              ),
-            ],
-          ),
+                annotations: <GaugeAnnotation>[
+                  GaugeAnnotation(
+                      positionFactor: 0.1,
+                      angle: 90,
+                      widget: Container(
+                        width: 100,
+                        height: 100,
+                        child: Column(
+                          children: [
+                            Container(
+                              width: 65,
+                              height: 65,
+                              child: Image.asset(aqiImage_ ?? 'assets/images/2.png') ,
+                            ),
+                            SizedBox(height: 10),
+                            Text(max(widget.avgpm25,widget.avgpm10).floor().toString(),
+                                style: TextStyle(
+                                    fontFamily: 'Inria', fontSize: 17))
+                          ],
+                        ),
+                      ))
+                ])
+          ]),
         ),
+        SizedBox(height: 20),
+        
+        Text(aqiStatus_?? 'Fair', style: TextStyle(fontFamily: 'Inria', fontSize: 22)),
       ],
     );
   }
@@ -261,42 +243,71 @@ class _AirFirstPageState extends State<AirFirstPage>
   Color getAQIUpdate(num aqi) {
     Color color = Colors.white;
 
-    if (aqi < 50) {
+    // if (aqi < 50) {
+    //   color = Color.fromARGB(255, 138, 227, 141);
+    //   aqiStatus_ = "Good";
+    //   aqiImage_ = aqi_1;
+    // }
+
+    // if (aqi >= 50 && aqi < 100) {
+    //   color = Color.fromARGB(255, 236, 224, 113);
+    //   aqiStatus_ = "Moderate";
+    //   aqiImage_ = aqi_2;
+    // }
+
+    // if (aqi >= 100 && aqi < 150) {
+    //   color = Color.fromARGB(255, 247, 157, 106);
+    //   aqiStatus_ = "Unhealthy\nfor\nSensitive Groups";
+    //   aqiImage_ = aqi_3;
+    // }
+
+    // if (aqi >= 150 && aqi < 200) {
+    //   color = Color.fromARGB(255, 252, 72, 72);
+    //   aqiStatus_ = "Unhealthy";
+    //   aqiImage_ = aqi_4;
+    // }
+
+    // if (aqi >= 200 && aqi < 300) {
+    //   color = Color.fromARGB(255, 136, 92, 255);
+    //   aqiStatus_ = "Very Unhealthy";
+    //   aqiImage_ = aqi_5;
+    // }
+    // if (aqi >= 300) {
+    //   color = Color.fromARGB(255, 91, 139, 0);
+    //   aqiStatus_ = "Hazardous";
+    //   aqiImage_ = aqi_6;
+    // }
+
+    if (aqi == 1) {
       color = Color.fromARGB(255, 138, 227, 141);
       aqiStatus_ = "Good";
       aqiImage_ = aqi_1;
     }
 
-    if (aqi >= 50 && aqi < 100) {
-      color = Colors.yellow;
+    if (aqi == 2) {
+      color = Color.fromARGB(255, 236, 224, 113);
       aqiStatus_ = "Moderate";
       aqiImage_ = aqi_2;
     }
 
-    if (aqi >= 100 && aqi < 150) {
-      color = Color.fromARGB(255, 253, 149, 237);
+    if (aqi == 3) {
+      color = Color.fromARGB(255, 247, 157, 106);
       aqiStatus_ = "Unhealthy\nfor\nSensitive Groups";
       aqiImage_ = aqi_3;
     }
 
-    if (aqi >= 150 && aqi < 200) {
-      color = Color.fromARGB(255, 244, 36, 36);
+    if (aqi == 4) {
+      color = Color.fromARGB(255, 252, 72, 72);
       aqiStatus_ = "Unhealthy";
       aqiImage_ = aqi_4;
     }
 
-    if (aqi >= 200 && aqi < 300) {
-      color = Color.fromARGB(255, 99, 46, 247);
+    if (aqi == 5) {
+      color = Color.fromARGB(255, 136, 92, 255);
       aqiStatus_ = "Very Unhealthy";
       aqiImage_ = aqi_5;
-    }
-    if (aqi >= 300) {
-      color = Color.fromARGB(255, 51, 22, 11);
-      aqiStatus_ = "Hazardous";
-      aqiImage_ = aqi_6;
     }
 
     return color;
   }
 }
-

@@ -95,6 +95,7 @@ class _savednewsState extends State<savednews> {
                     onDoubleTap: () {
                       Navigator.push(context, MaterialPageRoute(builder: (_) {
                         return newscontent(
+                            urlstring: article['url'],
                             url: article['url'],
                             img: article['urlToImage'],
                             title: article['title'],
