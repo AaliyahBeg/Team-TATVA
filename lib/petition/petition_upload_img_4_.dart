@@ -29,6 +29,8 @@ class ImagePickerExample extends StatefulWidget {
   String? textNote1;
   String? textNote2;
   String? textNote3;
+  int ? support;
+ 
 
   ImagePickerExample(
       {this.textNote, this.textNote1, this.textNote2, this.textNote3});
@@ -53,6 +55,7 @@ class _ImagePickerExampleState extends State<ImagePickerExample> {
   String imgTitle = ""; // title_of_img
   String pathUrl = ""; // pathurl
   String location = '-'; //location
+  int support = 0;
 
   _ImagePickerExampleState(
       {this.textNote, this.textNote1, this.textNote2, this.textNote3});
@@ -81,7 +84,7 @@ class _ImagePickerExampleState extends State<ImagePickerExample> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'NATURALEZA',
+          'TATV',
         ),
         backgroundColor: Color.fromARGB(255, 123, 187, 91),
       ),
@@ -213,8 +216,7 @@ class _ImagePickerExampleState extends State<ImagePickerExample> {
                   } catch (error) {}
                   //Store the file
 
-                  pathUrl = referenceImageToUpload.putFile(File(file!.path))
-                      as String;
+                  // pathUrl = referenceImageToUpload.putFile(File(file!.path)) as String;
                   print("Path URL after : ${pathUrl}");
                 },
                 icon: Icon(Icons.camera_alt),
@@ -239,6 +241,10 @@ class _ImagePickerExampleState extends State<ImagePickerExample> {
                     ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text('Please upload an image')));
                   }
+                  var userSnap = await FirebaseFirestore.instance
+                      .collection('users')
+                      .doc(uid)
+                      .get();
                   print("Path URL in onPressed: ${pathUrl}");
                   await user.add({
                     'uid': uid,
@@ -249,6 +255,10 @@ class _ImagePickerExampleState extends State<ImagePickerExample> {
                     'imgTitle': imgTitle,
                     'pathurl': imageUrl,
                     'location': location,
+                    'username': userSnap["name"],
+                    'profilePic': userSnap["photourl"],
+                    'support': [],
+                    'datePublished': DateTime.now(),
                   }).then((value) => print('User added'));
                   Navigator.push(
                       context,

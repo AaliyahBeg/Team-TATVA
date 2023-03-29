@@ -50,9 +50,11 @@ class _FeedScreenState extends State<FeedScreen> {
           print(
               "Following is: ${following} and length is: ${following.length}");
           return following.length == 0
-              ? Container(
-                  child: Text('Follow people to fill your feed...',
-                      style: TextStyle(fontFamily: 'Inria', fontSize: 15)))
+              ? Center(
+                child: Container(
+                    child: Text('Follow people to fill your feed...',
+                        style: TextStyle(fontFamily: 'Inria', fontSize: 15))),
+              )
               : Expanded(
                   child: ListView.builder(
                     itemCount: snapshot.data!.docs.length,
