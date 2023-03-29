@@ -21,7 +21,9 @@ class _FeedScreenState extends State<FeedScreen> {
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .get();
     print('Got data...');
-    following = data["following"];
+    setState(() {
+      following = data["following"];
+    });
     print(following);
   }
 
@@ -45,19 +47,25 @@ class _FeedScreenState extends State<FeedScreen> {
               child: CircularProgressIndicator(),
             );
           }
-          return Expanded(
-            child: ListView.builder(
-              itemCount: snapshot.data!.docs.length,
-              itemBuilder: (ctx, index) => following
-                      .contains(snapshot.data!.docs[index].data()["uid"] as dynamic)
-                  ? Container(
-                      child: PostCard(
-                        snap: snapshot.data!.docs[index].data(),
-                      ),
-                    )
-                  : Container(),
-            ),
-          );
+          print(
+              "Following is: ${following} and length is: ${following.length}");
+          return following.length == 0
+              ? Container(
+                  child: Text('Follow people to fill your feed...',
+                      style: TextStyle(fontFamily: 'Inria', fontSize: 15)))
+              : Expanded(
+                  child: ListView.builder(
+                    itemCount: snapshot.data!.docs.length,
+                    itemBuilder: (ctx, index) => following.contains(
+                            snapshot.data!.docs[index].data()["uid"] as dynamic)
+                        ? Container(
+                            child: PostCard(
+                              snap: snapshot.data!.docs[index].data(),
+                            ),
+                          )
+                        : Container(),
+                  ),
+                );
         },
       ),
     );

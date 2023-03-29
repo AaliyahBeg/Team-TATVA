@@ -1,29 +1,27 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:environment_app/Air_Pollution/air_quality.dart';
 import 'package:environment_app/Air_Pollution/components/fill_column_data.dart';
 import 'package:environment_app/Air_Pollution/data/historicalAQI/geo_coder_model.dart';
 import 'package:environment_app/utils/chartGradient.dart';
 import 'package:geolocator/geolocator.dart' as gl;
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:flutter/material.dart';
-import 'package:unixtime/unixtime.dart';
-import '../components/primary_appbar.dart';
-import 'components/create_dropdown_list.dart';
-import 'components/string_to_unix.dart';
-import 'data/confidential.dart';
-import 'data/historicalAQI/historical_aqi_model.dart';
+import '/components/primary_appbar.dart';
+import 'package:environment_app/Air_Pollution/components/create_dropdown_list.dart';
+import 'package:environment_app/Air_Pollution/components/string_to_unix.dart';
+import 'package:environment_app/Air_Pollution/data/confidential.dart';
+import 'package:environment_app/Air_Pollution/data/historicalAQI/historical_aqi_model.dart';
 import 'package:http/http.dart' as http;
-import 'package:environment_app/Air_Pollution/components/getLocation.dart';
+import 'package:environment_app/Air_Pollution/aqiGraph.dart';
 
-class aqiGraph extends StatefulWidget {
-  const aqiGraph({super.key});
+class curraqiGraph extends StatefulWidget {
+  const curraqiGraph({super.key});
 
   @override
-  State<aqiGraph> createState() => _aqiGraphState();
+  State<curraqiGraph> createState() => _curraqiGraphState();
 }
 
-class _aqiGraphState extends State<aqiGraph> {
+class _curraqiGraphState extends State<curraqiGraph> {
   double? lat;
   double? lon;
   int? start, monthStart;
@@ -34,8 +32,6 @@ class _aqiGraphState extends State<aqiGraph> {
   String dayDropdownValue = dayDropdownValues.last;
   String aqiDropdownValue = aqiDropdownValues.first;
   String monthDropdownValue = findMonth(DateTime.now());
-  final latlongurl =
-      'http://api.positionstack.com/v1/forward?access_key=${addressLatLongKey}&query=';
 
   num avgAQI = 0;
   num avgco = 0;
@@ -46,8 +42,6 @@ class _aqiGraphState extends State<aqiGraph> {
   num avgpm25 = 0;
   num avgpm10 = 0;
   num avgnh3 = 0;
-  StreamController? _streamController, monthController;
-  Stream? _stream, monthStream;
 
   Timer? _debounce;
   List<AQIValues>? graphData;
@@ -58,11 +52,8 @@ class _aqiGraphState extends State<aqiGraph> {
   @override
   void initState() {
     super.initState();
-    _streamController = StreamController();
-    monthController = StreamController();
-    _stream = _streamController!.stream;
-    monthStream = monthController!.stream;
-    _getCurrentPosition();
+    getAPI();
+    getMonthAPI();
   }
 
   @override
@@ -122,18 +113,7 @@ class _aqiGraphState extends State<aqiGraph> {
   }
 
   getAPI() async {
-    _streamController!.add("Loading...");
-    if (myController.text != null && myController.text.isNotEmpty) {
-      final latlongresponse = await http
-          .get(Uri.parse(latlongurl + myController.text.replaceAll(' ', '+')));
-
-      var latlongdata = jsonDecode(latlongresponse.body.toString());
-      print(latlongdata);
-
-      latlong = GeoCoderModel.fromJson(latlongdata);
-      lat = latlong.data![0].latitude;
-      lon = latlong.data![0].longitude;
-    }
+    await _getCurrentPosition();
     start = getUnix(dayDropdownValue, "00:00:00.000");
     end = getUnix(dayDropdownValue, "23:59:59.000");
     print("Latitude = ${lat}");
@@ -146,7 +126,6 @@ class _aqiGraphState extends State<aqiGraph> {
 
     var data = jsonDecode(response.body.toString());
     print(data);
-    _streamController!.add(data);
     dayData = historicalAqiModel.fromJson(data);
     for (int i = 0; i < dayData.list!.length; i++) {
       avgAQI += dayData.list![i].main!.aqi!;
@@ -159,32 +138,25 @@ class _aqiGraphState extends State<aqiGraph> {
       avgpm10 += dayData.list![i].components!.pm10!;
       avgnh3 += dayData.list![i].components!.nh3!;
     }
+    print("Before column data");
+    fillColumnData(dayData, aqiDropdownValue, 'day');
+    setState(() {
+      graphData = [...columnData];
+    });
+    clearColumnData();
+    print("After column data");
     // return dayData;
   }
 
   getMonthAPI() async {
-    print("Calling getMonthAPI...");
-    if (myController.text == null || myController.text.isEmpty) {
-      monthController!.add(null);
-      return;
-    }
-
-    monthController!.add("Loading...");
-
     List<int> start_end = getMonthUnix(monthDropdownValue);
     monthStart = start_end[0];
     monthEnd = start_end[1];
-
-    print("Start=${monthStart}");
-    print("End=${monthEnd}");
-    print(lat);
-    print(lon);
     final monthResponse = await http.get(Uri.parse(
         'http://api.openweathermap.org/data/2.5/air_pollution/history?lat=${lat}&lon=${lon}&start=${monthStart}&end=${monthEnd}&appid=${historicalDataAPIKey}'));
 
     var data = jsonDecode(monthResponse.body.toString());
     print(data);
-    monthController!.add(data);
     historicalAqiModel monData = historicalAqiModel.fromJson(data);
     monthData.coord = Coord(lon: monData.coord!.lon, lat: monData.coord!.lat);
     print("Month Data Lon: ${monthData.coord!.lon}");
@@ -236,6 +208,14 @@ class _aqiGraphState extends State<aqiGraph> {
           dt: date));
     }
     print("Month Data first AQI : ${monthData.list![0].main!.aqi}");
+
+    print("Before column data");
+    fillColumnData(monthData, aqiDropdownValue, 'month');
+    print("After column data");
+    setState(() {
+      graphData = [...columnData];
+    });
+    clearColumnData();
   }
 
   @override
@@ -265,23 +245,6 @@ class _aqiGraphState extends State<aqiGraph> {
           Container(
             margin: EdgeInsets.symmetric(horizontal: 10),
             child: Row(children: [
-              const Icon(Icons.location_on),
-              Flexible(
-                child: TextFormField(
-                  onChanged: (String text) async {
-                    if (_debounce?.isActive ?? false) _debounce!.cancel();
-                    _debounce = Timer(const Duration(milliseconds: 1000), () {
-                      getAPI();
-                    });
-                  },
-                  controller: myController,
-                  decoration: const InputDecoration(
-                    hintText: "Enter an address..",
-                    contentPadding: EdgeInsets.only(left: 24.0),
-                    border: InputBorder.none,
-                  ),
-                ),
-              ),
               Container(
                 margin: const EdgeInsets.fromLTRB(10, 0, 10, 20),
                 padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -330,86 +293,24 @@ class _aqiGraphState extends State<aqiGraph> {
             ),
           ),
           Container(
-            margin: const EdgeInsets.fromLTRB(10, 5, 10, 20),
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.black54),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: DropdownButton<String>(
-              value: dayDropdownValue.isNotEmpty ? dayDropdownValue : null,
-              icon: const Icon(Icons.expand_more),
-              elevation: 16,
-              style: const TextStyle(
-                  fontFamily: 'Inria',
-                  fontSize: 17,
-                  fontWeight: FontWeight.w200,
-                  color: Colors.black54),
-              onChanged: (String? value) {
-                setState(() {
-                  dayDropdownValue = value!;
-                });
-                getAPI();
-              },
-              items: dayDropdownValues
-                  .map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
+            child: SfCartesianChart(
+              title: ChartTitle(text: chartTitle),
+              primaryXAxis: CategoryAxis(),
+              primaryYAxis: NumericAxis(
+                edgeLabelPlacement: EdgeLabelPlacement.shift,
+              ),
+              series: <ChartSeries>[
+                AreaSeries<AQIValues, String>(
+                  dataSource: graphData!,
+                  xValueMapper: (AQIValues aqiv, _) => aqiv.date,
+                  yValueMapper: yValueMapper,
+                  gradient: linearGradient,
+                )
+              ],
+              // enableAxisAnimation: true,
+              margin: const EdgeInsets.all(6),
             ),
           ),
-          StreamBuilder(
-              stream: _stream,
-              builder: (BuildContext context, AsyncSnapshot snapshot) {
-                if (snapshot.data == null) {
-                  return Container();
-                }
-
-                if (snapshot.data == "Loading...") {
-                  return Center(
-                    child: Column(
-                      children: [
-                        CircularProgressIndicator(),
-                        SizedBox(height: 300),
-                      ],
-                    ),
-                  );
-                }
-                if (snapshot.hasData) {
-                  final data = snapshot.data;
-                  if (data["list"].length == 0) {
-                    return const Text('Type a nearby place');
-                  }
-                  print("Before column data");
-                  fillColumnData(dayData, aqiDropdownValue, 'day');
-                  graphData = [...columnData];
-                  clearColumnData();
-                  print("After column data");
-                  return Container(
-                    child: SfCartesianChart(
-                      title: ChartTitle(text: chartTitle),
-                      primaryXAxis: CategoryAxis(),
-                      primaryYAxis: NumericAxis(
-                        edgeLabelPlacement: EdgeLabelPlacement.shift,
-                      ),
-                      series: <ChartSeries>[
-                        AreaSeries<AQIValues, String>(
-                          dataSource: graphData!,
-                          xValueMapper: (AQIValues aqiv, _) => aqiv.date,
-                          yValueMapper: yValueMapper,
-                          gradient: linearGradient,
-                        )
-                      ],
-                      // enableAxisAnimation: true,
-                      margin: const EdgeInsets.all(6),
-                    ),
-                  );
-                }
-                return Container();
-              }),
-
           // By Month
           Container(
             margin: const EdgeInsets.fromLTRB(10, 5, 10, 20),
@@ -423,107 +324,27 @@ class _aqiGraphState extends State<aqiGraph> {
               textAlign: TextAlign.left,
             ),
           ),
-          Flexible(
-            child: Container(
-              margin: const EdgeInsets.fromLTRB(10, 5, 10, 20),
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.black54),
-                borderRadius: BorderRadius.circular(20),
+          Container(
+            child: SfCartesianChart(
+              title: ChartTitle(text: chartTitle),
+              primaryXAxis: CategoryAxis(),
+              primaryYAxis: NumericAxis(
+                edgeLabelPlacement: EdgeLabelPlacement.shift,
               ),
-              child: DropdownButton<String>(
-                value:
-                    monthDropdownValue.isNotEmpty ? monthDropdownValue : null,
-                icon: const Icon(Icons.expand_more),
-                elevation: 16,
-                style: const TextStyle(
-                    fontFamily: 'Inria',
-                    fontSize: 17,
-                    fontWeight: FontWeight.w200,
-                    color: Colors.black54),
-                onChanged: (String? value) {
-                  setState(() {
-                    monthDropdownValue = value!;
-                  });
-                  getMonthAPI();
-                },
-                items: monthDropdownValues
-                    .map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-              ),
+              series: <ChartSeries>[
+                AreaSeries<AQIValues, String>(
+                  dataSource: graphData!,
+                  xValueMapper: (AQIValues aqiv, _) => aqiv.date,
+                  yValueMapper: yValueMapper,
+                  gradient: linearGradient,
+                )
+              ],
+              enableAxisAnimation: true,
+              margin: const EdgeInsets.all(6),
             ),
           ),
-          StreamBuilder(
-              stream: monthStream,
-              builder: (BuildContext context, AsyncSnapshot snapshot) {
-                if (snapshot.data == null) {
-                  return Container();
-                }
-
-                if (snapshot.data == "Loading...") {
-                  return Center(
-                    child: Column(
-                      children: [
-                        CircularProgressIndicator(),
-                        SizedBox(height: 300),
-                      ],
-                    ),
-                  );
-                }
-                if (snapshot.hasData) {
-                  final data = snapshot.data;
-                  if (data["list"].length == 0) {
-                    return const Text('Type a nearby place');
-                  }
-                  print("Before column data");
-                  fillColumnData(monthData, aqiDropdownValue, 'month');
-                  print("After column data");
-                  graphData = [...columnData];
-                  clearColumnData();
-                  return Container(
-                    child: SfCartesianChart(
-                      title: ChartTitle(text: chartTitle),
-                      primaryXAxis: CategoryAxis(),
-                      primaryYAxis: NumericAxis(
-                        edgeLabelPlacement: EdgeLabelPlacement.shift,
-                      ),
-                      series: <ChartSeries>[
-                        AreaSeries<AQIValues, String>(
-                          dataSource: graphData!,
-                          xValueMapper: (AQIValues aqiv, _) => aqiv.date,
-                          yValueMapper: yValueMapper,
-                          gradient: linearGradient,
-                        )
-                      ],
-                      enableAxisAnimation: true,
-                      margin: const EdgeInsets.all(6),
-                    ),
-                  );
-                }
-                return Container();
-              })
         ],
       ),
     );
   }
-}
-
-class AQIValues {
-  String? date;
-  int? aqi;
-  num? co;
-  num? no;
-  num? no2;
-  num? o3;
-  num? so2;
-  num? pm25;
-  num? pm10;
-  num? nh3;
-
-  AQIValues(this.date, this.aqi, this.co, this.no, this.no2, this.o3, this.so2,
-      this.pm25, this.pm10, this.nh3);
 }

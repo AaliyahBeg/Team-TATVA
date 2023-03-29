@@ -70,9 +70,9 @@ class _newscontentState extends State<newscontent> {
                 children: [
                   Expanded(
                     child: Text(
-                        (widget.author == Null ? ' ' : widget.author) +
-                            (widget.author == Null ? ' ' : ' | ') +
-                            (widget.pubAt == Null ? ' ' : widget.pubAt),
+                        (widget.author == null ? ' ' : widget.author) +
+                            (widget.author == null ? ' ' : ' | ') +
+                            (widget.pubAt == null ? ' ' : widget.pubAt),
                         style: TextStyle(fontSize: 15)),
                   ),
                 ],
@@ -100,23 +100,23 @@ class _newscontentState extends State<newscontent> {
               margin: const EdgeInsets.fromLTRB(10.0, 0, 10.0, 0),
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                'Desciption: ' + widget.desc,
+                widget.desc == null ? 'Desciption: ' : 'Desciption: ' + widget.desc,
                 textAlign: TextAlign.justify,
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
-            Divider(
-              thickness: 2,
-              height: 10,
-            ),
-            Container(
-              margin: const EdgeInsets.all(10.0),
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                widget.content,
-                textAlign: TextAlign.justify,
-              ),
-            ),
+            // Divider(
+            //   thickness: 2,
+            //   height: 10,
+            // ),
+            // Container(
+            //   margin: const EdgeInsets.all(10.0),
+            //   padding: const EdgeInsets.all(8.0),
+            //   child: Text(
+            //     widget.content,
+            //     textAlign: TextAlign.justify,
+            //   ),
+            // ),
           ],
         ),
       ),

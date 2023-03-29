@@ -91,7 +91,7 @@ class Main {
 
 class Components {
   double? co;
-  int? no;
+  double? no;
   double? no2;
   double? o3;
   double? so2;
