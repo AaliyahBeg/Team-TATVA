@@ -8,23 +8,40 @@ class Splash extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future.delayed(
-        Duration(seconds: this.duration!),
-        {Navigator.pushNamed(context, 'welcomescreen')} as FutureOr
-            Function()?);
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        Container(
-          height: MediaQuery.of(context).size.height,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('images/lock.jpg'),
-              fit: BoxFit.cover,
+    Future.delayed(Duration(seconds: this.duration!), () {
+      Navigator.pushNamed(context, 'welcomescreen');
+    });
+    return Scaffold(
+      body: Stack(
+        children: [
+          Container(
+            height: MediaQuery.of(context).size.height,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('images/lock.jpg'),
+                fit: BoxFit.cover,
+              ),
             ),
           ),
-        ),
-      ],
+          Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+            Image.asset(
+              'images/birds.png',
+            ),
+          ]),
+          Center(
+            child: Text('TATV',
+                style: TextStyle(
+                  fontSize: 90,
+                  fontFamily: 'Inria',
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white60,
+                )),
+          ),
+          const SizedBox(
+            height: 15,
+          ),
+        ],
+      ),
     );
   }
 }

@@ -105,7 +105,7 @@ class MyApp extends StatelessWidget {
                 setCollection();
                 return Home();
               } else {
-                return Splash(duration: 2);
+                return Splash(duration: 5);
               }
             },
           ),
