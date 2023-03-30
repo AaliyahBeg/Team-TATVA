@@ -2,6 +2,7 @@ import 'package:environment_app/Land_Pollution/models/product_model.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:environment_app/Land_Pollution/Wishlist//boxes.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -25,6 +26,16 @@ class thumb extends StatefulWidget {
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 
 class CoffeeDetailsPage extends State<thumb> {
+
+  // void show(){
+  // showDialog(
+  //     context: context,
+  //     builder: (context){
+  //       return RatingDia
+  //     }
+  // );
+  // }
+
   var _razorpay = Razorpay();
 
   @override
@@ -531,6 +542,7 @@ class CoffeeDetailsPage extends State<thumb> {
                                 height: 50,
                                 child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.green[500],
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(16),
                                     ),
@@ -569,7 +581,31 @@ class CoffeeDetailsPage extends State<thumb> {
                                     ),
                                   ),
                                 ),
-                              )
+                              ),
+                              ButtonTheme(
+                                minWidth: 200,
+                                height: 70,
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.yellow[700],
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(16),
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    // show();
+                                  },
+                                  child: Text(
+                                    "Rate Now",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                ),
+                              ),
+
                             ],
                           )
                         ],
@@ -617,17 +653,10 @@ class CoffeeDetailsPage extends State<thumb> {
       ..ImageUrl = imagrUrl
       ..Short_Desc = short_desc
       ..Size = size;
-    // ..createdDate = DateTime.now()
-    // ..amount = amount
-    // ..isExpense = isExpense;
 
     final box = Boxes.getTransactions();
-    // box.add(production);
     box.put(this.id, production);
-    // final mybox = Boxes.getTransactions();
-    // final myTransaction = mybox.get('key');
-    // mybox.values;
-    // mybox.keys;
+
   }
 
 
@@ -641,7 +670,7 @@ class CoffeeDetailsPage extends State<thumb> {
       ..Desc = desc
       ..ImageUrl = imagrUrl
       ..Short_Desc = short_desc
-      ..Size = size;
+      ..Size = '1';
     // ..createdDate = DateTime.now()
     // ..amount = amount
     // ..isExpense = isExpense;
@@ -687,7 +716,8 @@ class CoffeeDetailsPage extends State<thumb> {
       String size,
       String desc,
       String short_desc,
-      String price) {
+      String price
+      ) {
     cart.id = this.id;
     cart.Name = name;
     cart.Price = price;
@@ -697,8 +727,6 @@ class CoffeeDetailsPage extends State<thumb> {
     cart.Short_Desc = short_desc;
     cart.Size = size;
 
-    // final box = Boxes.getTransactions();
-    // box.put(transaction.key, transaction);
 
     cart.save();
   }

@@ -7,7 +7,7 @@ import 'package:environment_app/components/scroll_pages.dart';
 
 import 'components/card_items.dart';
 import 'components/primary_appbar.dart';
-import 'Noise_Pollution/main_page.dart';
+// import 'Noise_Pollution/main_page.dart';
 import 'components/card_items.dart';
 import 'components/primary_appbar.dart';
 import 'components/scroll_pages.dart';
@@ -103,8 +103,8 @@ class _HomeState extends State<Home> {
         return Page2();
       case 2: //Air Pollution
         return Page3();
-      case 3: //Noise_Pollution
-        return Page4();
+      // case 3: //Noise_Pollution
+      //   return Page4();
       case 4: //Light_Pollution
         return Page5();
       default:
