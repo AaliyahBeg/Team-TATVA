@@ -23,8 +23,8 @@ import 'package:environment_app/welcome_screen.dart';
 import 'package:environment_app/login.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
-// import 'package:provider/provider.dart'; // state management
-// import 'package:google_sign_in/google_sign_in.dart';
+
+
 
 import 'Connect/components/providers/user_provider.dart';
 import 'components/profile.dart';
@@ -33,26 +33,6 @@ import 'package:environment_app/News/datenews.dart';
 import 'package:environment_app/News/headlines.dart';
 import 'package:environment_app/News/localnews.dart';
 import 'package:environment_app/News/savednews.dart';
-
-// void main() {
-//   runApp(const MyApp());
-// }
-//
-// class MyApp extends StatelessWidget {
-//   const MyApp({Key? key}) : super(key: key);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       debugShowCheckedModeBanner: false,
-//       initialRoute: 'homepage',
-//       routes: {
-//         'petitions': (context) => const Petitions(),
-//         'homepage': (context) => const Home(),
-//       },
-//     );
-//   }
-// }
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -96,11 +76,6 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: 'Tatv',
           home: StreamBuilder(
-            //This code is using the Flutter StreamBuilder widget
-            // to determine the UI to display. It listens to the stream of authentication
-            // state changes from FirebaseAuth. If the snapshot of the stream has data,
-            // it returns a Home widget, otherwise it returns a WelcomeScreen widget.
-            // This is likely used to determine if the user is logged in or not.
             stream: FirebaseAuth.instance.authStateChanges(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
@@ -135,48 +110,47 @@ class MyApp extends StatelessWidget {
 }
 
 
-// class GoogleSignInProvider {
-//   final GoogleSignIn _googleSignIn = GoogleSignIn(
-//     scopes: [
-//       'email',
-//     ],
-//   );
-//
-//   Future<GoogleSignInAccount?> signInWithGoogle() async {
-//     try {
-//       await _googleSignIn.signIn();
-//       return _googleSignIn.currentUser;
-//     } catch (error) {
-//       print(error);
-//       return null;
-//     }
-//   }
-// }
-//
-// class MyApp extends StatefulWidget {
-//   @override
-//   State<MyApp> createState() => _MyAppState();
-// }
-//
-// class _MyAppState extends State<MyApp> {
-//   @override
-//   Widget build(BuildContext context) => ChangeNotifierProvider(
-//     create: (context) => GoogleSignInProvider(),
-//     child: GetMaterialApp(
-//       title: 'Tatv',
-//       debugShowCheckedModeBanner: false,
-//       theme: ThemeData(
-//         // TODO: change the color schemes
-//         primarySwatch: Colors.grey,
-//         scaffoldBackgroundColor: const Color(0xFFffffff),
-//         fontFamily: 'Montserrat',
-//       ),
-//       initialRoute: '/',
-//       routes: <String, WidgetBuilder>{
-//         '/': (context) => const Home(),
-//         '/login': (BuildContext context) => const LoginPage(),
-//
-//       },
-//     ),
-//   );
-// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

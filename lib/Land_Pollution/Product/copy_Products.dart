@@ -49,117 +49,115 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height,
-      child: Scaffold(
-        body: Container(
-            margin: EdgeInsets.symmetric(horizontal: 20),
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height * 0.95,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Text(
-                  "Second Hands",
-                  style: TextStyle(
-                      fontFamily: 'Inria',
-                      fontSize: 30,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.black,
-                    ),
-                ),
-                IconButton(
-                    onPressed: () {
-                      showSearch(
-                        context: context,
-                        delegate: MySeach(),
-                      );
-                    },
-                    icon: const Icon(Icons.search)),
-                SizedBox(
-                  height: 20,
-                ),
-                Container(
-                  margin: EdgeInsets.only(bottom: 6.0),
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                    color: Colors.grey,
-                    borderRadius: BorderRadius.circular(15),
+    return Scaffold(
+      body: Container(
+          margin: EdgeInsets.symmetric(horizontal: 20),
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height * 0.95,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Reduce and Recycle",
+                    style: TextStyle(
+                        fontFamily: 'Inter',
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black,
+                      ),
                   ),
-
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                TabBar(
-                    isScrollable: true,
-                    controller: tabController,
-                    labelColor: Colors.green,
-                    labelStyle: TextStyle(fontWeight: FontWeight.bold),
-                    unselectedLabelColor: Color(0xff3c4046),
-                    indicator: CircleTabIndicator(color: Colors.green, radius: 4),
-                    padding: EdgeInsets.all(8),
-                    tabs: [
-                      Tab(
-                        text: "Dresses",
-                      ),
-                      Tab(
-                        text: "Decoration",
-                      ),
-                      Tab(
-                        text: "Tops",
-                      ),
-                      Tab(
-                        text: "Pants",
-                      ),
-                      Tab(
-                        text: "furniture",
-                      ),
-                      Tab(
-                        text: "Toys",
-                      ),
-                    ]),
-
-                LayoutBuilder(
-                  builder: (BuildContext context, BoxConstraints constraints) {
-                    final availableHeight = 700;
-                    print('maxheight' + availableHeight.toString());
-                    final tabBarViewHeight = availableHeight *
-                        0.8; // set the tabBarView height to 80% of the available height
-                    return SizedBox(
-                      height: tabBarViewHeight,
-                      child: TabBarView(
-                        controller: tabController,
-                        children: [
-                          CoffeeCard(Categorie: "Dresses"),
-                          CoffeeCard(Categorie: "Decoration"),
-                          CoffeeCard(Categorie: "Tops"),
-                          CoffeeCard(Categorie: "Pants"),
-                          CoffeeCard(Categorie: "Furnitures"),
-                          CoffeeCard(Categorie: "Toys")
-                        ],
-                      ),
+              IconButton(
+                  onPressed: () {
+                    showSearch(
+                      context: context,
+                      delegate: MySeach(),
                     );
                   },
+                  icon: const Icon(Icons.search)),
+                ],
+              ),
+              Container(
+                margin: EdgeInsets.only(bottom: 6.0),
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  color: Colors.grey,
+                  borderRadius: BorderRadius.circular(15),
                 ),
 
-                // CoffeeCard(),
-                SizedBox(
-                  height: 20,
-                ),
-              ],
-            ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              TabBar(
+                  isScrollable: true,
+                  controller: tabController,
+                  labelColor: Colors.green,
+                  labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                  unselectedLabelColor: Color(0xff3c4046),
+                  indicator: CircleTabIndicator(color: Colors.green, radius: 4),
+                  padding: EdgeInsets.all(8),
+                  tabs: [
+                    Tab(
+                      text: "Dresses",
+                    ),
+                    Tab(
+                      text: "Decoration",
+                    ),
+                    Tab(
+                      text: "Tops",
+                    ),
+                    Tab(
+                      text: "Pants",
+                    ),
+                    Tab(
+                      text: "furniture",
+                    ),
+                    Tab(
+                      text: "Toys",
+                    ),
+                  ]),
+
+              LayoutBuilder(
+                builder: (BuildContext context, BoxConstraints constraints) {
+                  final availableHeight = 700;
+                  print('maxheight' + availableHeight.toString());
+                  final tabBarViewHeight = availableHeight *
+                      0.8; // set the tabBarView height to 80% of the available height
+                  return SizedBox(
+                    height: tabBarViewHeight,
+                    child: TabBarView(
+                      controller: tabController,
+                      children: [
+                        RecycledProductCard(Categorie: "Dresses"),
+                        RecycledProductCard(Categorie: "Decoration"),
+                        RecycledProductCard(Categorie: "Tops"),
+                        RecycledProductCard(Categorie: "Pants"),
+                        RecycledProductCard(Categorie: "Furnitures"),
+                        RecycledProductCard(Categorie: "Toys")
+                      ],
+                    ),
+                  );
+                },
+              ),
+
+              // RecycledProductCard(),
+              SizedBox(
+                height: 20,
+              ),
+            ],
           ),
         ),
-
-    );
+      );
   }
 }
 
@@ -239,7 +237,7 @@ class MySeach extends SearchDelegate {
 
                     return ListTile(
                       onTap: () {
-                        // Navigator.push(context, MaterialPageRoute(builder: (context) => CoffeeDetailsPage(id: ''))
+                        // Navigator.push(context, MaterialPageRoute(builder: (context) => RecycledProductDetailsPage(id: ''))
                       },
                       title: Text(Name!),
                       leading: CircleAvatar(

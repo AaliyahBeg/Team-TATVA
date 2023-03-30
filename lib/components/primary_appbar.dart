@@ -24,7 +24,7 @@ class _PrimaryAppBarState extends State<PrimaryAppBar> {
     return AppBar(
         elevation: 0.0,
         backgroundColor: Colors.transparent,
-        title: Text('TATV',
+        title: Text('TATVA',
             style: TextStyle(
               fontSize: 22,
               fontFamily: 'Inter',
