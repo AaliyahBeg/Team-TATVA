@@ -34,6 +34,9 @@ git clone https://github.com/AaliyahBeg/Environment-App.git
 4. Edit the confidential.dart file and add your Newsapi.org API keys.
 ```
 String NewsAPIKey = "NEWS API Key Here";
+Open Weather Map ="Open Weather Map API Key Here"
+Position Stack Geocoder API= "Position Stack Geocoder API Key Here"
+RazorPay API= "RazorPay API Key Here"
 ```
 8. Run the following commands to fetch all required dependancies.
 ```
