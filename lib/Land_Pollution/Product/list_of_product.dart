@@ -125,18 +125,6 @@ class CoffeeCard extends StatelessWidget {
                                               )
                                             ],
                                           ),
-                                          Container(
-                                              height: 30,
-                                              width: 30,
-                                              decoration: BoxDecoration(
-                                                  color: Colors.green[400],
-                                                  borderRadius:
-                                                  BorderRadius.circular(10)),
-                                              child: Icon(
-                                                Icons.add,
-                                                color: Colors.black,
-                                                size: 20,
-                                              ))
                                         ],
                                       )
                                     ],

@@ -13,6 +13,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:environment_app/homepage.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'Land_Pollution/Cart_Add/CartSystem.dart';
+import 'Land_Pollution/Product/Products.dart';
 import 'Air_Pollution/components/getLocation.dart';
 import 'Land_Pollution/models/product_model.dart';
 import 'package:environment_app/petition/petitions_1_.dart';
@@ -58,6 +60,7 @@ Future main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(ProductAdapter());
   await Hive.openBox<Product>('production');
+  await Hive.openBox<Product>('cart');
   await Permission.camera.request();
   await Permission.microphone.request();
   await Permission.phone.request();

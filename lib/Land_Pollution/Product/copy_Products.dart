@@ -1,18 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:environment_app/Land_Pollution/Product/sellProduct.dart';
 import 'package:environment_app/Land_Pollution/Wishlist/Wishlist_item.dart';
 import 'package:flutter/material.dart';
 import 'list_of_product.dart';
-
-
 import 'project_detail.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key }) : super(key: key);
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
-
 
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   late TabController tabController;
@@ -23,139 +21,238 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     super.initState();
   }
 
+  String _searchText = '';
+
+  CollectionReference _firebaseFirestore =
+      FirebaseFirestore.instance.collection('product');
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    return <Widget>[
+      IconButton(
+        onPressed: () {
+          _searchText = "";
+        },
+        icon: Icon(Icons.close),
+      ),
+    ];
+  }
+
+  @override
+  Widget buildLeading(BuildContext context) {
+    return IconButton(
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+      icon: Icon(Icons.arrow_back),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: MediaQuery.of(context).size.height,
       child: Scaffold(
         body: Container(
-          margin: EdgeInsets.symmetric(horizontal: 20),
-          width: MediaQuery.of(context).size.width,
-          height:  MediaQuery.of(context).size.height * 0.95,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  // Container(
-                  //     padding: EdgeInsets.all(8),
-                  //     decoration: BoxDecoration(
-                  //       color: Colors.black,
-                  //       borderRadius: BorderRadius.circular(10),
-                  //
-                  //     ),
-                  //     // child: Icon(
-                  //     //   Icons.menu,
-                  //     //   color: Color(0xff4d4f52),
-                  //     // )
-                  //   ),
-                  // Image.asset(
-                  //   "images/timothy-dykes-yd4ubMUNTG0-unsplash-removebg-preview.png",
-                  //   height: 50,
-                  //   width: 50,
-                  // ),
-                ],
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Text(
-                "Second Hands",
-                style: TextStyle(
-                    color: Colors.green[400],
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Container(
-                margin: EdgeInsets.only(bottom: 6.0),
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                  color: Colors.grey,
-                  borderRadius: BorderRadius.circular(15),
+            margin: EdgeInsets.symmetric(horizontal: 20),
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height * 0.95,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 ),
-                child: TextField(
-                  decoration: InputDecoration(
-                      hintText: "Find your coffee...",
-                      hintStyle: TextStyle(color: Color(0xff3c4046)),
-                      border: InputBorder.none,
-                      prefixIcon: Icon(
-                        Icons.search,
-                        color: Colors.grey[600],
-                      )),
+                SizedBox(
+                  height: 20,
                 ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              TabBar(
-                  isScrollable: true,
-                  controller: tabController,
-                  labelColor: Colors.green,
-                  labelStyle: TextStyle(fontWeight: FontWeight.bold),
-                  unselectedLabelColor: Color(0xff3c4046),
-                  indicator:
-                  CircleTabIndicator(color: Colors.green, radius: 4),
-                  padding:EdgeInsets.all(8) ,
-                  tabs: [
-                    Tab(
-                      text: "Dresses",
+                Text(
+                  "Second Hands",
+                  style: TextStyle(
+                      fontFamily: 'Inria',
+                      fontSize: 30,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.black,
                     ),
-                    Tab(
-                      text: "Decoration",
-                    ),
-                    Tab(
-                      text: "Tops",
-                    ),
-                    Tab(
-                      text: "Pants",
-                    ),
-                    Tab(
-                      text: "furniture",
-                    ),
-                    Tab(
-                      text: "Toys",
-                    ),
-                  ]),
+                ),
+                IconButton(
+                    onPressed: () {
+                      showSearch(
+                        context: context,
+                        delegate: MySeach(),
+                      );
+                    },
+                    icon: const Icon(Icons.search)),
+                SizedBox(
+                  height: 20,
+                ),
+                Container(
+                  margin: EdgeInsets.only(bottom: 6.0),
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                    color: Colors.grey,
+                    borderRadius: BorderRadius.circular(15),
+                  ),
 
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                TabBar(
+                    isScrollable: true,
+                    controller: tabController,
+                    labelColor: Colors.green,
+                    labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                    unselectedLabelColor: Color(0xff3c4046),
+                    indicator: CircleTabIndicator(color: Colors.green, radius: 4),
+                    padding: EdgeInsets.all(8),
+                    tabs: [
+                      Tab(
+                        text: "Dresses",
+                      ),
+                      Tab(
+                        text: "Decoration",
+                      ),
+                      Tab(
+                        text: "Tops",
+                      ),
+                      Tab(
+                        text: "Pants",
+                      ),
+                      Tab(
+                        text: "furniture",
+                      ),
+                      Tab(
+                        text: "Toys",
+                      ),
+                    ]),
 
-              LayoutBuilder(
-                builder: (BuildContext context, BoxConstraints constraints) {
-                  final availableHeight =   700;
-                  print('maxheight' + availableHeight.toString());
-                  final tabBarViewHeight = availableHeight * 0.8; // set the tabBarView height to 80% of the available height
-                  return SizedBox(
-                    height: tabBarViewHeight,
-                    child: TabBarView(
-                      controller: tabController,
-                      children: [
-                        CoffeeCard(Categorie: "Dresses"),
-                        CoffeeCard(Categorie: "Decoration"),
-                        CoffeeCard(Categorie: "Tops"),
-                        CoffeeCard(Categorie: "Pants"),
-                        CoffeeCard(Categorie: "Furnitures"),
-                        CoffeeCard(Categorie: "Toys")
-                      ],
-                    ),
-                  );
-                },
-              ),
+                LayoutBuilder(
+                  builder: (BuildContext context, BoxConstraints constraints) {
+                    final availableHeight = 700;
+                    print('maxheight' + availableHeight.toString());
+                    final tabBarViewHeight = availableHeight *
+                        0.8; // set the tabBarView height to 80% of the available height
+                    return SizedBox(
+                      height: tabBarViewHeight,
+                      child: TabBarView(
+                        controller: tabController,
+                        children: [
+                          CoffeeCard(Categorie: "Dresses"),
+                          CoffeeCard(Categorie: "Decoration"),
+                          CoffeeCard(Categorie: "Tops"),
+                          CoffeeCard(Categorie: "Pants"),
+                          CoffeeCard(Categorie: "Furnitures"),
+                          CoffeeCard(Categorie: "Toys")
+                        ],
+                      ),
+                    );
+                  },
+                ),
 
-
-              // CoffeeCard(),
-              SizedBox(
-                height: 20,
-              ),
-            ],
+                // CoffeeCard(),
+                SizedBox(
+                  height: 20,
+                ),
+              ],
+            ),
           ),
         ),
-      ),
 
     );
+  }
+}
+
+class MySeach extends SearchDelegate {
+  CollectionReference _firebaseFirestore =
+      FirebaseFirestore.instance.collection('product');
+
+  @override
+  List<Widget>? buildActions(BuildContext context) => [
+        IconButton(
+          onPressed: () {
+            if (query.isEmpty) {
+              close(context, null);
+            }
+            query = '';
+          },
+          icon: Icon(Icons.clear),
+        ),
+      ];
+
+  @override
+  Widget? buildLeading(BuildContext context) => IconButton(
+        onPressed: () => close(context, null),
+
+        /// close seach bar
+        icon: Icon(Icons.arrow_back),
+      );
+
+  @override
+  Widget buildResults(BuildContext context) {
+    // TODO: implement buildResults
+    throw UnimplementedError();
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    List<String> suggestions = [];
+
+    return StreamBuilder<QuerySnapshot>(
+        stream: _firebaseFirestore.snapshots(),
+        builder: (BuildContext context,
+            AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (!snapshot.hasData) {
+            return Center(child: CircularProgressIndicator());
+          }
+          else {
+            if (snapshot.data!.docs
+                .where((QueryDocumentSnapshot<Object?> element) =>
+                    element['Name']
+                        .toString()
+                        .toLowerCase()
+                        .contains(query.toLowerCase()))
+                .isEmpty) {
+              return Center(
+                child: Text("No data"),
+              );
+            }
+            else {
+              ///fetch data here
+              print('snapshot data');
+              print(snapshot.data);
+              return ListView(
+                children: [
+                  ...snapshot.data!.docs
+                      .where((QueryDocumentSnapshot<Object?> element) =>
+                          element['Name'] != null &&
+                              element['Image'] != null &&
+                              element['short_desc'] != null &&
+                          element['Name']
+                              .toString()
+                              .toLowerCase()
+                              .contains(query.toLowerCase()))
+                      .map((QueryDocumentSnapshot<Object?> data) {
+                    final String? Name = data['Name'] as String?;
+                    final String? image = data['Image'] as String?;
+                    final String? short_desc = data['short_desc'] as String?;
+
+                    return ListTile(
+                      onTap: () {
+                        // Navigator.push(context, MaterialPageRoute(builder: (context) => CoffeeDetailsPage(id: ''))
+                      },
+                      title: Text(Name!),
+                      leading: CircleAvatar(
+                        backgroundImage: NetworkImage(image!),
+                      ),
+                      subtitle: Text(short_desc!),
+                    );
+                  })
+                ],
+              );
+            }
+          }
+        });
   }
 }
 
@@ -177,8 +274,8 @@ class _CirclePainter extends BoxPainter {
 
   _CirclePainter(Color color, this.radius)
       : _paint = Paint()
-    ..color = color
-    ..isAntiAlias = true;
+          ..color = color
+          ..isAntiAlias = true;
 
   @override
   void paint(Canvas canvas, Offset offset, ImageConfiguration cfg) {
