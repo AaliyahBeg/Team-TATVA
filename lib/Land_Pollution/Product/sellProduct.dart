@@ -6,6 +6,8 @@ import 'DataDetail.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
+import 'Products.dart';
+
 FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
 class DataSetInputScreen extends StatefulWidget {
@@ -34,8 +36,27 @@ class _DataSetInputScreenState extends State<DataSetInputScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sell Your Own'),
-        backgroundColor: Colors.green,
+        title: Text(
+            'Sell Your Own',
+          style: TextStyle(
+            fontFamily: 'Inria',
+            fontSize: 30,
+            fontWeight: FontWeight.w700,
+            color: Colors.black,
+          ),
+        ),
+        backgroundColor: Colors.white,
+        leading: IconButton(
+          icon: Icon(
+            Icons.keyboard_arrow_left,
+            color: Colors.black,
+          ),
+          onPressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => MainScreen()),
+            );
+          },
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

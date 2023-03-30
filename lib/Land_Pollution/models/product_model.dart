@@ -16,7 +16,7 @@ class Product extends HiveObject {  // Equatable
   @HiveField(3)
   late final String Price ;
   @HiveField(4)
-  late final String Size;
+  late final String Size ;
   @HiveField(5)
   late final String Desc;
   @HiveField(6)
