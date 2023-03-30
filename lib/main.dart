@@ -17,7 +17,7 @@ import 'Air_Pollution/components/getLocation.dart';
 import 'Land_Pollution/models/product_model.dart';
 import 'package:environment_app/petition/petitions_1_.dart';
 
-import 'package:environment_app/Welcome_Screen.dart';
+import 'package:environment_app/welcome_screen.dart';
 import 'package:environment_app/login.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
