@@ -13,6 +13,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:environment_app/homepage.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'Air_Pollution/components/getLocation.dart';
 import 'Land_Pollution/models/product_model.dart';
 import 'package:environment_app/petition/petitions_1_.dart';
 
@@ -115,6 +116,7 @@ class MyApp extends StatelessWidget {
             'login': (context) => const LoginPage(),
             'signup': (context) => const SignupPage(),
             'aqiGraph': (context) => const aqiGraph(),
+            'currAQIGraph': (context) => const curraqiGraph(),
             'connect': (context) => Connect(
                   collection: collection,
                 ),

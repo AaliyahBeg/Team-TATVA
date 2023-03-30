@@ -32,6 +32,7 @@ class _ProfileState extends State<Profile> {
   int postLen = 0;
   int followers = 0;
   int following = 0;
+  int petitions = 0;
   bool isFollowing = false;
   bool isLoading = false;
   String imageUrl =
@@ -64,6 +65,11 @@ class _ProfileState extends State<Profile> {
           .where('uid', isEqualTo: widget.uid)
           .get();
 
+      var petitionSnap = await FirebaseFirestore.instance
+          .collection('Petition')
+          .where('uid', isEqualTo: widget.uid)
+          .get();
+      petitions = petitionSnap.docs.length;
       postLen = postSnap.docs.length;
       print("Error in next line");
       userData = userSnap.data()!;
@@ -183,7 +189,7 @@ class _ProfileState extends State<Profile> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           buildStatColumn(postLen, "posts"),
-                          buildStatColumn(followers, "petitions")
+                          buildStatColumn(petitions, "petitions")
                         ],
                       ),
                       const SizedBox(height: 15),
@@ -317,21 +323,21 @@ class _ProfileState extends State<Profile> {
                 const Divider(),
                 widget.uid == FirebaseAuth.instance.currentUser!.uid
                     ? Container(
-                      margin: EdgeInsets.symmetric(horizontal: 30),
-                      padding: EdgeInsets.symmetric(horizontal: 70),
-                      child: GeneralButton(
-                          child: const Text('Add Post',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontFamily: 'Inter',
-                                fontSize: 10
-                              )),
-                          onPressed: () => Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(
-                                  builder: (context) => AddPostScreen(),
-                                ),
-                              )),
-                    )
+                        margin: EdgeInsets.symmetric(horizontal: 30),
+                        padding: EdgeInsets.symmetric(horizontal: 70),
+                        child: GeneralButton(
+                            child: const Text('Add Post',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontFamily: 'Inter',
+                                    fontSize: 10)),
+                            onPressed: () =>
+                                Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                    builder: (context) => AddPostScreen(),
+                                  ),
+                                )),
+                      )
                     : Container(),
                 FutureBuilder(
                   future: FirebaseFirestore.instance

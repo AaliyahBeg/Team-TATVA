@@ -4,7 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:environment_app/petition/petition_2_.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:environment_app/petition/Petiton_6_Explore_.dart';
+import 'package:environment_app/petition/Petiton_5_Explore_.dart';
 // import 'package:environment_app/petition/';
 import 'package:environment_app/petition/components/cards.dart';
 
@@ -70,6 +70,10 @@ class Petitions extends StatelessWidget {
                                 imgTitle: item['Story'],
                                 pathurl: item['pathurl'],
                                 location: item['location'],
+                                profilePic: item['profilePic'],
+                                username: item['username'],
+                                // uid: item['uid'],
+                                support: item['support'],
                                 onPressed: () {
                                   print(item);
                                   Navigator.of(context).pushReplacement(
@@ -84,9 +88,11 @@ class Petitions extends StatelessWidget {
                               )
                           .toList(),
                       options: CarouselOptions(
-                        padEnds: true,
+                        // padEnds: true,
                         aspectRatio: 16 / 9,
-                        viewportFraction: 1,
+                        // aspectRatio: 2.0,
+                        enlargeCenterPage: true,
+                        viewportFraction: 0.8,
                         autoPlay: true,
                       )
                       );
@@ -194,7 +200,6 @@ class Petitions extends StatelessWidget {
     );
   }
 }
-
 
 
 

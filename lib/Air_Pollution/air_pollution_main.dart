@@ -71,6 +71,33 @@ class _AirPollutionMainState extends State<AirPollutionMain> {
                     SizedBox(height: 10),
                     Icon(Icons.chevron_right)
                   ],
+                ))),
+                Container(
+          padding: EdgeInsets.all(35),
+          margin: EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(50),
+              color: const Color.fromARGB(255, 218, 242, 206),
+            ),
+            child: GestureDetector(
+                onTap: () => {Navigator.pushNamed(context, 'currAQIGraph')},
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Icon(Icons.bar_chart),
+                    SizedBox(height: 10),
+                    Text(
+                      'My Location AQI Graphs',
+                      style: TextStyle(
+                        fontFamily: 'Inria',
+                        fontSize: 18,
+                        fontWeight: FontWeight.w700,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(height: 10),
+                    Icon(Icons.chevron_right)
+                  ],
                 )))
       ],
     );
