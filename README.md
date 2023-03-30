@@ -22,7 +22,29 @@ Elaborately on the problem related to the layers of destruction caused to the en
 Would collaborate and work upon this vision and provide solutions in form of a fully-functional fast application. The application will be made cross platform using dart framework called Flutter. 
 
 * How to run the Application :
-
+1.  Flutter should be configured and Andriod Studio downloaded on your machine so that you are able to run the Flutter projects locally in your device.
+2. To ensure your system meets the requirements to run the app. All requirements must be met to run the app.
+```
+flutter doctor
+```
+3. Git clone the project into the directory of your choosing.
+```
+git clone https://github.com/AaliyahBeg/Environment-App.git
+```
+4. Edit the confidential.dart file and add your Newsapi.org API keys.
+```
+String NewsAPIKey = "NEWS API Key Here";
+```
+8. Run the following commands to fetch all required dependancies.
+```
+flutter clean
+flutter pub get
+```
+9. Yay, you're all set to run our Application
+```
+flutter run 
+```
+It is preferred you run the app on an actual Andriod device or you can set-up your emulator from Android Studio in order to test it on Andriod :)
 
 ## Resources
 
