@@ -1,3 +1,4 @@
+import 'package:environment_app/Air_Pollution/data/AQI/aqi_data.dart';
 import 'package:environment_app/Land_Pollution/models/product_model.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -26,15 +27,6 @@ class thumb extends StatefulWidget {
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 
 class CoffeeDetailsPage extends State<thumb> {
-
-  // void show(){
-  // showDialog(
-  //     context: context,
-  //     builder: (context){
-  //       return RatingDia
-  //     }
-  // );
-  // }
 
   var _razorpay = Razorpay();
 
@@ -84,17 +76,16 @@ class CoffeeDetailsPage extends State<thumb> {
     print(box.keys);
     print(box.values);
 
-      print(this.id);
-      final cart_id = this.id;
+    print(this.id);
+    final cart_id = this.id;
 
-      final cart_box = cart_Item.getCart();
-      final myCart = cart_box.get(cart_id);
+    final cart_box = cart_Item.getCart();
+    final myCart = cart_box.get(cart_id);
     isCart = (myCart != null);
     print(myCart?.key);
     print(myCart);
     print(cart_box.keys);
     print(cart_box.values);
-
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -105,12 +96,12 @@ class CoffeeDetailsPage extends State<thumb> {
             future: firestore.collection('product').doc(id).get(),
             builder: (context,
                 AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>>
-                snapshot) {
+                    snapshot) {
               var s = snapshot;
               var d =
-              (s as AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>>)
-                  .data
-                  ?.data();
+                  (s as AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>>)
+                      .data
+                      ?.data();
               print(snapshot.runtimeType);
               if (snapshot.hasData) {
                 return Column(
@@ -119,16 +110,13 @@ class CoffeeDetailsPage extends State<thumb> {
                       children: [
                         Container(
                           height: 440,
-                          width: MediaQuery
-                              .of(context)
-                              .size
-                              .width,
+                          width: MediaQuery.of(context).size.width,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(25),
                               image: DecorationImage(
                                   image: NetworkImage(
                                       (d as Map<String, dynamic>)['Image']
-                                          ?.toString() ??
+                                              ?.toString() ??
                                           ''),
                                   fit: BoxFit.cover)),
                         ),
@@ -147,15 +135,15 @@ class CoffeeDetailsPage extends State<thumb> {
                                 color: Colors.black.withOpacity(0),
                                 child: Row(
                                   mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Column(
                                       crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           (d as Map<String, dynamic>)['Name']
-                                              ?.toString() ??
+                                                  ?.toString() ??
                                               'not found',
                                           style: TextStyle(
                                               color: Colors.white,
@@ -167,8 +155,8 @@ class CoffeeDetailsPage extends State<thumb> {
                                         ),
                                         Text(
                                           (d as Map<String, dynamic>)[
-                                          'short_desc']
-                                              ?.toString() ??
+                                                      'short_desc']
+                                                  ?.toString() ??
                                               'not found',
                                           style: TextStyle(
                                             color: Color(0xff919296),
@@ -191,8 +179,8 @@ class CoffeeDetailsPage extends State<thumb> {
                                             ),
                                             Text(
                                               (d as Map<String, dynamic>)[
-                                              'Rating']
-                                                  ?.toString() ??
+                                                          'Rating']
+                                                      ?.toString() ??
                                                   '4.0',
                                               style: TextStyle(
                                                 color: Colors.white,
@@ -215,9 +203,9 @@ class CoffeeDetailsPage extends State<thumb> {
                                               width: 42,
                                               child: Column(
                                                 crossAxisAlignment:
-                                                CrossAxisAlignment.center,
+                                                    CrossAxisAlignment.center,
                                                 mainAxisAlignment:
-                                                MainAxisAlignment.center,
+                                                    MainAxisAlignment.center,
                                                 children: [
                                                   LikeButton(
                                                     size: 20,
@@ -229,47 +217,40 @@ class CoffeeDetailsPage extends State<thumb> {
                                                             'product deleted');
                                                       } else {
                                                         addTransaction(
-                                                          (d as Map<
-                                                              String,
-                                                              dynamic>)[
-                                                          'Name']
-                                                              ?.toString() ??
+                                                          (d as Map<String,
+                                                                          dynamic>)[
+                                                                      'Name']
+                                                                  ?.toString() ??
                                                               '',
-                                                          (d as Map<
-                                                              String,
-                                                              dynamic>)[
-                                                          'Categories']
-                                                              ?.toString() ??
+                                                          (d as Map<String,
+                                                                          dynamic>)[
+                                                                      'Categories']
+                                                                  ?.toString() ??
                                                               '',
-                                                          (d as Map<
-                                                              String,
-                                                              dynamic>)[
-                                                          'Image']
-                                                              ?.toString() ??
+                                                          (d as Map<String,
+                                                                          dynamic>)[
+                                                                      'Image']
+                                                                  ?.toString() ??
                                                               '',
-                                                          (d as Map<
-                                                              String,
-                                                              dynamic>)[
-                                                          'Price']
-                                                              ?.toString() ??
+                                                          (d as Map<String,
+                                                                          dynamic>)[
+                                                                      'Price']
+                                                                  ?.toString() ??
                                                               '',
-                                                          (d as Map<
-                                                              String,
-                                                              dynamic>)[
-                                                          'short_desc']
-                                                              ?.toString() ??
+                                                          (d as Map<String,
+                                                                          dynamic>)[
+                                                                      'short_desc']
+                                                                  ?.toString() ??
                                                               '',
-                                                          (d as Map<
-                                                              String,
-                                                              dynamic>)[
-                                                          'desc']
-                                                              ?.toString() ??
+                                                          (d as Map<String,
+                                                                          dynamic>)[
+                                                                      'desc']
+                                                                  ?.toString() ??
                                                               '',
-                                                          (d as Map<
-                                                              String,
-                                                              dynamic>)[
-                                                          'size']
-                                                              ?.toString() ??
+                                                          (d as Map<String,
+                                                                          dynamic>)[
+                                                                      'size']
+                                                                  ?.toString() ??
                                                               '',
                                                         );
 
@@ -285,17 +266,17 @@ class CoffeeDetailsPage extends State<thumb> {
                                                     "Like",
                                                     style: TextStyle(
                                                         color:
-                                                        Color(0xff919296),
+                                                            Color(0xff919296),
                                                         fontSize: 10,
                                                         fontWeight:
-                                                        FontWeight.bold),
+                                                            FontWeight.bold),
                                                   )
                                                 ],
                                               ),
                                               decoration: BoxDecoration(
                                                   color: Color(0xF6F3F3E4),
                                                   borderRadius:
-                                                  BorderRadius.circular(8)),
+                                                      BorderRadius.circular(8)),
                                             ),
                                             SizedBox(
                                               width: 15,
@@ -305,14 +286,14 @@ class CoffeeDetailsPage extends State<thumb> {
                                               width: 42,
                                               child: Column(
                                                 crossAxisAlignment:
-                                                CrossAxisAlignment.center,
+                                                    CrossAxisAlignment.center,
                                                 mainAxisAlignment:
-                                                MainAxisAlignment.center,
+                                                    MainAxisAlignment.center,
                                                 children: [
                                                   LikeButton(
                                                     size: 20,
                                                     isLiked: isCart,
-                                                    likeBuilder: (isCart){
+                                                    likeBuilder: (isCart) {
                                                       return Icon(
                                                         Icons.shopping_cart,
                                                         // color: Colors.green,
@@ -325,47 +306,40 @@ class CoffeeDetailsPage extends State<thumb> {
                                                             'product deleted');
                                                       } else {
                                                         addCart(
-                                                          (d as Map<
-                                                              String,
-                                                              dynamic>)[
-                                                          'Name']
-                                                              ?.toString() ??
+                                                          (d as Map<String,
+                                                                          dynamic>)[
+                                                                      'Name']
+                                                                  ?.toString() ??
                                                               '',
-                                                          (d as Map<
-                                                              String,
-                                                              dynamic>)[
-                                                          'Categories']
-                                                              ?.toString() ??
+                                                          (d as Map<String,
+                                                                          dynamic>)[
+                                                                      'Categories']
+                                                                  ?.toString() ??
                                                               '',
-                                                          (d as Map<
-                                                              String,
-                                                              dynamic>)[
-                                                          'Image']
-                                                              ?.toString() ??
+                                                          (d as Map<String,
+                                                                          dynamic>)[
+                                                                      'Image']
+                                                                  ?.toString() ??
                                                               '',
-                                                          (d as Map<
-                                                              String,
-                                                              dynamic>)[
-                                                          'Price']
-                                                              ?.toString() ??
+                                                          (d as Map<String,
+                                                                          dynamic>)[
+                                                                      'Price']
+                                                                  ?.toString() ??
                                                               '',
-                                                          (d as Map<
-                                                              String,
-                                                              dynamic>)[
-                                                          'short_desc']
-                                                              ?.toString() ??
+                                                          (d as Map<String,
+                                                                          dynamic>)[
+                                                                      'short_desc']
+                                                                  ?.toString() ??
                                                               '',
-                                                          (d as Map<
-                                                              String,
-                                                              dynamic>)[
-                                                          'desc']
-                                                              ?.toString() ??
+                                                          (d as Map<String,
+                                                                          dynamic>)[
+                                                                      'desc']
+                                                                  ?.toString() ??
                                                               '',
-                                                          (d as Map<
-                                                              String,
-                                                              dynamic>)[
-                                                          'size']
-                                                              ?.toString() ??
+                                                          (d as Map<String,
+                                                                          dynamic>)[
+                                                                      'size']
+                                                                  ?.toString() ??
                                                               '',
                                                         );
 
@@ -381,17 +355,17 @@ class CoffeeDetailsPage extends State<thumb> {
                                                     "Cart",
                                                     style: TextStyle(
                                                         color:
-                                                        Color(0xff919296),
+                                                            Color(0xff919296),
                                                         fontSize: 10,
                                                         fontWeight:
-                                                        FontWeight.bold),
+                                                            FontWeight.bold),
                                                   )
                                                 ],
                                               ),
                                               decoration: BoxDecoration(
                                                   color: Color(0xF6F3F3E4),
                                                   borderRadius:
-                                                  BorderRadius.circular(8)),
+                                                      BorderRadius.circular(8)),
                                             ),
                                           ],
                                         ),
@@ -451,12 +425,12 @@ class CoffeeDetailsPage extends State<thumb> {
                                 width: 110,
                                 child: Center(
                                     child: Text(
-                                      "S",
-                                      style: TextStyle(
-                                        color: Color(0xff919296),
-                                        fontSize: 18,
-                                      ),
-                                    )),
+                                  "S",
+                                  style: TextStyle(
+                                    color: Color(0xff919296),
+                                    fontSize: 18,
+                                  ),
+                                )),
                                 decoration: BoxDecoration(
                                     color: Color(0xF6F3F3E4),
                                     borderRadius: BorderRadius.circular(10),
@@ -470,12 +444,12 @@ class CoffeeDetailsPage extends State<thumb> {
                                 width: 110,
                                 child: Center(
                                     child: Text(
-                                      "M",
-                                      style: TextStyle(
-                                        color: Color(0xff919296),
-                                        fontSize: 18,
-                                      ),
-                                    )),
+                                  "M",
+                                  style: TextStyle(
+                                    color: Color(0xff919296),
+                                    fontSize: 18,
+                                  ),
+                                )),
                                 decoration: BoxDecoration(
                                     color: Color(0xF6F3F3E4),
                                     borderRadius: BorderRadius.circular(8)),
@@ -488,12 +462,12 @@ class CoffeeDetailsPage extends State<thumb> {
                                 width: 110,
                                 child: Center(
                                     child: Text(
-                                      "L",
-                                      style: TextStyle(
-                                        color: Color(0xff919296),
-                                        fontSize: 18,
-                                      ),
-                                    )),
+                                  "L",
+                                  style: TextStyle(
+                                    color: Color(0xff919296),
+                                    fontSize: 18,
+                                  ),
+                                )),
                                 decoration: BoxDecoration(
                                     color: Color(0xF6F3F3E4),
                                     borderRadius: BorderRadius.circular(8)),
@@ -527,7 +501,7 @@ class CoffeeDetailsPage extends State<thumb> {
                                       ),
                                       Text(
                                         (d as Map<String, dynamic>)['Price']
-                                            ?.toString() ??
+                                                ?.toString() ??
                                             'not found',
                                         style: TextStyle(
                                             color: Colors.black, fontSize: 21),
@@ -552,17 +526,20 @@ class CoffeeDetailsPage extends State<thumb> {
                                     var options = {
                                       'key': 'rzp_test_UScfYQh4DskA20',
                                       'amount': (int.parse((d as Map<String,
-                                          dynamic>)['Price']) * 100)
-                                          ?.toString() ??
+                                                      dynamic>)['Price']) *
+                                                  100)
+                                              ?.toString() ??
                                           'not found',
                                       //in the smallest currency sub-unit.
-                                      'name': (d as Map<String,
-                                          dynamic>)['Name']?.toString() ??
-                                          'not found',
+                                      'name':
+                                          (d as Map<String, dynamic>)['Name']
+                                                  ?.toString() ??
+                                              'not found',
                                       // 'order_id': 'order_EMBFqjDHEEn80l',
-                                      'description': (d as Map<String,
-                                          dynamic>)["desc"]?.toString() ??
-                                          'not found',
+                                      'description':
+                                          (d as Map<String, dynamic>)["desc"]
+                                                  ?.toString() ??
+                                              'not found',
                                       'timeout': 300,
                                       // in seconds
                                       'prefill': {
@@ -592,9 +569,7 @@ class CoffeeDetailsPage extends State<thumb> {
                                       borderRadius: BorderRadius.circular(16),
                                     ),
                                   ),
-                                  onPressed: () {
-                                    // show();
-                                  },
+                                  onPressed: () => Myshow(),
                                   child: Text(
                                     "Rate Now",
                                     style: TextStyle(
@@ -605,7 +580,6 @@ class CoffeeDetailsPage extends State<thumb> {
                                   ),
                                 ),
                               ),
-
                             ],
                           )
                         ],
@@ -656,12 +630,10 @@ class CoffeeDetailsPage extends State<thumb> {
 
     final box = Boxes.getTransactions();
     box.put(this.id, production);
-
   }
 
-
-  Future addCart(String name, String categorie, String imagrUrl,
-      String price, String desc, String short_desc, String size) async {
+  Future addCart(String name, String categorie, String imagrUrl, String price,
+      String desc, String short_desc, String size) async {
     final Cart = Product()
       ..id = this.id
       ..Name = name
@@ -671,17 +643,9 @@ class CoffeeDetailsPage extends State<thumb> {
       ..ImageUrl = imagrUrl
       ..Short_Desc = short_desc
       ..Size = '1';
-    // ..createdDate = DateTime.now()
-    // ..amount = amount
-    // ..isExpense = isExpense;
 
     final cart_box = cart_Item.getCart();
-    // box.add(production);
     cart_box.put(this.id, Cart);
-    // final mybox = Boxes.getTransactions();
-    // final myTransaction = mybox.get('key');
-    // mybox.values;
-    // mybox.keys;
   }
 
   void editTransaction(
@@ -702,22 +666,11 @@ class CoffeeDetailsPage extends State<thumb> {
     production.Short_Desc = short_desc;
     production.Size = size;
 
-    // final box = Boxes.getTransactions();
-    // box.put(transaction.key, transaction);
-
     production.save();
   }
 
-  void editCart(
-      Product cart,
-      String name,
-      String categorie,
-      String imagrUrl,
-      String size,
-      String desc,
-      String short_desc,
-      String price
-      ) {
+  void editCart(Product cart, String name, String categorie, String imagrUrl,
+      String size, String desc, String short_desc, String price) {
     cart.id = this.id;
     cart.Name = name;
     cart.Price = price;
@@ -727,17 +680,15 @@ class CoffeeDetailsPage extends State<thumb> {
     cart.Short_Desc = short_desc;
     cart.Size = size;
 
-
     cart.save();
   }
 
   void deleteTransaction() {
     final box = Boxes.getTransactions();
     box.delete(this.id);
-
   }
 
-  void deleteCart(){
+  void deleteCart() {
     final cart_box = cart_Item.getCart();
     cart_box.delete(this.id);
   }
@@ -748,4 +699,79 @@ class CoffeeDetailsPage extends State<thumb> {
     _razorpay.clear(); // Removes all listeners
     super.dispose();
   }
+
+  void Myshow() => showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: Text(
+        'Rate This Product',
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      content: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            'Please leave a rating',
+            style: TextStyle(
+              fontSize: 20,
+                fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 32),
+          RatingBar.builder(
+            initialRating: 5,
+            itemCount: 5,
+            itemBuilder: (context, index) {
+              switch (index) {
+                case 0:
+                  return Icon(
+                    Icons.sentiment_very_dissatisfied,
+                    color: Colors.red,
+                  );
+                case 1:
+                  return Icon(
+                    Icons.sentiment_dissatisfied,
+                    color: Colors.redAccent,
+                  );
+                case 2:
+                  return Icon(
+                    Icons.sentiment_neutral,
+                    color: Colors.amber,
+                  );
+                case 3:
+                  return Icon(
+                    Icons.sentiment_satisfied,
+                    color: Colors.lightGreen,
+                  );
+                case 4:
+                  return Icon(
+                    Icons.sentiment_very_satisfied,
+                    color: Colors.green,
+                  );
+                default:
+                  throw ArgumentError("Invalid index $index");
+              }
+            },
+            onRatingUpdate: (rating) {
+              print(rating);
+            },
+          ),
+        ],
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: Text(
+            'Ok',
+            style: TextStyle(fontSize: 20),
+          ),
+        ),
+      ],
+    ),
+  );
+
+
 }
