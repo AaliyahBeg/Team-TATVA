@@ -49,6 +49,7 @@ class _HomeState extends State<Home> {
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
+                    fontFamily: 'Inter'
                   ),
                 ),
                 Container(

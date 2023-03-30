@@ -19,13 +19,13 @@ class thumb extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     print(id);
-    return CoffeeDetailsPage(id: id);
+    return ProductDetailsPage(id: id);
   }
 }
 
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-class CoffeeDetailsPage extends State<thumb> {
+class ProductDetailsPage extends State<thumb> {
 
   // void show(){
   // showDialog(
@@ -64,7 +64,7 @@ class CoffeeDetailsPage extends State<thumb> {
 
   // static const routeName = '/project_detail';
   final String id;
-  CoffeeDetailsPage({required this.id});
+  ProductDetailsPage({required this.id});
 
   bool isLiked = true;
   bool isCart = true;
@@ -98,7 +98,9 @@ class CoffeeDetailsPage extends State<thumb> {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SafeArea(
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
         child: Padding(
           padding: EdgeInsets.all(10),
           child: FutureBuilder(
@@ -118,7 +120,7 @@ class CoffeeDetailsPage extends State<thumb> {
                     Stack(
                       children: [
                         Container(
-                          height: 440,
+                          height: MediaQuery.of(context).size.height/2,
                           width: MediaQuery
                               .of(context)
                               .size

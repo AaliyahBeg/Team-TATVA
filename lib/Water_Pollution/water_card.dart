@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 import '../widgets/expandable_text.dart';
 
-class LightCard extends StatelessWidget {
+class WaterCard extends StatelessWidget {
   String title;
   String imgUrl;
   String text;
-  LightCard(
+  WaterCard(
       {super.key,
       required this.title,
       required this.imgUrl,
@@ -19,7 +19,7 @@ class LightCard extends StatelessWidget {
       padding: EdgeInsets.all(20),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        color: Color.fromARGB(255, 194, 174, 255),
+        color: Color.fromARGB(255, 165, 207, 255),
       ),
       child: Column(children: [
         Text(title,
