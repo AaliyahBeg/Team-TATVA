@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:environment_app/Air_Pollution/air_quality.dart';
 import 'package:environment_app/Air_Pollution/components/fill_column_data.dart';
 import 'package:environment_app/Air_Pollution/data/historicalAQI/geo_coder_model.dart';
+import 'package:environment_app/utils/chartGradient.dart';
+import 'package:geolocator/geolocator.dart' as gl;
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:flutter/material.dart';
 import 'package:unixtime/unixtime.dart';
@@ -12,6 +14,7 @@ import 'components/string_to_unix.dart';
 import 'data/confidential.dart';
 import 'data/historicalAQI/historical_aqi_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:environment_app/Air_Pollution/components/getLocation.dart';
 
 class aqiGraph extends StatefulWidget {
   const aqiGraph({super.key});
@@ -47,8 +50,20 @@ class _aqiGraphState extends State<aqiGraph> {
   Stream? _stream, monthStream;
 
   Timer? _debounce;
+  List<AQIValues>? graphData;
+  bool gotLocation = false;
 
   final TextEditingController myController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _streamController = StreamController();
+    monthController = StreamController();
+    _stream = _streamController!.stream;
+    monthStream = monthController!.stream;
+    _getCurrentPosition();
+  }
 
   @override
   void dispose() {
@@ -56,25 +71,76 @@ class _aqiGraphState extends State<aqiGraph> {
     super.dispose();
   }
 
-  getAPI() async {
-    if (myController.text == null || myController.text.isEmpty) {
-      _streamController!.add(null);
+  Future<bool> _handleLocationPermission() async {
+    bool serviceEnabled;
+    gl.LocationPermission permission;
+
+    serviceEnabled = await gl.Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+              'Location services are disabled. Please enable the services')));
+      return false;
+    }
+    permission = await gl.Geolocator.checkPermission();
+    if (permission == gl.LocationPermission.denied) {
+      permission = await gl.Geolocator.requestPermission();
+      if (permission == gl.LocationPermission.denied) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Location permissions are denied')));
+        return false;
+      }
+    }
+    if (permission == gl.LocationPermission.deniedForever) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+              'Location permissions are permanently denied, we cannot request permissions.')));
+      return false;
+    }
+    return true;
+  }
+
+  Future<void> _getCurrentPosition() async {
+    final hasPermission = await _handleLocationPermission();
+
+    if (!hasPermission) {
+      print("Permission not provided");
       return;
     }
+    await gl.Geolocator.getCurrentPosition(
+            desiredAccuracy: gl.LocationAccuracy.high)
+        .then((gl.Position position) {
+      setState(() {
+        print("setting lat and lon values....");
+        lat = position.latitude;
+        lon = position.longitude;
+        gotLocation = true;
+      });
+    }).catchError((e) {
+      debugPrint(e);
+    });
+  }
 
+  getAPI() async {
     _streamController!.add("Loading...");
+    if (myController.text != null && myController.text.isNotEmpty) {
+      final latlongresponse = await http
+          .get(Uri.parse(latlongurl + myController.text.replaceAll(' ', '+')));
 
-    final latlongresponse = await http
-        .get(Uri.parse(latlongurl + myController.text.replaceAll(' ', '+')));
+      var latlongdata = jsonDecode(latlongresponse.body.toString());
+      print(latlongdata);
 
-    var latlongdata = jsonDecode(latlongresponse.body.toString());
-    print(latlongdata);
-
-    latlong = GeoCoderModel.fromJson(latlongdata);
-    lat = latlong.data![0].latitude;
-    lon = latlong.data![0].longitude;
+      latlong = GeoCoderModel.fromJson(latlongdata);
+      lat = latlong.data![0].latitude;
+      lon = latlong.data![0].longitude;
+    }
     start = getUnix(dayDropdownValue, "00:00:00.000");
     end = getUnix(dayDropdownValue, "23:59:59.000");
+    print("Latitude = ${lat}");
+    print("Longitude = ${lon}");
+    print("Start time is = ${start}");
+    print("End time is = ${end}");
+
     final response = await http.get(Uri.parse(
         'http://api.openweathermap.org/data/2.5/air_pollution/history?lat=${lat}&lon=${lon}&start=${start}&end=${end}&appid=${historicalDataAPIKey}'));
 
@@ -96,81 +162,80 @@ class _aqiGraphState extends State<aqiGraph> {
     // return dayData;
   }
 
-  // getMonthAPI() async {
-  //   if (myController.text == null || myController.text.isEmpty) {
-  //     monthController!.add(null);
-  //     return;
-  //   }
+  getMonthAPI() async {
+    print("Calling getMonthAPI...");
+    if (myController.text == null || myController.text.isEmpty) {
+      monthController!.add(null);
+      return;
+    }
 
-  //   monthController!.add("Loading...");
+    monthController!.add("Loading...");
 
-  //   List<int> start_end = getMonthUnix(monthDropdownValue);
-  //   monthStart = start_end[0];
-  //   monthEnd = start_end[1];
+    List<int> start_end = getMonthUnix(monthDropdownValue);
+    monthStart = start_end[0];
+    monthEnd = start_end[1];
 
-  //   print("Start=${monthStart}");
-  //   print("End=${monthEnd}");
-  //   print(lat);
-  //   print(lon);
-  //   final monthResponse = await http.get(Uri.parse(
-  //       'http://api.openweathermap.org/data/2.5/air_pollution/history?lat=${lat}&lon=${lon}&start=${monthStart}&end=${monthEnd}&appid=${historicalDataAPIKey}'));
+    print("Start=${monthStart}");
+    print("End=${monthEnd}");
+    print(lat);
+    print(lon);
+    final monthResponse = await http.get(Uri.parse(
+        'http://api.openweathermap.org/data/2.5/air_pollution/history?lat=${lat}&lon=${lon}&start=${monthStart}&end=${monthEnd}&appid=${historicalDataAPIKey}'));
 
-  //   var data = jsonDecode(monthResponse.body.toString());
-  //   print(data);
-  //   monthController!.add(data);
-  //   historicalAqiModel monData = historicalAqiModel.fromJson(data);
-  //   print("Month Data ${monData.coord!.lon}");
-  //   monthData.coord = monData.coord;
-  //   print("Month Data ${monthData.coord!.lon}");
-  //   List<ComponentList> avg = [];
-  //   for (int i = 0; i < monData.list!.length; i += 24) {
-  //     num avgAQI = 0;
-  //     num avgco = 0;
-  //     num avgno = 0;
-  //     num avgno2 = 0;
-  //     num avgo3 = 0;
-  //     num avgso2 = 0;
-  //     num avgpm25 = 0;
-  //     num avgpm10 = 0;
-  //     num avgnh3 = 0;
-  //     int date = monData.list![i].dt!;
-  //     for (int j = i; j < i + 24 && i < monData.list!.length; j++) {
-  //       avgAQI += monData.list![i].main!.aqi!;
-  //       avgco += monData.list![i].components!.co!;
-  //       avgno += monData.list![i].components!.no!;
-  //       avgno2 += monData.list![i].components!.no2!;
-  //       avgo3 += monData.list![i].components!.o3!;
-  //       avgso2 += monData.list![i].components!.so2!;
-  //       avgpm25 += monData.list![i].components!.pm25!;
-  //       avgpm10 += monData.list![i].components!.pm10!;
-  //       avgnh3 += monData.list![i].components!.nh3!;
-  //     }
-  //     avgAQI /= 24;
-  //     avgco /= 24;
-  //     avgno /= 24;
-  //     avgno2 /= 24;
-  //     avgo3 /= 24;
-  //     avgso2 /= 24;
-  //     avgpm25 /= 24;
-  //     avgpm10 /= 24;
-  //     avgnh3 /= 24;
-  //     avg.add(ComponentList(
-  //         main: Main(avgAQI),
-  //         components: Components(
-  //             avgco, avgno, avgno2, avgo3, avgso2, avgpm25, avgpm10, avgnh3),
-  //         dt: date));
-  //   }
-  //   print(avg);
-  //   monthData.list = avg;
-  // }
-
-  @override
-  void initState() {
-    super.initState();
-    _streamController = StreamController();
-    monthController = StreamController();
-    _stream = _streamController!.stream;
-    monthStream = monthController!.stream;
+    var data = jsonDecode(monthResponse.body.toString());
+    print(data);
+    monthController!.add(data);
+    historicalAqiModel monData = historicalAqiModel.fromJson(data);
+    monthData.coord = Coord(lon: monData.coord!.lon, lat: monData.coord!.lat);
+    print("Month Data Lon: ${monthData.coord!.lon}");
+    print("Month Data Lat: ${monthData.coord!.lat}");
+    monthData.list = <ComponentList>[];
+    for (int i = 0; i < monData.list!.length; i += 24) {
+      int avgAQI = 0;
+      num avgco = 0;
+      num avgno = 0;
+      num avgno2 = 0;
+      num avgo3 = 0;
+      num avgso2 = 0;
+      num avgpm25 = 0;
+      num avgpm10 = 0;
+      num avgnh3 = 0;
+      int date = monData.list![i].dt!;
+      for (int j = i; j < i + 24 && i < monData.list!.length; j++) {
+        avgAQI += monData.list![i].main!.aqi!;
+        avgco += monData.list![i].components!.co!;
+        avgno += monData.list![i].components!.no!;
+        avgno2 += monData.list![i].components!.no2!;
+        avgo3 += monData.list![i].components!.o3!;
+        avgso2 += monData.list![i].components!.so2!;
+        avgpm25 += monData.list![i].components!.pm25!;
+        avgpm10 += monData.list![i].components!.pm10!;
+        avgnh3 += monData.list![i].components!.nh3!;
+      }
+      avgAQI = (avgAQI / 24).floor();
+      avgco /= 24;
+      avgno /= 24;
+      avgno2 /= 24;
+      avgo3 /= 24;
+      avgso2 /= 24;
+      avgpm25 /= 24;
+      avgpm10 /= 24;
+      avgnh3 /= 24;
+      // print("Average AQI ${i + 1} = ${avgAQI}");
+      monthData.list!.add(ComponentList(
+          main: Main(aqi: avgAQI),
+          components: Components(
+              co: avgco,
+              no: avgno,
+              no2: avgno2,
+              o3: avgo3,
+              so2: avgso2,
+              pm25: avgpm25,
+              pm10: avgpm10,
+              nh3: avgnh3),
+          dt: date));
+    }
+    print("Month Data first AQI : ${monthData.list![0].main!.aqi}");
   }
 
   @override
@@ -179,7 +244,9 @@ class _aqiGraphState extends State<aqiGraph> {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(110.0),
-        child: PrimaryAppBar(page: 'homepage',),
+        child: PrimaryAppBar(
+          page: 'homepage',
+        ),
       ),
       body: ListView(
         children: [
@@ -248,7 +315,7 @@ class _aqiGraphState extends State<aqiGraph> {
               ),
             ]),
           ),
-      
+
           //By Day
           Container(
             margin: const EdgeInsets.fromLTRB(10, 5, 10, 20),
@@ -299,7 +366,7 @@ class _aqiGraphState extends State<aqiGraph> {
                 if (snapshot.data == null) {
                   return Container();
                 }
-                
+
                 if (snapshot.data == "Loading...") {
                   return Center(
                     child: Column(
@@ -316,7 +383,9 @@ class _aqiGraphState extends State<aqiGraph> {
                     return const Text('Type a nearby place');
                   }
                   print("Before column data");
-                  fillColumnData(dayData, aqiDropdownValue);
+                  fillColumnData(dayData, aqiDropdownValue, 'day');
+                  graphData = [...columnData];
+                  clearColumnData();
                   print("After column data");
                   return Container(
                     child: SfCartesianChart(
@@ -327,122 +396,116 @@ class _aqiGraphState extends State<aqiGraph> {
                       ),
                       series: <ChartSeries>[
                         AreaSeries<AQIValues, String>(
-                          dataSource: columnData,
+                          dataSource: graphData!,
                           xValueMapper: (AQIValues aqiv, _) => aqiv.date,
                           yValueMapper: yValueMapper,
+                          gradient: linearGradient,
                         )
                       ],
-                      enableAxisAnimation: true,
+                      // enableAxisAnimation: true,
                       margin: const EdgeInsets.all(6),
-                      palette: const [
-                        Color.fromARGB(255, 255, 174, 243),
-                        Color.fromARGB(255, 112, 226, 255),
-                        Color.fromARGB(255, 255, 255, 79),
-                      ],
                     ),
                   );
                 }
                 return Container();
               }),
-      
-          //By Month
-          // Container(
-          //   margin: const EdgeInsets.fromLTRB(10, 5, 10, 20),
-          //   child: const Text(
-          //     'By Month',
-          //     style: TextStyle(
-          //       fontFamily: 'Inria',
-          //       fontSize: 22,
-          //       fontWeight: FontWeight.w700,
-          //     ),
-          //     textAlign: TextAlign.left,
-          //   ),
-          // ),
-          // Flexible(
-          //   child: Container(
-          //     margin: const EdgeInsets.fromLTRB(10, 5, 10, 20),
-          //     padding: const EdgeInsets.symmetric(horizontal: 10),
-          //     decoration: BoxDecoration(
-          //       border: Border.all(color: Colors.black54),
-          //       borderRadius: BorderRadius.circular(20),
-          //     ),
-          //     child: DropdownButton<String>(
-          //       value:
-          //           monthDropdownValue.isNotEmpty ? monthDropdownValue : null,
-          //       icon: const Icon(Icons.expand_more),
-          //       elevation: 16,
-          //       style: const TextStyle(
-          //           fontFamily: 'Inria',
-          //           fontSize: 17,
-          //           fontWeight: FontWeight.w200,
-          //           color: Colors.black54),
-          //       onChanged: (String? value) {
-          //         setState(() {
-          //           monthDropdownValue = value!;
-          //         });
-          //         getMonthAPI();
-          //       },
-          //       items: monthDropdownValues
-          //           .map<DropdownMenuItem<String>>((String value) {
-          //         return DropdownMenuItem<String>(
-          //           value: value,
-          //           child: Text(value),
-          //         );
-          //       }).toList(),
-          //     ),
-          //   ),
-          // ),
-          // StreamBuilder(
-          //     stream: monthStream,
-          //     builder: (BuildContext context, AsyncSnapshot snapshot) {
-          //       if (snapshot.data == null) {
-          //         return Container();
-          //       }
-      
-          //       if (snapshot.data == "Loading...") {
-          //         return Center(
-          //           child: Column(
-          //             children: [
-          //               CircularProgressIndicator(),
-          //               SizedBox(height: 300),
-          //             ],
-          //           ),
-          //         );
-          //       }
-          //       if (snapshot.hasData) {
-          //         final data = snapshot.data;
-          //         if (data["list"].length == 0) {
-          //           return const Text('Type a nearby place');
-          //         }
-          //         print("Before column data");
-          //         fillColumnData(monthData, aqiDropdownValue);
-          //         print("After column data");
-          //         return Container(
-          //           child: SfCartesianChart(
-          //             title: ChartTitle(text: chartTitle),
-          //             primaryXAxis: CategoryAxis(),
-          //             primaryYAxis: NumericAxis(
-          //               edgeLabelPlacement: EdgeLabelPlacement.shift,
-          //             ),
-          //             series: <ChartSeries>[
-          //               AreaSeries<AQIValues, String>(
-          //                 dataSource: columnData,
-          //                 xValueMapper: (AQIValues aqiv, _) => aqiv.date,
-          //                 yValueMapper: yValueMapper,
-          //               )
-          //             ],
-          //             enableAxisAnimation: true,
-          //             margin: const EdgeInsets.all(6),
-          //             palette: const [
-          //               Color.fromARGB(255, 255, 174, 243),
-          //               Color.fromARGB(255, 112, 226, 255),
-          //               Color.fromARGB(255, 255, 255, 79),
-          //             ],
-          //           ),
-          //         );
-          //       }
-          //       return Container();
-          //     })
+
+          // By Month
+          Container(
+            margin: const EdgeInsets.fromLTRB(10, 5, 10, 20),
+            child: const Text(
+              'By Month',
+              style: TextStyle(
+                fontFamily: 'Inria',
+                fontSize: 22,
+                fontWeight: FontWeight.w700,
+              ),
+              textAlign: TextAlign.left,
+            ),
+          ),
+          Flexible(
+            child: Container(
+              margin: const EdgeInsets.fromLTRB(10, 5, 10, 20),
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.black54),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: DropdownButton<String>(
+                value:
+                    monthDropdownValue.isNotEmpty ? monthDropdownValue : null,
+                icon: const Icon(Icons.expand_more),
+                elevation: 16,
+                style: const TextStyle(
+                    fontFamily: 'Inria',
+                    fontSize: 17,
+                    fontWeight: FontWeight.w200,
+                    color: Colors.black54),
+                onChanged: (String? value) {
+                  setState(() {
+                    monthDropdownValue = value!;
+                  });
+                  getMonthAPI();
+                },
+                items: monthDropdownValues
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+              ),
+            ),
+          ),
+          StreamBuilder(
+              stream: monthStream,
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (snapshot.data == null) {
+                  return Container();
+                }
+
+                if (snapshot.data == "Loading...") {
+                  return Center(
+                    child: Column(
+                      children: [
+                        CircularProgressIndicator(),
+                        SizedBox(height: 300),
+                      ],
+                    ),
+                  );
+                }
+                if (snapshot.hasData) {
+                  final data = snapshot.data;
+                  if (data["list"].length == 0) {
+                    return const Text('Type a nearby place');
+                  }
+                  print("Before column data");
+                  fillColumnData(monthData, aqiDropdownValue, 'month');
+                  print("After column data");
+                  graphData = [...columnData];
+                  clearColumnData();
+                  return Container(
+                    child: SfCartesianChart(
+                      title: ChartTitle(text: chartTitle),
+                      primaryXAxis: CategoryAxis(),
+                      primaryYAxis: NumericAxis(
+                        edgeLabelPlacement: EdgeLabelPlacement.shift,
+                      ),
+                      series: <ChartSeries>[
+                        AreaSeries<AQIValues, String>(
+                          dataSource: graphData!,
+                          xValueMapper: (AQIValues aqiv, _) => aqiv.date,
+                          yValueMapper: yValueMapper,
+                          gradient: linearGradient,
+                        )
+                      ],
+                      enableAxisAnimation: true,
+                      margin: const EdgeInsets.all(6),
+                    ),
+                  );
+                }
+                return Container();
+              })
         ],
       ),
     );

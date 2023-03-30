@@ -1,22 +1,25 @@
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:environment_app/Connect/add_post.dart';
 import 'package:environment_app/components/primary_appbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:environment_app/Connect/dbResources/firestore_methods.dart';
+import 'package:environment_app/services/firestore_methods.dart';
 import 'package:environment_app/login.dart';
 import 'package:environment_app/utils/utils.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../Connect/dbResources/storage_methods.dart';
+import '../services/storage_methods.dart';
 import '../services/authFunctions.dart';
 import '../widgets/general_button.dart';
 
 class Profile extends StatefulWidget {
   final String uid;
   final String collection;
-  const Profile({Key? key, required this.uid, required this.collection})
+  Function? callback;
+  Profile(
+      {Key? key, required this.uid, required this.collection, this.callback})
       : super(key: key);
 
   @override
@@ -24,16 +27,20 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  String? desc;
   var userData = {};
   int postLen = 0;
   int followers = 0;
   int following = 0;
+  int petitions = 0;
   bool isFollowing = false;
   bool isLoading = false;
   String imageUrl =
       'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png';
   bool imageUploaded = false;
+  bool enabledField = false;
   late Uint8List file;
+  final TextEditingController _descriptionController = TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -45,26 +52,36 @@ class _ProfileState extends State<Profile> {
       isLoading = true;
     });
     try {
+      print('Userid: ${widget.uid}');
+      print('Collection: ${widget.collection}');
       var userSnap = await FirebaseFirestore.instance
           .collection(widget.collection)
           .doc(widget.uid)
           .get();
 
       // get post lENGTH
-      // var postSnap = await FirebaseFirestore.instance
-      //     .collection('posts')
-      //     .where('uid', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
-      //     .get();
+      var postSnap = await FirebaseFirestore.instance
+          .collection('posts')
+          .where('uid', isEqualTo: widget.uid)
+          .get();
 
-      // postLen = postSnap.docs.length;
+      var petitionSnap = await FirebaseFirestore.instance
+          .collection('Petition')
+          .where('uid', isEqualTo: widget.uid)
+          .get();
+      petitions = petitionSnap.docs.length;
+      postLen = postSnap.docs.length;
       print("Error in next line");
       userData = userSnap.data()!;
       print("Userdata for uid=${widget.uid} = ${userData}");
-      followers = userSnap.data()!['followers'];
-      following = userSnap.data()!['following'];
-      // isFollowing = userSnap
-      //     .data()!['followers']
-      //     .contains(FirebaseAuth.instance.currentUser!.uid);
+      followers = userSnap.data()!['followers'].length;
+      following = userSnap.data()!['following'].length;
+      desc = widget.collection == "users"
+          ? userSnap.data()!['bio']
+          : userSnap.data()!['mission'];
+      isFollowing = userSnap
+          .data()!['followers']
+          .contains(FirebaseAuth.instance.currentUser!.uid);
       setState(() {
         imageUrl = userSnap.data()!['photourl'];
         if (imageUrl.isNotEmpty) imageUploaded = true;
@@ -72,14 +89,12 @@ class _ProfileState extends State<Profile> {
     } catch (e) {
       showSnackBar(
         context,
-        "The Error in Profile is" + e.toString(),
+        "The Error in Profile is: $e",
       );
     }
-    if (userData != null) {
-      setState(() {
-        isLoading = false;
-      });
-    }
+    setState(() {
+      isLoading = false;
+    });
   }
 
   selectImage() async {
@@ -101,15 +116,19 @@ class _ProfileState extends State<Profile> {
     return isLoading
         ? Scaffold(
             appBar: PreferredSize(
-              preferredSize: Size.fromHeight(110.0),
-              child: PrimaryAppBar(page: 'homepage',),
+              preferredSize: const Size.fromHeight(110.0),
+              child: PrimaryAppBar(
+                page: 'homepage',
+              ),
             ),
-            body: Center(child: CircularProgressIndicator()),
+            body: const Center(child: CircularProgressIndicator()),
           )
         : Scaffold(
             appBar: PreferredSize(
-              preferredSize: Size.fromHeight(110.0),
-              child: PrimaryAppBar(page: 'homepage',),
+              preferredSize: const Size.fromHeight(110.0),
+              child: PrimaryAppBar(
+                page: 'homepage',
+              ),
             ),
             body: ListView(
               children: [
@@ -124,18 +143,22 @@ class _ProfileState extends State<Profile> {
                             backgroundImage: NetworkImage(imageUrl),
                             radius: 40,
                           ),
-                          GeneralButton(
-                              onPressed: selectImage,
-                              child: Text(
-                                  imageUploaded ? 'Edit Image' : 'Upload Image',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontFamily: 'Inter',
-                                    fontSize: 10,
-                                  )))
+                          widget.uid == FirebaseAuth.instance.currentUser!.uid
+                              ? GeneralButton(
+                                  onPressed: selectImage,
+                                  child: Text(
+                                      imageUploaded
+                                          ? 'Edit Image'
+                                          : 'Upload Image',
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                        fontFamily: 'Inter',
+                                        fontSize: 10,
+                                      )))
+                              : Container(),
                         ],
                       ),
-                      SizedBox(height: 15),
+                      const SizedBox(height: 15),
                       //UserName
                       Container(
                         alignment: Alignment.center,
@@ -143,14 +166,14 @@ class _ProfileState extends State<Profile> {
                           top: 15,
                         ),
                         child: Text(
-                          userData['name'] == null ? 'User' : userData['name'],
-                          style: TextStyle(
+                          userData['name'] ?? 'User',
+                          style: const TextStyle(
                             fontWeight: FontWeight.bold,
                           ),
                           textAlign: TextAlign.center,
                         ),
                       ),
-                      SizedBox(height: 15),
+                      const SizedBox(height: 15),
 
                       //Followers, Following, Posts
                       Row(
@@ -166,10 +189,10 @@ class _ProfileState extends State<Profile> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           buildStatColumn(postLen, "posts"),
-                          buildStatColumn(followers, "petitions")
+                          buildStatColumn(petitions, "petitions")
                         ],
                       ),
-                      SizedBox(height: 15),
+                      const SizedBox(height: 15),
 
                       //Button
                       Row(
@@ -177,7 +200,7 @@ class _ProfileState extends State<Profile> {
                         children: [
                           FirebaseAuth.instance.currentUser!.uid == widget.uid
                               ? GeneralButton(
-                                  child: Text('Sign Out',
+                                  child: const Text('Sign Out',
                                       style: TextStyle(
                                         color: Colors.black,
                                         fontFamily: 'Inter',
@@ -193,17 +216,18 @@ class _ProfileState extends State<Profile> {
                                 )
                               : isFollowing
                                   ? GeneralButton(
-                                      child: Text('Unfollow',
+                                      child: const Text('Unfollow',
                                           style: TextStyle(
                                             color: Colors.black,
                                             fontFamily: 'Inter',
                                           )),
                                       onPressed: () async {
                                         await FireStoreMethods().followUser(
-                                          FirebaseAuth
-                                              .instance.currentUser!.uid,
-                                          userData['uid'],
-                                        );
+                                            FirebaseAuth
+                                                .instance.currentUser!.uid,
+                                            userData['uid'],
+                                            'users',
+                                            widget.collection);
 
                                         setState(() {
                                           isFollowing = false;
@@ -212,17 +236,18 @@ class _ProfileState extends State<Profile> {
                                       },
                                     )
                                   : GeneralButton(
-                                      child: Text('Follow',
+                                      child: const Text('Follow',
                                           style: TextStyle(
                                             color: Colors.black,
                                             fontFamily: 'Inter',
                                           )),
                                       onPressed: () async {
                                         await FireStoreMethods().followUser(
-                                          FirebaseAuth
-                                              .instance.currentUser!.uid,
-                                          userData['uid'],
-                                        );
+                                            FirebaseAuth
+                                                .instance.currentUser!.uid,
+                                            userData['uid'],
+                                            'users',
+                                            widget.collection);
 
                                         setState(() {
                                           isFollowing = true;
@@ -232,59 +257,124 @@ class _ProfileState extends State<Profile> {
                                     )
                         ],
                       ),
+
+                      const SizedBox(height: 20),
+                      Text(widget.collection == 'users' ? "BIO" : "OUR MISSION",
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'Inria',
+                          )),
                       Container(
                         alignment: Alignment.center,
                         padding: const EdgeInsets.only(
                           top: 1,
                         ),
-                        child: Text(widget.collection == 'users'
-                            ? userData['bio'] == null
-                                ? 'Your Bio'
-                                : userData['bio']
-                            : userData['mission'] == null
-                                ? 'Your Mission'
-                                : userData['mission']),
+                        child: TextFormField(
+                          controller: _descriptionController,
+                          keyboardType: TextInputType.multiline,
+                          textAlignVertical: TextAlignVertical.center,
+                          textAlign: TextAlign.center,
+                          decoration: InputDecoration(
+                              hintText: widget.collection == 'users'
+                                  ? desc ?? 'Bio'
+                                  : desc ?? 'Mission'),
+                          enabled: enabledField,
+                        ),
                       ),
+
+                      widget.uid == FirebaseAuth.instance.currentUser!.uid
+                          ? GeneralButton(
+                              onPressed: () async {
+                                if (!enabledField) {
+                                  setState(() {
+                                    enabledField = true;
+                                  });
+                                } else {
+                                  setState(() {
+                                    enabledField = false;
+                                    desc = _descriptionController.text;
+                                  });
+                                  widget.collection == "users"
+                                      ? await FirebaseFirestore.instance
+                                          .collection(widget.collection)
+                                          .doc(widget.uid)
+                                          .update({'bio': desc})
+                                      : await FirebaseFirestore.instance
+                                          .collection(widget.collection)
+                                          .doc(widget.uid)
+                                          .update({'mission': desc});
+                                }
+                              },
+                              child: Text(
+                                  enabledField
+                                      ? 'Save'
+                                      : widget.collection == 'users'
+                                          ? 'Edit Bio'
+                                          : 'Edit Mission',
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontFamily: 'Inter',
+                                    fontSize: 10,
+                                  )))
+                          : Container(),
                     ],
                   ),
                 ),
                 const Divider(),
-                // FutureBuilder(
-                //   future: FirebaseFirestore.instance
-                //       .collection('posts')
-                //       .where('uid', isEqualTo: widget.uid)
-                //       .get(),
-                //   builder: (context, snapshot) {
-                //     if (snapshot.connectionState == ConnectionState.waiting) {
-                //       return const Center(
-                //         child: CircularProgressIndicator(),
-                //       );
-                //     }
+                widget.uid == FirebaseAuth.instance.currentUser!.uid
+                    ? Container(
+                        margin: EdgeInsets.symmetric(horizontal: 30),
+                        padding: EdgeInsets.symmetric(horizontal: 70),
+                        child: GeneralButton(
+                            child: const Text('Add Post',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontFamily: 'Inter',
+                                    fontSize: 10)),
+                            onPressed: () =>
+                                Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                    builder: (context) => AddPostScreen(),
+                                  ),
+                                )),
+                      )
+                    : Container(),
+                FutureBuilder(
+                  future: FirebaseFirestore.instance
+                      .collection('posts')
+                      .where('uid', isEqualTo: widget.uid)
+                      .get(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
 
-                //     return GridView.builder(
-                //       shrinkWrap: true,
-                //       itemCount: (snapshot.data! as dynamic).docs.length,
-                //       gridDelegate:
-                //           const SliverGridDelegateWithFixedCrossAxisCount(
-                //         crossAxisCount: 3,
-                //         crossAxisSpacing: 5,
-                //         mainAxisSpacing: 1.5,
-                //         childAspectRatio: 1,
-                //       ),
-                //       itemBuilder: (context, index) {
-                //         DocumentSnapshot snap =
-                //             (snapshot.data! as dynamic).docs[index];
+                    return GridView.builder(
+                      shrinkWrap: true,
+                      itemCount: (snapshot.data! as dynamic).docs.length,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        crossAxisSpacing: 5,
+                        mainAxisSpacing: 1.5,
+                        childAspectRatio: 1,
+                      ),
+                      itemBuilder: (context, index) {
+                        DocumentSnapshot snap =
+                            (snapshot.data! as dynamic).docs[index];
 
-                //         return Container(
-                //           child: Image(
-                //             image: NetworkImage(snap['postUrl']),
-                //             fit: BoxFit.cover,
-                //           ),
-                //         );
-                //       },
-                //     );
-                //   },
-                // )
+                        return Container(
+                          child: Image(
+                            image: NetworkImage(snap['postUrl']),
+                            fit: BoxFit.cover,
+                          ),
+                        );
+                      },
+                    );
+                  },
+                )
               ],
             ),
           );

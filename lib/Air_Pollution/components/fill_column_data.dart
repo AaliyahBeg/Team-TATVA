@@ -6,10 +6,10 @@ import '../aqiGraph.dart';
 String chartTitle = "";
 var yValueMapper;
 List<AQIValues> columnData = <AQIValues>[];
-void fillColumnData(historicalAqiModel hAQIdata, String value) {
+void fillColumnData(historicalAqiModel hAQIdata, String value, String type) {
   for (ComponentList data in hAQIdata.list!) {
     columnData.add(AQIValues(
-        data.dt!.toUnixTime(isUtc: true).toString().substring(11, 19),
+        type=='day' ? data.dt!.toUnixTime(isUtc: false).toString().substring(11, 16) : data.dt!.toUnixTime(isUtc: false).toString().substring(8, 10),
         data.main?.aqi,
         data.components?.co,
         data.components?.no,
@@ -18,8 +18,7 @@ void fillColumnData(historicalAqiModel hAQIdata, String value) {
         data.components?.so2,
         data.components?.pm25,
         data.components?.pm10,
-        data.components?.nh3
-        ));
+        data.components?.nh3));
   }
   chartTitle = "$value Graph";
   switch (value) {
@@ -51,4 +50,8 @@ void fillColumnData(historicalAqiModel hAQIdata, String value) {
       yValueMapper = (AQIValues aqiv, _) => aqiv.nh3;
       break;
   }
+}
+
+void clearColumnData() {
+  columnData.clear();
 }
