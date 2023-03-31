@@ -1,4 +1,4 @@
-List<String> dayDropdownValues = <String>["", "", "", "", "", "", ""];
+List<String> dayDropdownValues = <String>["","","","","","",""];
 const List<String> aqiDropdownValues = <String>[
   "AQI",
   "PM 2.5",
@@ -75,7 +75,7 @@ String dateToString(DateTime date) {
 void createDayDropdownList() {
   DateTime today = DateTime.now();
   for (int i = 6; i >= 0; i--) {
-    dayDropdownValues[i] += dateToString(today.subtract(Duration(days: 6 - i)));
+    dayDropdownValues[i] = dateToString(today.subtract(Duration(days: 6 - i)));
   }
 }
 
