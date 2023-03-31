@@ -3,7 +3,7 @@ description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -19,7 +19,7 @@ version: 1.0.0+1
 
 environment:
   sdk: ">=2.17.6 <3.0.0"
-
+#    sdk: '>=2.12.0 <3.0.0'
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
 # consider running `flutter pub upgrade --major-versions`. Alternatively,
@@ -27,33 +27,65 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  blurrycontainer: ^1.0.2
+  build_runner: ^2.3.3
+  carousel_slider: ^4.2.1
+  cloud_firestore: ^4.4.4
+  controller: ^0.1.10+1
+  cupertino_icons: ^1.0.5
+  cupertino_setting_control: ^1.1.0
+  dartleaf: ^1.1.4
+  date_utils: ^0.2.0
+  dropdown_button2: ^2.0.0
+  equatable: ^2.0.5
+  firebase_auth: ^4.3.0
+  firebase_core: ^2.7.1
+  firebase_database: ^10.0.14
+  firebase_storage: ^11.0.15
   flutter:
     sdk: flutter
-
-
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.2
-  carousel_slider: ^4.2.1
+  flutter_hooks: ^0.18.5+1
+  flutter_map: ^3.1.0
+  flutter_rating_bar: ^4.0.1
+  flutter_svg: ^1.1.6
+  font_awesome_flutter: ^10.3.0
+  geocoding: ^2.1.0
+  geolocator: ^9.0.2
+  get: ^4.6.5
+  google_fonts: ^4.0.1
+  google_sign_in: ^6.0.2
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+  hive_generator: ^2.0.0
+  image_picker: ^0.8.7
+  like_button: ^2.0.5
+  liquid_progress_indicator: ^0.4.0
+  location: ^4.4.0
+  noise_meter: ^3.2.0
+  open_street_map_search_and_pick: ^0.0.15
+  permission_handler: ^10.2.0
+  provider: ^6.0.5
+  razorpay_flutter: 1.3.3
   scroll_snap_list: ^0.9.1
+  syncfusion_flutter_charts: ^20.4.52
+  syncfusion_flutter_gauges: ^20.4.52
+  syncfusion_flutter_maps: ^20.4.52
+  table_calendar: ^3.0.8
+  unixtime: ^1.0.0
+  url_launcher: ^6.1.8
+  uuid: ^3.0.7
+  water_bottle: ^0.0.7
+  weather_icons: ^3.0.0
 
 dev_dependencies:
+  flutter_lints: ^2.0.0
   flutter_test:
     sdk: flutter
 
-  # The "flutter_lints" package below contains a set of recommended lints to
-  # encourage good coding practices. The lint set provided by the package is
-  # activated in the `analysis_options.yaml` file located at the root of your
-  # package. See that file for information about deactivating specific lint
-  # rules and activating additional ones.
-  flutter_lints: ^2.0.0
-
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
-
 # The following section is specific to Flutter packages.
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
@@ -61,15 +93,29 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-     - images/pet1.png
-#    - images/a_dot_ham.jpeg
-
+    - images/pet1.png
+    - images/airPollution.png
+    - images/soilPollution.png
+    - images/waterPollution.png
+    - images/lightPollution.png
+    - images/noisePollution.png
+    - images/birds.png
+    - images/earthf.png
+    - images/R.png
+    - images/rocket.png
+    - assets/images/1.png
+    - assets/images/2.png
+    - assets/images/3.png
+    - assets/images/4.png
+    - assets/images/5.png
+    - assets/images/6.png
+    - images/.
+    - assets/.
+  #    - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
-
   # For details regarding adding assets from package dependencies, see
   # https://flutter.dev/assets-and-images/#from-packages
-
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a
@@ -79,8 +125,11 @@ flutter:
     - family: Inter
       fonts:
         - asset: fonts/inter.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
+    - family: Aboreto
+      fonts:
+        - asset: fonts/Aboreto-Regular.ttf
+    #       - asset: fonts/Schyler-Italic.ttf
+    #         style: italic
     - family: Inria
       fonts:
         - asset: fonts/InriaSerif-Bold.ttf
