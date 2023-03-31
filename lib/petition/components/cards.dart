@@ -133,9 +133,6 @@ Widget buildCard({
                       ),
                     ],
                   ),
-                  const SizedBox(
-                    width: 5,
-                  ),
                   Row(
                     children: [
                       Icon(

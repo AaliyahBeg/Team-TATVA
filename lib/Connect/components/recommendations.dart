@@ -97,7 +97,7 @@ class _RecommendationsState extends State<Recommendations> {
                   height: 190,
                   child: FutureBuilder(
                       future: FirebaseFirestore.instance
-                          .collection('organizations')
+                          .collection('users')
                           .orderBy('followers')
                           .get(),
                       builder: (context, snapshot) {

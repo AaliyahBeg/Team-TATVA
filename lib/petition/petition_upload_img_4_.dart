@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
+import '../components/primary_appbar.dart';
+
 void main() => runApp(ImagePickerExample());
 
 class MyApp extends StatelessWidget {
@@ -82,12 +84,12 @@ class _ImagePickerExampleState extends State<ImagePickerExample> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'TATV',
+      appBar: PreferredSize(
+          child: PrimaryAppBar(
+            page: 'petitions',
+          ),
+          preferredSize: const Size.fromHeight(110.0),
         ),
-        backgroundColor: Color.fromARGB(255, 123, 187, 91),
-      ),
       body: Center(
         child: SingleChildScrollView(
           child: Column(
@@ -96,7 +98,7 @@ class _ImagePickerExampleState extends State<ImagePickerExample> {
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
                 child: Text(
-                  " >> ADD AN IMAGE <<  ",
+                  "ADD AN IMAGE",
                   textAlign: TextAlign.left,
                   style: TextStyle(
                     fontFamily: 'Inria',
@@ -108,7 +110,7 @@ class _ImagePickerExampleState extends State<ImagePickerExample> {
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
                 child: Text(
-                  ">> Select the image by clicking camera icon <<",
+                  "Select the image by clicking camera icon",
                   textAlign: TextAlign.left,
                   style: TextStyle(
                     fontFamily: 'Inria',
@@ -128,7 +130,7 @@ class _ImagePickerExampleState extends State<ImagePickerExample> {
                         imgTitle = value;
                       },
                       decoration: InputDecoration(
-                        hintText: ">> Give some title to your image <<",
+                        hintText: "Give some title to your image",
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(11),
                           borderSide: BorderSide(
@@ -160,7 +162,7 @@ class _ImagePickerExampleState extends State<ImagePickerExample> {
                         location = value;
                       },
                       decoration: InputDecoration(
-                        hintText: ">> Enter location of image <<",
+                        hintText: "Enter location of image",
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(11),
                           borderSide: BorderSide(

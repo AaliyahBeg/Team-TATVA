@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:environment_app/petition/petition_2_.dart';
 
+import '../components/primary_appbar.dart';
+
 
 class RaisePetition extends StatelessWidget {
   final TextEditingController _textEditingController = TextEditingController();
@@ -16,98 +18,24 @@ class RaisePetition extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          elevation: 0.0,
-          backgroundColor: Colors.transparent,
-          title: Text('TATV',
-              style: TextStyle(
-                fontSize: 22,
-                fontFamily: 'Inter',
-                fontWeight: FontWeight.w400,
-                color: Colors.black,
-              )),
-          leading: Icon(
-            Icons.energy_savings_leaf_rounded,
-            color: Colors.black,
-            size: 35,
+      appBar: PreferredSize(
+          child: PrimaryAppBar(
+            page: 'petitions',
           ),
-          actions: [
-            Icon(
-              Icons.search,
-              color: Colors.black,
-              size: 30,
-            ),
-            SizedBox(width: 5),
-          ]),
+          preferredSize: const Size.fromHeight(110.0),
+        ),
       body: Padding(
         padding: EdgeInsets.symmetric(vertical: 25),
         child: SingleChildScrollView(
        
           child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                GestureDetector(
-                    onTap: () => {Navigator.pushNamed(context, 'homepage')},
-                    child: Container(
-                      child: Text('Home',
-                          style: TextStyle(
-                            fontFamily: 'Inter',
-                            fontWeight: FontWeight.bold,
-                          )),
-                    )),
-                GestureDetector(
-                    onTap: () => {Navigator.pushNamed(context, '')},
-                    child: Container(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 12, horizontal: 13),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        gradient: LinearGradient(
-                            begin: Alignment.centerLeft,
-                            end: Alignment.centerRight,
-                            stops: [
-                              0.3,
-                              0.75,
-                              0.9
-                            ],
-                            colors: [
-                              const Color(0xFF3DA35D),
-                              const Color(0xFF96E072),
-                              const Color(0xFFE8FCCF),
-                            ]),
-                      ),
-                      child: Text('Petitions',
-                          style: TextStyle(
-                            fontFamily: 'Inter',
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          )),
-                    )),
-                GestureDetector(
-                    onTap: () => {Navigator.pushNamed(context, '')},
-                    child: Container(
-                        child: Text('Connect',
-                            style: TextStyle(
-                              fontFamily: 'Inter',
-                              fontWeight: FontWeight.bold,
-                            )))),
-                GestureDetector(
-                    onTap: () => {Navigator.pushNamed(context, '')},
-                    child: Container(
-                        child: Text('News',
-                            style: TextStyle(
-                              fontFamily: 'Inter',
-                              fontWeight: FontWeight.bold,
-                            )))),
-              ],
-            ),
+            
 
             SizedBox(height: 5),
             Container(
               margin: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
               child: Text(
-                "LET'S TAKE FIRST STEP TOWARDS CHANGE :)",
+                "LET'S TAKE THE FIRST STEP TOWARDS CHANGE",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontFamily: 'Inria',

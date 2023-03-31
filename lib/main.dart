@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:environment_app/Air_Pollution/aqi.dart';
 import 'package:environment_app/Air_Pollution/aqiGraph.dart';
 import 'package:environment_app/Connect/connect.dart';
-import 'package:environment_app/Connect/feed_screen.dart';
 import 'package:environment_app/News/datenews_home.dart';
 import 'package:environment_app/News/localnews_home.dart';
 
@@ -13,9 +12,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:environment_app/homepage.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'Land_Pollution/Cart_Add/CartSystem.dart';
-import 'Land_Pollution/Product/Products.dart';
-import 'Air_Pollution/components/getLocation.dart';
 import 'Land_Pollution/models/product_model.dart';
 import 'package:environment_app/petition/petitions_1_.dart';
 
@@ -29,9 +25,7 @@ import 'package:provider/provider.dart';
 import 'Connect/components/providers/user_provider.dart';
 import 'components/profile.dart';
 
-import 'package:environment_app/News/datenews.dart';
 import 'package:environment_app/News/headlines.dart';
-import 'package:environment_app/News/localnews.dart';
 import 'package:environment_app/News/savednews.dart';
 
 Future main() async {
@@ -60,8 +54,9 @@ class MyApp extends StatelessWidget {
         await FirebaseFirestore.instance.collection('users').doc(uid).get();
     if (documentSnapshot.data() == null) {
       collection = 'organizations';
-    } else
+    } else {
       collection = 'users';
+    }
   }
 
   @override
@@ -89,12 +84,11 @@ class MyApp extends StatelessWidget {
           ),
           routes: {
             'petitions': (context) => const Petitions(),
-            'news': (context) => News_home(),
+            'news': (context) => const News_home(),
             'homepage': (context) => const Home(),
             'login': (context) => const LoginPage(),
             'signup': (context) => const SignupPage(),
             'aqiGraph': (context) => const aqiGraph(),
-            'currAQIGraph': (context) => const curraqiGraph(),
             'connect': (context) => Connect(
                   collection: collection,
                 ),
