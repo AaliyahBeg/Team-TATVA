@@ -55,7 +55,7 @@ class Splash extends StatelessWidget {
             ),
           ]),
           Center(
-            child: Text('TATV',
+            child: Text('TATVA',
                 style: TextStyle(
                   fontSize: 90,
                   fontFamily: 'Inria',

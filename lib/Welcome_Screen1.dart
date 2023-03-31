@@ -51,7 +51,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     Image.asset(
                       'images/birds.png',
                     ),
-                    Text('TATV',
+                    Text('TATVA',
                         style: TextStyle(
                           fontSize: 90,
                           fontFamily: 'Inria',

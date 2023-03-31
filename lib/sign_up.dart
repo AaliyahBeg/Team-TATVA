@@ -224,7 +224,7 @@ class _SignupPageState extends State<SignupPage> {
                                   if (_formKey.currentState!.validate()) {
                                     _formKey.currentState!.save();
                                     if (login) {
-                                       bool loggedin =
+                                      bool loggedin =
                                           await AuthServices.signinUser(
                                               email, password, context);
                                       if (loggedin)
