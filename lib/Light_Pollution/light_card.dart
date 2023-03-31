@@ -19,7 +19,7 @@ class LightCard extends StatelessWidget {
       padding: EdgeInsets.all(20),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        color: Color.fromARGB(255, 194, 174, 255),
+        color: Color.fromARGB(255, 161, 96, 169),
       ),
       child: Column(children: [
         Text(title,
@@ -31,10 +31,12 @@ class LightCard extends StatelessWidget {
         Container(
           height: 200,
           width: 300,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              image: DecorationImage(image: NetworkImage(imgUrl), fit: BoxFit.cover), 
-            ),),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            image:
+                DecorationImage(image: NetworkImage(imgUrl), fit: BoxFit.cover),
+          ),
+        ),
         SizedBox(height: 15),
         Container(child: ExpandableText(text)),
       ]),
