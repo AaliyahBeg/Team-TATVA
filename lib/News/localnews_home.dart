@@ -119,8 +119,8 @@ class _localnews_homeState extends State<localnews_home> {
           ),
           preferredSize: const Size.fromHeight(110.0),
         ),
-        body: SingleChildScrollView(
-            child: Column(
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             SizedBox(
               height: 30,
@@ -179,6 +179,6 @@ class _localnews_homeState extends State<localnews_home> {
               image: AssetImage('images/tree.png'),
             ),
           ],
-        )));
+        ));
   }
 }

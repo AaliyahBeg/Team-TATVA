@@ -1,3 +1,4 @@
+import 'package:environment_app/components/primary_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:noise_meter/noise_meter.dart';
 import 'dart:async';
@@ -9,21 +10,20 @@ class ChartData {
   final double y;
 }
 
-class Page4 extends StatefulWidget {
+class main_page extends StatefulWidget {
   @override
-  _Page4State createState() => new _Page4State();
+  _main_page createState() => new _main_page();
 }
 
-class _Page4State extends State<Page4> {
-  //bool _isRecording = false;
-  bool _isRecording = true;
+class _main_page extends State<main_page> {
+  bool _isRecording = false;
+  //bool _isRecording = true;
   StreamSubscription<NoiseReading>? _noiseSubscription;
   late NoiseMeter _noiseMeter;
   List<String> values = [];
-  _Page4State() {
-    // Start a timer that runs every 1 minutes
-  }
-
+  double sum = 0.0;
+  double avg = 0.0;
+  int i = 0;
   @override
   void initState() {
     super.initState();
@@ -56,6 +56,9 @@ class _Page4State extends State<Page4> {
     String value = noiseReading.toString();
     String plot_value =
         value[28] + value[29] + value[30] + value[31] + value[32];
+    sum += double.parse(plot_value);
+    i++;
+    avg = sum / i;
 
     values.add(plot_value);
     print(plot_value);
@@ -88,16 +91,19 @@ class _Page4State extends State<Page4> {
     }
   }
 
-  Widget getGraph1() {
-    start();
+  Widget getGraph() {
+    // List<ChartData> chartData = values
+    //     .asMap()
+    //     .entries
+    //     .map((e) => ChartData(x: e.key, y: double.parse(e.value)))
+    //     .toList();
     List<ChartData> chartData = [];
     for (int i = 0; i < values.length; i++) {
       chartData.add(ChartData(i, double.parse(values[i])));
     }
-    if (chartData.length >= 25) {
-      chartData.removeAt(0);
+    if (values.length >= 20) {
+      values.removeAt(0);
     }
-
     return Container(
       padding: EdgeInsets.all(16.0),
       child: SfCartesianChart(
@@ -113,106 +119,94 @@ class _Page4State extends State<Page4> {
     );
   }
 
-  Widget getGraph() {
-    // List<ChartData> chartData = values
-    //     .asMap()
-    //     .entries
-    //     .map((e) => ChartData(x: e.key, y: double.parse(e.value)))
-    //     .toList();
-    start();
-    List<ChartData> chartData = [];
-
-    if (values.length == 10) {
-      for (int i = 0; i < values.length; i++) {
-        chartData.add(ChartData(i, double.parse(values[i])));
-      }
-      clear_vector();
-      return Container(
-        padding: EdgeInsets.all(16.0),
-        child: SfCartesianChart(
-          primaryXAxis: NumericAxis(),
-          series: <LineSeries<ChartData, num>>[
-            LineSeries<ChartData, num>(
-              dataSource: chartData,
-              xValueMapper: (ChartData data, _) => data.x,
-              yValueMapper: (ChartData data, _) => data.y,
-            ),
-          ],
-        ),
-      );
-    } else
-      return Container(
-        padding: EdgeInsets.all(16.0),
-        child: SfCartesianChart(
-          primaryXAxis: NumericAxis(),
-          series: <LineSeries<ChartData, num>>[
-            LineSeries<ChartData, num>(
-              dataSource: chartData,
-              xValueMapper: (ChartData data, _) => data.x,
-              yValueMapper: (ChartData data, _) => data.y,
-            ),
-          ],
-        ),
-      );
-  }
-
-  List<Widget> getContent() => <Widget>[
-        Container(
-            margin: EdgeInsets.all(25),
-            child: Column(children: [
-              Container(
-                child: Text(_isRecording ? "Mic: ON" : "Mic: OFF",
-                    style: TextStyle(fontSize: 25, color: Colors.blue)),
-                margin: EdgeInsets.only(top: 20),
-              )
-            ])),
-      ];
-
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: SingleChildScrollView(
-          child: Center(
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  //children: getContent())),
-                  children: <Widget>[
-                const SizedBox(
-                  height: 5,
-                ),
-                Container(
-                  height: 100,
-                  //width: ,
-                  padding: EdgeInsets.all(10),
-                  margin: EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                      color: Color.fromRGBO(211, 222, 135, 100),
-                      borderRadius: BorderRadius.all(Radius.circular(25)),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey,
-                          blurRadius: 2.0,
-                          spreadRadius: 0.0,
-                          offset: Offset(3.0, 3.0),
-                        ),
-                      ]),
-                ),
-                const SizedBox(
-                  height: 50,
-                ),
-                getGraph1(),
-                const SizedBox(
-                  height: 50,
-                ),
-              ])),
+    return Scaffold(
+      appBar: PreferredSize(
+        child: PrimaryAppBar(
+          page: 'homepage',
         ),
-        // floatingActionButton: FloatingActionButton(
-        //     backgroundColor: _isRecording ? Colors.red : Colors.green,
-        //     onPressed: _isRecording ? stop : start,
-        //     child: _isRecording ? Icon(Icons.stop) : Icon(Icons.mic)),
+        preferredSize: const Size.fromHeight(110.0),
       ),
+      body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Row(
+              children: [
+                Icon(Icons.lightbulb),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Text(
+                      'Click the button at buttom to check the current noise levels in your surroundings',
+                      textAlign: TextAlign.justify,
+                      style: TextStyle(
+                        color: Color.fromARGB(255, 29, 71, 31),
+                        fontSize: 14,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            getGraph(),
+            SizedBox(
+              height: 20,
+            ),
+            Container(
+              margin: EdgeInsets.all(10),
+              padding: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: const Color(0xFF96E072),
+                borderRadius: BorderRadius.all(Radius.circular(20)),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Text(
+                      'Average Noise Level:',
+                      textAlign: TextAlign.justify,
+                      style: TextStyle(
+                          color: Color.fromARGB(255, 29, 71, 31),
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(10.0, 10.0, 0, 10.0),
+                    child: Text(
+                      avg.toStringAsPrecision(5),
+                      textAlign: TextAlign.justify,
+                      style: TextStyle(
+                        color: Color.fromARGB(255, 29, 71, 31),
+                        fontSize: 14,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: Text(
+                      'dB',
+                      textAlign: TextAlign.justify,
+                      style: TextStyle(
+                        color: Color.fromARGB(255, 29, 71, 31),
+                        fontSize: 14,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ]),
+      floatingActionButton: FloatingActionButton(
+          backgroundColor: _isRecording ? Colors.red : Colors.green,
+          onPressed: _isRecording ? stop : start,
+          child: _isRecording ? Icon(Icons.stop) : Icon(Icons.mic)),
     );
   }
 }

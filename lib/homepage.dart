@@ -1,4 +1,3 @@
-
 import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:scroll_snap_list/scroll_snap_list.dart';
@@ -7,7 +6,7 @@ import 'package:environment_app/components/scroll_pages.dart';
 
 import 'components/card_items.dart';
 import 'components/primary_appbar.dart';
-import 'Noise_Pollution/main_page.dart';
+import 'Noise_Pollution/main.dart';
 import 'components/card_items.dart';
 import 'components/primary_appbar.dart';
 import 'components/scroll_pages.dart';

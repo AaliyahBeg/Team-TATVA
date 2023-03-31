@@ -5,6 +5,7 @@ import 'package:environment_app/Connect/connect.dart';
 import 'package:environment_app/Connect/feed_screen.dart';
 import 'package:environment_app/News/datenews_home.dart';
 import 'package:environment_app/News/localnews_home.dart';
+import 'package:environment_app/Noise_Pollution/main_page.dart';
 import 'package:environment_app/splash_screen.dart';
 
 import 'package:environment_app/News/news_home.dart';
@@ -105,7 +106,8 @@ class MyApp extends StatelessWidget {
                 setCollection();
                 return Home();
               } else {
-                return Splash(duration: 5);
+                //return Splash(duration: 5);
+                return WelcomeScreen();
               }
             },
           ),
@@ -126,6 +128,7 @@ class MyApp extends StatelessWidget {
             'news_page3': (context) => const datenews_home(),
             'saved_news': (context) => const savednews(),
             'welcomescreen': (context) => const WelcomeScreen(),
+            'main_page_noise': (context) => main_page(),
           },
         ));
   }

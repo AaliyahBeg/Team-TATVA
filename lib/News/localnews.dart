@@ -55,7 +55,7 @@ class _localnewsState extends State<localnews> {
                         'Sorry, no News was recorded as of now for the given location');
                   } else
                     return InkWell(
-                      onDoubleTap: () {
+                      onTap: () {
                         Navigator.push(context, MaterialPageRoute(builder: (_) {
                           final Uri _url = Uri.parse(article['url']);
                           return newscontent(

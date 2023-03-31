@@ -55,7 +55,7 @@ class _headlinesState extends State<headlines> {
                     return Text('Sorry, no Headlines was recorded as of now.');
                   }
                   return InkWell(
-                    onDoubleTap: () {
+                    onTap: () {
                       Navigator.push(context, MaterialPageRoute(builder: (_) {
                         final Uri _url = Uri.parse(article['url']);
                         return newscontent(
