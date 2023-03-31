@@ -31,7 +31,7 @@ flutter doctor
 ```
 git clone https://github.com/AaliyahBeg/Environment-App.git
 ```
-4. Edit the confidential.dart file and add your Newsapi.org API keys.
+4. Edit the confidential.dart file and add your Newsapi.org API, Open Weather Map API, Position Stack Geocoder API, RazorPay API keys.
 ```
 String NewsAPIKey = "NEWS API Key Here";
 Open Weather Map ="Open Weather Map API Key Here"
