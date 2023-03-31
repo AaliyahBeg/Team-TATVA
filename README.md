@@ -34,9 +34,9 @@ git clone https://github.com/AaliyahBeg/Environment-App.git
 4. Edit the confidential.dart file and add your Newsapi.org API, Open Weather Map API, Position Stack Geocoder API, RazorPay API keys.
 ```
 String NewsAPIKey = "NEWS API Key Here";
-Open Weather Map ="Open Weather Map API Key Here"
-Position Stack Geocoder API= "Position Stack Geocoder API Key Here"
-RazorPay API= "RazorPay API Key Here"
+String Open Weather Map ="Open Weather Map API Key Here"
+String Position Stack Geocoder API= "Position Stack Geocoder API Key Here"
+String RazorPay API= "RazorPay API Key Here"
 ```
 8. Run the following commands to fetch all required dependancies.
 ```
@@ -50,9 +50,15 @@ flutter run
 It is preferred you run the app on an actual Andriod device or you can set-up your emulator from Android Studio in order to test it on Andriod :)
 
 ## Resources
-
 - Presentation : https://www.canva.com/design/DAFdkZJ7me4/BH7MuVMDxjj7uGqkesESzA/view?utm_content=DAFdkZJ7me4&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
 - Prototyping : https://www.figma.com/file/xwutHNA8uxheIKWMoXhgJc/Environment-App?node-id=515%3A4
+
+## APIs Used
+- News API from : https://newsapi.org/
+- Forward Geocoding API from : https://positionstack.com/
+- Air Pollution Data API from: https://openweathermap.org/api/air-pollution
+- RazorPay API from  : https://razorpay.com
+
 
 
 
