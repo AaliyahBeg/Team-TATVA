@@ -61,7 +61,7 @@ dependencies:
   like_button: ^2.0.5
   liquid_progress_indicator: ^0.4.0
   location: ^4.4.0
-  noise_meter: ^3.0.3
+  noise_meter: ^3.2.0
   open_street_map_search_and_pick: ^0.0.15
   permission_handler: ^10.2.0
   provider: ^6.0.5
