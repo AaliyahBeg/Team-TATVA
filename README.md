@@ -1,4 +1,4 @@
-# TATV
+# TATVA
 ## An impactful Environment App
 * Curating by the motto :
   Purifying the Elements of Existence.
