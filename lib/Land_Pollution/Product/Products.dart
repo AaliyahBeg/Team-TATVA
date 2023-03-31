@@ -1,6 +1,7 @@
 import 'package:environment_app/Land_Pollution/Product/sellProduct.dart';
 import 'package:environment_app/Land_Pollution/Wishlist/Wishlist_item.dart';
 import 'package:flutter/material.dart';
+import '../Cart_Add/CartSystem.dart';
 import 'list_of_product.dart';
 import 'package:environment_app/Land_Pollution/Product/copy_Products.dart';
 
@@ -23,6 +24,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
     HomeScreen(),
     wishItem(),
     DataSetInputScreen(),
+    CartView(),
   ];
 
   void _onItemTapped(int index) {
@@ -55,7 +57,8 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
             BottomNavigationBarItem(icon: Icon(Icons.shopping_bag), label: "WisList"),
-            BottomNavigationBarItem(icon: Icon(Icons.account_balance_wallet_rounded), label: "Cart"),
+            BottomNavigationBarItem(icon: Icon(Icons.account_balance_wallet_rounded), label: "Earn"),
+            BottomNavigationBarItem(icon: Icon(Icons.shopping_cart), label: "Cart"),
           ],
             currentIndex: _selectedIndex,
             onTap: _onItemTapped,

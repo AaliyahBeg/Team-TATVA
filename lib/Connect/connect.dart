@@ -42,7 +42,7 @@ class _ConnectState extends State<Connect> with TickerProviderStateMixin {
                     _currentIndex = 0;
                   }),
                   child: Container(
-                    margin: EdgeInsets.all(5),
+                    margin: EdgeInsets.all(15),
                     decoration: _currentIndex == 0
                         ? BoxDecoration(
                             gradient: LinearGradient(
@@ -78,7 +78,7 @@ class _ConnectState extends State<Connect> with TickerProviderStateMixin {
                     _currentIndex = 1;
                   }),
                   child: Container(
-                    margin: EdgeInsets.all(5),
+                    margin: EdgeInsets.all(15),
                     decoration: _currentIndex == 1
                         ? BoxDecoration(
                             gradient: LinearGradient(

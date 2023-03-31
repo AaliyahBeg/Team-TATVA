@@ -5,10 +5,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 FirebaseFirestore firestore = FirebaseFirestore.instance;
-class CoffeeCard extends StatelessWidget {
+class RecycledProductCard extends StatelessWidget {
   final String Categorie;
 
-  const CoffeeCard({
+  const RecycledProductCard({
     Key? key,
     required this.Categorie,
   }) : super(key: key);
@@ -27,7 +27,7 @@ class CoffeeCard extends StatelessWidget {
               return Text('Error: ${snapshot.error}');
             switch (snapshot.connectionState) {
               case ConnectionState.waiting:
-                return CircularProgressIndicator();
+                return Center(child: CircularProgressIndicator());
               default:
                 final int count = (snapshot.data as QuerySnapshot<Object>).size;
                 return GridView.builder(
@@ -35,7 +35,7 @@ class CoffeeCard extends StatelessWidget {
                       crossAxisCount: 2, //number of columns
                       childAspectRatio: 0.6, // aspect ratio of the grid cells
                       crossAxisSpacing: 20, // horizontal spacing between cells
-                      mainAxisSpacing: 0, // vertical spacing between cells
+                      mainAxisSpacing: 5, // vertical spacing between cells
                     ),
                     shrinkWrap: true,
                     itemCount: count,
@@ -51,17 +51,22 @@ class CoffeeCard extends StatelessWidget {
                       return Column(
                         children: [
                           Container(
-                            height: 250,
-                            width: 160,
+                            // height: 250,
+                            // width: 160,
+                            decoration: BoxDecoration(
+                                color: Color(0xF6F3F3E4),
+                                borderRadius: BorderRadius.circular(20)),
+                            // height: 250,
+                            // width: 160,
                             child: InkWell(
-
+                
                                onTap: (){
                                  String id = document.id;
                                  Navigator.of(context).push(
                                      MaterialPageRoute
                                        (builder: (context) => thumb( id)),);
                                  // Navigator.of(context)
-                                 //     .pushNamed(CoffeeDetailsPage.routeName, arguments: id);
+                                 //     .pushNamed(RecycledProductDetailsPage.routeName, arguments: id);
                           },
                             child: Column(
                               children: [
@@ -78,7 +83,7 @@ class CoffeeCard extends StatelessWidget {
                                           image: NetworkImage((document.data() as Map<String, dynamic>)['Image']?.toString() ?? ''),
                                           fit: BoxFit.cover)),
                                 ),
-
+                
                                 Padding(
                                   padding: EdgeInsets.all(15),
                                   child: Column(
@@ -125,18 +130,6 @@ class CoffeeCard extends StatelessWidget {
                                               )
                                             ],
                                           ),
-                                          Container(
-                                              height: 30,
-                                              width: 30,
-                                              decoration: BoxDecoration(
-                                                  color: Colors.green[400],
-                                                  borderRadius:
-                                                  BorderRadius.circular(10)),
-                                              child: Icon(
-                                                Icons.add,
-                                                color: Colors.black,
-                                                size: 20,
-                                              ))
                                         ],
                                       )
                                     ],
@@ -144,9 +137,6 @@ class CoffeeCard extends StatelessWidget {
                                 )
                               ],
                             ),),
-                            decoration: BoxDecoration(
-                                color: Color(0xF6F3F3E4),
-                                borderRadius: BorderRadius.circular(20)),
                           ),
                           SizedBox(
                             width: 20,

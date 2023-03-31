@@ -4,6 +4,7 @@ import 'package:environment_app/Air_Pollution/air_quality.dart';
 import 'package:environment_app/Air_Pollution/components/fill_column_data.dart';
 import 'package:environment_app/Air_Pollution/data/historicalAQI/geo_coder_model.dart';
 import 'package:environment_app/utils/chartGradient.dart';
+import 'package:geolocator/geolocator.dart' as gl;
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:flutter/material.dart';
 import 'package:unixtime/unixtime.dart';
@@ -49,22 +50,74 @@ class _aqiGraphState extends State<aqiGraph> {
 
   Timer? _debounce;
   List<AQIValues>? graphData;
+  bool gotLocation = false;
 
   final TextEditingController myController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    _streamController = StreamController();
-    monthController = StreamController();
+    _streamController = StreamController.broadcast();
+    monthController = StreamController.broadcast();
     _stream = _streamController!.stream;
     monthStream = monthController!.stream;
+    _getCurrentPosition();
   }
 
   @override
   void dispose() {
     myController.dispose();
     super.dispose();
+  }
+
+  Future<bool> _handleLocationPermission() async {
+    bool serviceEnabled;
+    gl.LocationPermission permission;
+
+    serviceEnabled = await gl.Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+              'Location services are disabled. Please enable the services')));
+      return false;
+    }
+    permission = await gl.Geolocator.checkPermission();
+    if (permission == gl.LocationPermission.denied) {
+      permission = await gl.Geolocator.requestPermission();
+      if (permission == gl.LocationPermission.denied) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Location permissions are denied')));
+        return false;
+      }
+    }
+    if (permission == gl.LocationPermission.deniedForever) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+              'Location permissions are permanently denied, we cannot request permissions.')));
+      return false;
+    }
+    return true;
+  }
+
+  Future<void> _getCurrentPosition() async {
+    final hasPermission = await _handleLocationPermission();
+
+    if (!hasPermission) {
+      print("Permission not provided");
+      return;
+    }
+    await gl.Geolocator.getCurrentPosition(
+            desiredAccuracy: gl.LocationAccuracy.high)
+        .then((gl.Position position) {
+      setState(() {
+        print("setting lat and lon values....");
+        lat = position.latitude;
+        lon = position.longitude;
+        gotLocation = true;
+      });
+    }).catchError((e) {
+      debugPrint(e);
+    });
   }
 
   getAPI() async {
@@ -82,10 +135,13 @@ class _aqiGraphState extends State<aqiGraph> {
     print(latlongdata);
 
     latlong = GeoCoderModel.fromJson(latlongdata);
+    if (latlong.data == null || latlong.data!.isEmpty) return;
     lat = latlong.data![0].latitude;
     lon = latlong.data![0].longitude;
     start = getUnix(dayDropdownValue, "00:00:00.000");
     end = getUnix(dayDropdownValue, "23:59:59.000");
+    print("Latitude = ${lat}");
+    print("Longitude = ${lon}");
     print("Start time is = ${start}");
     print("End time is = ${end}");
 
@@ -278,7 +334,8 @@ class _aqiGraphState extends State<aqiGraph> {
             ),
           ),
           Container(
-            margin: const EdgeInsets.fromLTRB(10, 5, 10, 20),
+            width: MediaQuery.of(context).size.width/3,
+            margin: const EdgeInsets.fromLTRB(10, 5, 220, 20),
             padding: const EdgeInsets.symmetric(horizontal: 10),
             decoration: BoxDecoration(
               border: Border.all(color: Colors.black54),
@@ -352,7 +409,6 @@ class _aqiGraphState extends State<aqiGraph> {
                       ],
                       // enableAxisAnimation: true,
                       margin: const EdgeInsets.all(6),
-                      
                     ),
                   );
                 }
@@ -374,7 +430,7 @@ class _aqiGraphState extends State<aqiGraph> {
           ),
           Flexible(
             child: Container(
-              margin: const EdgeInsets.fromLTRB(10, 5, 10, 20),
+              margin: const EdgeInsets.fromLTRB(10, 5, 200, 20),
               padding: const EdgeInsets.symmetric(horizontal: 10),
               decoration: BoxDecoration(
                 border: Border.all(color: Colors.black54),
@@ -454,10 +510,163 @@ class _aqiGraphState extends State<aqiGraph> {
                   );
                 }
                 return Container();
-              })
+              }),
+          SizedBox(height: 20),
+          Container(
+              margin: EdgeInsets.all(10),
+              padding: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: colors[0],
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Image.asset('assets/images/1.png', width: 30),
+                  Container(
+                    width: 250,
+                    child: Text(
+                      'Toxins are absent, and the air is clean. There are no health risks for people.',
+                    ),
+                  ),
+                ],
+              )),
+          Container(
+              margin: EdgeInsets.all(10),
+              padding: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: colors[1],
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Image.asset('assets/images/2.png', width: 30),
+                  Container(
+                    width: 250,
+                    child: Text(
+                      'Those in good health can breathe the air,but those who are very sensitive may be at risk.',
+                      // maxLines: 2,
+                      // overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              )),
+          Container(
+              margin: EdgeInsets.all(10),
+              padding: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: colors[2],
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Image.asset('assets/images/3.png', width: 30),
+                  Container(
+                    width: 250,
+                    child: Text(
+                      'Such air might make breathing a little uncomfortable and difficult.',
+                    ),
+                  ),
+                ],
+              )),
+          Container(
+              margin: EdgeInsets.all(10),
+              padding: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: colors[3],
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Image.asset('assets/images/4.png', width: 30),
+                  Container(
+                    width: 250,
+                    child: Text(
+                      'Children, pregnant women, and the elderly may particularly struggle with this.',
+                    ),
+                  ),
+                ],
+              )),
+          Container(
+              margin: EdgeInsets.all(10),
+              padding: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: colors[4],
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Image.asset('assets/images/5.png', width: 30),
+                  Container(
+                    width: 250,
+                    child: Text(
+                      'Chronic morbidities or even organ damage might result from air exposure.',
+                    ),
+                  ),
+                ],
+              )),
+              Container(
+              margin: EdgeInsets.all(10),
+              padding: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: colors[5],
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Image.asset('assets/images/6.png', width: 40),
+                  Container(
+                    width: 250,
+                    child: Text(
+                      'Beware! Your life is at risk. Prolonged exposure can result in death.',
+                    ),
+                  ),
+                ],
+              )),
         ],
       ),
     );
+  }
+}
+
+class AQIDangerCard extends StatelessWidget {
+  String text = "Text";
+  String emoji = "assets/images/1.png";
+  Color color = Colors.white;
+
+  AQIDangerCard({
+    super.key,
+    required text,
+    required emoji,
+    required color,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        margin: EdgeInsets.all(10),
+        padding: EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: color,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Image.asset(emoji, width: 20),
+            Container(
+              width: 250,
+              child: Text(
+                text,
+              ),
+            ),
+          ],
+        ));
   }
 }
 

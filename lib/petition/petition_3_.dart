@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:environment_app/petition/petition_3_.dart';
 
+import '../components/primary_appbar.dart';
+
 class Petition_form extends StatelessWidget {
   String? textNote;
   String textNote1 = 'Local';
@@ -17,98 +19,24 @@ class Petition_form extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-            elevation: 0.0,
-            backgroundColor: Colors.transparent,
-            title: Text('TATV',
-                style: TextStyle(
-                  fontSize: 22,
-                  fontFamily: 'Inter',
-                  fontWeight: FontWeight.w400,
-                  color: Colors.black,
-                )),
-            leading: Icon(
-              Icons.energy_savings_leaf_rounded,
-              color: Colors.black,
-              size: 35,
-            ),
-            actions: [
-              Icon(
-                Icons.search,
-                color: Colors.black,
-                size: 30,
-              ),
-              SizedBox(width: 5),
-            ]),
+        appBar: PreferredSize(
+          child: PrimaryAppBar(
+            page: 'petitions',
+          ),
+          preferredSize: const Size.fromHeight(110.0),
+        ),
         body: Padding(
           padding: EdgeInsets.symmetric(vertical: 25),
           child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    GestureDetector(
-                        onTap: () => {Navigator.pushNamed(context, '')},
-                        child: Container(
-                          child: Text('Home',
-                              style: TextStyle(
-                                fontFamily: 'Inter',
-                                fontWeight: FontWeight.bold,
-                              )),
-                        )),
-                    GestureDetector(
-                        onTap: () => {Navigator.pushNamed(context, '')},
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 12, horizontal: 13),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            gradient: LinearGradient(
-                                begin: Alignment.centerLeft,
-                                end: Alignment.centerRight,
-                                stops: [
-                                  0.3,
-                                  0.75,
-                                  0.9
-                                ],
-                                colors: [
-                                  const Color(0xFF3DA35D),
-                                  const Color(0xFF96E072),
-                                  const Color(0xFFE8FCCF),
-                                ]),
-                          ),
-                          child: Text('Petitions',
-                              style: TextStyle(
-                                fontFamily: 'Inter',
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              )),
-                        )),
-                    GestureDetector(
-                        onTap: () => {Navigator.pushNamed(context, '')},
-                        child: Container(
-                            child: Text('Connect',
-                                style: TextStyle(
-                                  fontFamily: 'Inter',
-                                  fontWeight: FontWeight.bold,
-                                )))),
-                    GestureDetector(
-                        onTap: () => {Navigator.pushNamed(context, '')},
-                        child: Container(
-                            child: Text('News',
-                                style: TextStyle(
-                                  fontFamily: 'Inter',
-                                  fontWeight: FontWeight.bold,
-                                )))),
-                  ],
-                ),
+                
                 SizedBox(height: 5),
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
                   child: Text(
-                    " >> Write the scope of your petition: <<  ",
+                    "Write the scope of your petition:",
                     textAlign: TextAlign.left,
                     style: TextStyle(
                       fontFamily: 'Inria',
@@ -150,7 +78,7 @@ class Petition_form extends StatelessWidget {
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
                   child: Text(
-                    ">>What's the topic that best fits your petition?<< ",
+                    "What's the topic that best fits your petition?",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontFamily: 'Inria',
@@ -168,7 +96,7 @@ class Petition_form extends StatelessWidget {
                           textNote2 = value;
                         },
                         decoration: InputDecoration(
-                          hintText: "Ex- Environment , Education,Health",
+                          hintText: "Eg: Environment ,Soil Pollution etc.",
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(11),
                             borderSide: BorderSide(
@@ -192,7 +120,7 @@ class Petition_form extends StatelessWidget {
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
                   child: Text(
-                    ">>  TELL YOUR STORY << ",
+                    "TELL YOUR STORY",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontFamily: 'Inria',
@@ -211,7 +139,7 @@ class Petition_form extends StatelessWidget {
                             textNote3 = value;
                           },
                           decoration: InputDecoration(
-                            hintText: "                   Start from scratch",
+                            hintText: "Elaborate on the situation",
                             contentPadding: EdgeInsets.symmetric(
                                 vertical: 66.0, horizontal: 0),
                             focusedBorder: OutlineInputBorder(
@@ -466,7 +394,7 @@ class Petition_form extends StatelessWidget {
 //                 Container(
 //                   margin: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
 //                   child: Text(
-//                     " >> Write the scope of your petition: <<  ",
+//                     "Write the scope of your petition:",
 //                     textAlign: TextAlign.left,
 //                     style: TextStyle(
 //                       fontFamily: 'Inria',

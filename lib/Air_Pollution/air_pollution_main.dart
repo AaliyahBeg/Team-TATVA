@@ -71,7 +71,7 @@ class _AirPollutionMainState extends State<AirPollutionMain> {
                     SizedBox(height: 10),
                     Icon(Icons.chevron_right)
                   ],
-                )))
+                ))),
       ],
     );
   }

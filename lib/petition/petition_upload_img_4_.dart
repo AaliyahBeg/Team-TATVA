@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
+import '../components/primary_appbar.dart';
+
 void main() => runApp(ImagePickerExample());
 
 class MyApp extends StatelessWidget {
@@ -29,6 +31,8 @@ class ImagePickerExample extends StatefulWidget {
   String? textNote1;
   String? textNote2;
   String? textNote3;
+  int ? support;
+ 
 
   ImagePickerExample(
       {this.textNote, this.textNote1, this.textNote2, this.textNote3});
@@ -53,6 +57,7 @@ class _ImagePickerExampleState extends State<ImagePickerExample> {
   String imgTitle = ""; // title_of_img
   String pathUrl = ""; // pathurl
   String location = '-'; //location
+  int support = 0;
 
   _ImagePickerExampleState(
       {this.textNote, this.textNote1, this.textNote2, this.textNote3});
@@ -79,12 +84,12 @@ class _ImagePickerExampleState extends State<ImagePickerExample> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'NATURALEZA',
+      appBar: PreferredSize(
+          child: PrimaryAppBar(
+            page: 'petitions',
+          ),
+          preferredSize: const Size.fromHeight(110.0),
         ),
-        backgroundColor: Color.fromARGB(255, 123, 187, 91),
-      ),
       body: Center(
         child: SingleChildScrollView(
           child: Column(
@@ -93,7 +98,7 @@ class _ImagePickerExampleState extends State<ImagePickerExample> {
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
                 child: Text(
-                  " >> ADD AN IMAGE <<  ",
+                  "ADD AN IMAGE",
                   textAlign: TextAlign.left,
                   style: TextStyle(
                     fontFamily: 'Inria',
@@ -105,7 +110,7 @@ class _ImagePickerExampleState extends State<ImagePickerExample> {
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
                 child: Text(
-                  ">> Select the image by clicking camera icon <<",
+                  "Select the image by clicking camera icon",
                   textAlign: TextAlign.left,
                   style: TextStyle(
                     fontFamily: 'Inria',
@@ -125,7 +130,7 @@ class _ImagePickerExampleState extends State<ImagePickerExample> {
                         imgTitle = value;
                       },
                       decoration: InputDecoration(
-                        hintText: ">> Give some title to your image <<",
+                        hintText: "Give some title to your image",
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(11),
                           borderSide: BorderSide(
@@ -157,7 +162,7 @@ class _ImagePickerExampleState extends State<ImagePickerExample> {
                         location = value;
                       },
                       decoration: InputDecoration(
-                        hintText: ">> Enter location of image <<",
+                        hintText: "Enter location of image",
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(11),
                           borderSide: BorderSide(
@@ -213,8 +218,7 @@ class _ImagePickerExampleState extends State<ImagePickerExample> {
                   } catch (error) {}
                   //Store the file
 
-                  pathUrl = referenceImageToUpload.putFile(File(file!.path))
-                      as String;
+                  // pathUrl = referenceImageToUpload.putFile(File(file!.path)) as String;
                   print("Path URL after : ${pathUrl}");
                 },
                 icon: Icon(Icons.camera_alt),
@@ -239,6 +243,10 @@ class _ImagePickerExampleState extends State<ImagePickerExample> {
                     ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text('Please upload an image')));
                   }
+                  var userSnap = await FirebaseFirestore.instance
+                      .collection('users')
+                      .doc(uid)
+                      .get();
                   print("Path URL in onPressed: ${pathUrl}");
                   await user.add({
                     'uid': uid,
@@ -249,6 +257,10 @@ class _ImagePickerExampleState extends State<ImagePickerExample> {
                     'imgTitle': imgTitle,
                     'pathurl': imageUrl,
                     'location': location,
+                    'username': userSnap["name"],
+                    'profilePic': userSnap["photourl"],
+                    'support': [],
+                    'datePublished': DateTime.now(),
                   }).then((value) => print('User added'));
                   Navigator.push(
                       context,

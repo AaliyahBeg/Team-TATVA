@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:unixtime/unixtime.dart';
 
 import '../data/historicalAQI/historical_aqi_model.dart';
@@ -23,7 +25,7 @@ void fillColumnData(historicalAqiModel hAQIdata, String value, String type) {
   chartTitle = "$value Graph";
   switch (value) {
     case "AQI":
-      yValueMapper = (AQIValues aqiv, _) => aqiv.aqi;
+      yValueMapper = (AQIValues aqiv, _) => max(aqiv.pm25!.toInt(),aqiv.pm10!.toInt());
       break;
     case "PM 2.5":
       yValueMapper = (AQIValues aqiv, _) => aqiv.pm25;

@@ -3,11 +3,9 @@ import 'package:flutter/material.dart';
 class CardItem {
   final String assetImage;
   final String title;
-  final String desc;
   const CardItem({
     required this.assetImage,
     required this.title,
-    required this.desc,
   });
 }
 
@@ -16,31 +14,26 @@ List<CardItem> items = [
       assetImage:
           'images/soilPollution.png',
       title: "LAND POLLUTION",
-      desc: "",
     ),
     CardItem(
       assetImage:
           'images/waterPollution.png',
       title: "WATER POLLUTION",
-      desc: "",
     ),
     CardItem(
       assetImage:
           'images/airPollution.png',
       title: "AIR POLLUTION",
-      desc: "",
     ),
     CardItem(
       assetImage:
           'images/noisePollution.png',
       title: "NOISE POLLUTION",
-      desc: "",
     ),
     CardItem(
       assetImage:
           'images/lightPollution.png',
       title: "LIGHT POLLUTION",
-      desc: "",
     ),
   ];
 
@@ -63,22 +56,12 @@ List<CardItem> items = [
               ),
             ),
           ),
-          const SizedBox(
-            height: 5,
-          ),
           Text(
             item.title,
             style: TextStyle(
-              fontSize: 20,
+              fontSize: 18,
               fontWeight: FontWeight.bold,
-            ),
-          ),
-          Text(
-            item.desc,
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w100,
-              color: Colors.grey,
+              fontFamily: 'Inter'
             ),
           ),
           Container(

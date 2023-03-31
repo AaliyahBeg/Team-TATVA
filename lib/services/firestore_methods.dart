@@ -55,6 +55,27 @@ class FireStoreMethods {
     return res;
   }
 
+  Future<String> supportPetition(String docId, String uid, List supports) async {
+    String res = "Some error occurred";
+    try {
+      if (supports.contains(uid)) {
+        // if the supports list contains the user uid, we need to remove it
+        _firestore.collection('Petition').doc(docId).update({
+          'support': FieldValue.arrayRemove([uid])
+        });
+      } else {
+        // else we need to add uid to the supports array
+        _firestore.collection('Petition').doc(docId).update({
+          'support': FieldValue.arrayUnion([uid])
+        });
+      }
+      res = 'success';
+    } catch (err) {
+      res = err.toString();
+    }
+    return res;
+  }
+
   // Post comment
   Future<String> postComment(String postId, String text, String uid,
       String name, String profilePic) async {

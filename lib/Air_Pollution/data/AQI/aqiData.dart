@@ -90,14 +90,14 @@ class Main {
 }
 
 class Components {
-  double? co;
-  int? no;
-  double? no2;
-  double? o3;
-  double? so2;
-  double? pm25;
-  double? pm10;
-  double? nh3;
+  num? co;
+  num? no;
+  num? no2;
+  num? o3;
+  num? so2;
+  num? pm25;
+  num? pm10;
+  num? nh3;
 
   Components(
       {this.co,
