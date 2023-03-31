@@ -29,7 +29,7 @@ flutter doctor
 ```
 3. Git clone the project into the directory of your choosing.
 ```
-git clone https://github.com/AaliyahBeg/Environment-App.git
+git clone https://github.com/AaliyahBeg/Team-TATVA.git
 ```
 4. Edit the confidential.dart file and add your Newsapi.org API, Open Weather Map API, Position Stack Geocoder API, RazorPay API keys.
 ```
