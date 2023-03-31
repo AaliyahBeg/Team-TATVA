@@ -10,7 +10,7 @@
 ## Getting Started
 
 * Get to know more about the idea :
-https://drive.google.com/file/d/1ujgN21t4jnaeYIthkPtdLoDI1ACSa6NV/view?usp=sharing
+https://www.canva.com/design/DAFdkZJ7me4/BH7MuVMDxjj7uGqkesESzA/view?utm_content=DAFdkZJ7me4&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
 
 * Features : 
 Elaborately on the problem related to the layers of destruction caused to the environment. Tackling and providing solutions to all the environmental issues broadly classified into 
@@ -51,9 +51,10 @@ It is preferred you run the app on an actual Andriod device or you can set-up yo
 
 ## Resources
 
-https://www.figma.com/file/xwutHNA8uxheIKWMoXhgJc/Environment-App?node-id=515%3A4
-https://docs.google.com/document/d/1W4tkS1QQG8nbXSfrxZMUT0FYQPK1ESGIVjQ9m09hkss/edit
-https://miro.com/app/board/uXjVPwcNB_Y=/
+- Presentation : https://www.canva.com/design/DAFdkZJ7me4/BH7MuVMDxjj7uGqkesESzA/view?utm_content=DAFdkZJ7me4&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
+- Prototyping : https://www.figma.com/file/xwutHNA8uxheIKWMoXhgJc/Environment-App?node-id=515%3A4
+
+
 
 ## TEAM TATV
    - Aaliyah Beg
