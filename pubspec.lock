@@ -948,10 +948,10 @@ packages:
     dependency: "direct main"
     description:
       name: noise_meter
-      sha256: d0856ed21f16cbbd4e92abbe9b8e55554bf5eaef72cf9ea702b07f4710f2f52c
+      sha256: "4b08cda3b0f8361646cd8eb13a9ed09a7e0bb947f815f23832215c0386d7271f"
       url: "https://pub.dev"
     source: hosted
-    version: "3.1.0"
+    version: "3.2.0"
   open_street_map_search_and_pick:
     dependency: "direct main"
     description:

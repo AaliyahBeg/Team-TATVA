@@ -102,8 +102,8 @@ class _HomeState extends State<Home> {
         return Page2();
       case 2: //Air Pollution
         return Page3();
-      // case 3: //Noise_Pollution
-      //   return Page4();
+      case 3: //Noise_Pollution
+        return Page4();
       case 4: //Light_Pollution
         return Page5();
       default:
