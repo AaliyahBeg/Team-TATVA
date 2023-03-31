@@ -18,3 +18,7 @@ Would collaborate and work upon this vision and provide solutions in form of a f
 https://www.figma.com/file/xwutHNA8uxheIKWMoXhgJc/Environment-App?node-id=515%3A4
 https://docs.google.com/document/d/1W4tkS1QQG8nbXSfrxZMUT0FYQPK1ESGIVjQ9m09hkss/edit
 https://miro.com/app/board/uXjVPwcNB_Y=/
+
+## APIs Used
+- Forward Geocoding API from : https://positionstack.com/
+- Air Pollution Data API from: https://openweathermap.org/api/air-pollution
