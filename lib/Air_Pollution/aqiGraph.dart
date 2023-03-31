@@ -14,7 +14,6 @@ import 'components/string_to_unix.dart';
 import 'data/confidential.dart';
 import 'data/historicalAQI/historical_aqi_model.dart';
 import 'package:http/http.dart' as http;
-import 'package:environment_app/Air_Pollution/components/getLocation.dart';
 
 class aqiGraph extends StatefulWidget {
   const aqiGraph({super.key});
