@@ -1,3 +1,5 @@
+import 'package:environment_app/services/database.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -46,6 +48,7 @@ class _newscontentState extends State<newscontent> {
 
   @override
   Widget build(BuildContext context) {
+    String uid = FirebaseAuth.instance.currentUser!.uid;
     return Scaffold(
       appBar: PreferredSize(
         child: PrimaryAppBar(
@@ -100,7 +103,9 @@ class _newscontentState extends State<newscontent> {
               margin: const EdgeInsets.fromLTRB(10.0, 0, 10.0, 0),
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                widget.desc == null ? 'Desciption: ' : 'Desciption: ' + widget.desc,
+                widget.desc == null
+                    ? 'Desciption: '
+                    : 'Desciption: ' + widget.desc,
                 textAlign: TextAlign.justify,
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
@@ -163,7 +168,18 @@ class _newscontentState extends State<newscontent> {
                   return Color.fromARGB(255, 198, 218, 198);
               }),
             ),
-            onPressed: () => {},
+            onPressed: () => {
+              print(uid),
+              DatabaseServices().addNewsData(
+                  widget.author,
+                  widget.content,
+                  widget.desc,
+                  widget.img,
+                  widget.pubAt,
+                  widget.title,
+                  uid,
+                  widget.urlstring),
+            },
             icon: Icon(Icons.save_alt),
             label: Text('Save'),
           ),

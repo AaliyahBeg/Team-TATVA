@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:environment_app/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:environment_app/services/firebaseFunctions.dart';
 import 'package:environment_app/Connect/components/models/user.dart' as model;
+
+late String uid;
 
 class AuthServices {
   static FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -13,7 +16,7 @@ class AuthServices {
     try {
       UserCredential userCredential = await _auth
           .createUserWithEmailAndPassword(email: email, password: password);
-
+      uid = _auth.currentUser!.uid;
       await _auth.currentUser!.updateDisplayName(name);
       await _auth.currentUser!.updateEmail(email);
       await FirestoreServices.saveUser(name, email, userCredential.user!.uid);
@@ -38,7 +41,9 @@ class AuthServices {
     try {
       UserCredential userCredential = await _auth
           .createUserWithEmailAndPassword(email: email, password: password);
-
+      uid = _auth.currentUser!.uid;
+      // await DatabaseServices(uid: _auth.currentUser!.uid)
+      //     .updateUserData('', '', '', '', '', '', '');
       await _auth.currentUser!.updateDisplayName(name);
       await _auth.currentUser!.updateEmail(email);
       await FirestoreServices.saveOrganization(
