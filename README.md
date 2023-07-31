@@ -62,7 +62,7 @@ It is preferred you run the app on an actual Andriod device or you can set-up yo
 
 
 
-## TEAM TATV
+## TEAM TATVA
    - Aaliyah Beg
    - Chayanika Basak
    - Pratibha Pratibha
